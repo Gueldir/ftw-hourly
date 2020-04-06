@@ -134,6 +134,8 @@ export const searchListings = searchParams => (dispatch, getState, sdk) => {
   const { perPage, price, dates, ...rest } = searchParams;
   const priceMaybe = priceSearchParams(price);
 
+  // TODO: dates, minDuration
+
   const params = {
     ...rest,
     ...priceMaybe,

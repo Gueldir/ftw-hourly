@@ -26,7 +26,7 @@ export const priceFilterConfig = {
 };
 
 // Activate booking dates filter on search page
-export const dateRangeFilterConfig = {
+export const dateRangeLengthFilterConfig = {
   active: true,
 };
 
