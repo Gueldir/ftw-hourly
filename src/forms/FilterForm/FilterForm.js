@@ -58,25 +58,24 @@ const FilterFormComponent = props => {
 
         const classes = classNames(css.root);
 
-        const spy = liveEdit || onChange
-              ? <FormSpy onChange={handleChange} subscription={{ values: true, dirty: true }} />
-              : null;
+        const spy =
+          liveEdit || onChange ? (
+            <FormSpy onChange={handleChange} subscription={{ values: true, dirty: true }} />
+          ) : null;
 
-        const buttons = !liveEdit
-              ? (
-                <div className={css.buttonsWrapper}>
-                  <button className={css.clearButton} type="button" onClick={onClear}>
-                    {clear}
-                  </button>
-                  <button className={css.cancelButton} type="button" onClick={handleCancel}>
-                    {cancel}
-                  </button>
-                  <button className={css.submitButton} type="submit">
-                    {submit}
-                  </button>
-                </div>
-              )
-              : null;
+        const buttons = !liveEdit ? (
+          <div className={css.buttonsWrapper}>
+            <button className={css.clearButton} type="button" onClick={onClear}>
+              {clear}
+            </button>
+            <button className={css.cancelButton} type="button" onClick={handleCancel}>
+              {cancel}
+            </button>
+            <button className={css.submitButton} type="submit">
+              {submit}
+            </button>
+          </div>
+        ) : null;
 
         return (
           <Form

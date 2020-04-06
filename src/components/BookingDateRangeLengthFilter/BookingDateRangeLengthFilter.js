@@ -33,6 +33,7 @@ export class BookingDateRangeLengthFilterComponent extends Component {
     const isDatesSelected = !!initialDateValuesRaw && !!initialDateValuesRaw.dates;
     const initialDateValues = isDatesSelected ? initialDateValuesRaw : { dates: null };
 
+    // TODO: ???
     const initialDurationValue = initialDurationValueRaw;
 
     const startDate = isDatesSelected ? initialDateValues.dates.startDate : null;
@@ -85,13 +86,18 @@ export class BookingDateRangeLengthFilterComponent extends Component {
 
     const handleChange = (param, values) => {
       console.log('handleChange()', values);
-      this.setState({ dates: values[datesUrlParam]});
+      this.setState({ dates: values[datesUrlParam] });
     };
 
     const datesSelected = !!(initialDateValues.dates || this.state.dates);
 
     // ask selected filter value form Kaisa
     // duration slot values, min 60mins
+
+    const initialValues = {
+      ...initialDateValues,
+      minDuration: initialDurationValue,
+    };
 
     return showAsPopup ? (
       <FilterPopup
@@ -107,7 +113,7 @@ export class BookingDateRangeLengthFilterComponent extends Component {
         onChange={handleChange}
         {...onClearPopupMaybe}
         {...onCancelPopupMaybe}
-        initialValues={initialDateValues}
+        initialValues={initialValues}
         urlParam={datesUrlParam}
         {...rest}
       >
@@ -140,7 +146,7 @@ export class BookingDateRangeLengthFilterComponent extends Component {
         contentPlacementOffset={contentPlacementOffset}
         onSubmit={handleSubmit}
         {...onClearPlainMaybe}
-        initialValues={initialDateValues}
+        initialValues={initialValues}
         urlParam={datesUrlParam}
         {...rest}
       >
@@ -175,7 +181,7 @@ BookingDateRangeLengthFilterComponent.propTypes = {
   durationUrlParam: string.isRequired,
   onSubmit: func.isRequired,
   initialDateValues: object,
-  initialDurationValue: object,
+  initialDurationValue: number,
   contentPlacementOffset: number,
 
   // form injectIntl

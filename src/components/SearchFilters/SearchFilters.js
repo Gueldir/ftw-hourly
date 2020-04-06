@@ -47,6 +47,20 @@ const initialPriceRangeValue = (queryParams, paramName) => {
     : null;
 };
 
+const initialDateRangeValue = (queryParams, paramName) => {
+  const dates = queryParams[paramName];
+  const rawValuesFromParams = !!dates ? dates.split(',') : [];
+  const valuesFromParams = rawValuesFromParams.map(v => parseDateFromISO8601(v));
+  const initialValues =
+    !!dates && valuesFromParams.length === 2
+      ? {
+          dates: { startDate: valuesFromParams[0], endDate: valuesFromParams[1] },
+        }
+      : { dates: null };
+
+  return initialValues;
+};
+
 const SearchFiltersComponent = props => {
   const {
     rootClassName,
@@ -96,12 +110,12 @@ const SearchFiltersComponent = props => {
     : null;
 
   const initialDates = dateRangeLengthFilter
-        ? initialValue(urlQueryParams, dateRangeLengthFilter.paramName)
-        : null;
+    ? initialDateRangeValue(urlQueryParams, dateRangeLengthFilter.paramName)
+    : null;
 
   const initialMinDuration = dateRangeLengthFilter
-        ? initialValue(urlQueryParams, dateRangeLengthFilter.minDurationParamName)
-        : null;
+    ? initialValue(urlQueryParams, dateRangeLengthFilter.minDurationParamName)
+    : null;
 
   const handleSelectOptions = (urlParam, options) => {
     const queryParams =
@@ -184,22 +198,37 @@ const SearchFiltersComponent = props => {
     />
   ) : null;
 
-  const handleDateRangeLength = (values) => {
+  const handleDateRangeLength = values => {
     console.log('values:', values);
-    // const dates = values[dateRangeLengthFilter.paramName];
-    // const minDuration = values[dateRangeLengthFilter.minDurationParamName];
-    // const dates = values[dateRangeLengthFilter.paramName];
-    // const queryParams = {};
-      // minPrice != null && maxPrice != null
-      //   ? { ...urlQueryParams, [urlParam]: `${minPrice},${maxPrice}` }
-      //   : omit(urlQueryParams, urlParam);
+    const hasDates = values && values[dateRangeLengthFilter.paramName];
+    const { startDate, endDate } = hasDates ? values[dateRangeLengthFilter.paramName] : {};
+    const start = startDate ? stringifyDateToISO8601(startDate) : null;
+    const end = endDate ? stringifyDateToISO8601(endDate) : null;
+    const minDuration =
+      hasDates && values && values[dateRangeLengthFilter.minDurationParamName]
+        ? values[dateRangeLengthFilter.minDurationParamName]
+        : null;
 
-    // history.push(createResourceLocatorString('SearchPage', routeConfiguration(), {}, queryParams));
+    const restParams = omit(
+      urlQueryParams,
+      dateRangeLengthFilter.paramName,
+      dateRangeLengthFilter.minDurationParamName
+    );
+
+    const datesMaybe =
+      start != null && end != null ? { [dateRangeLengthFilter.paramName]: `${start},${end}` } : {};
+    const minDurationMaybe = minDuration
+      ? { [dateRangeLengthFilter.minDurationParamName]: minDuration }
+      : {};
+
+    const queryParams = {
+      ...datesMaybe,
+      ...minDurationMaybe,
+      ...restParams,
+    };
+    console.log('query params:', queryParams);
+    history.push(createResourceLocatorString('SearchPage', routeConfiguration(), {}, queryParams));
   };
-
-  // dateRangeLengthFilter
-  // initialDates
-  // initialMinDuration
 
   const dateRangeLengthFilterElement =
     dateRangeLengthFilter && dateRangeLengthFilter.config.active ? (
