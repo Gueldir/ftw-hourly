@@ -234,6 +234,7 @@ const SearchFiltersComponent = props => {
     dateRangeLengthFilter && dateRangeLengthFilter.config.active ? (
       <BookingDateRangeLengthFilter
         id="SearchFilters.dateRangeLengthFilter"
+        dateRangeLengthFilter={dateRangeLengthFilter}
         datesUrlParam={dateRangeLengthFilter.paramName}
         durationUrlParam={dateRangeLengthFilter.minDurationParamName}
         onSubmit={handleDateRangeLength}

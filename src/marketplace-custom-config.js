@@ -28,6 +28,13 @@ export const priceFilterConfig = {
 // Activate booking dates filter on search page
 export const dateRangeLengthFilterConfig = {
   active: true,
+
+  // Options for the minimum duration of the booking
+  options: [
+    { key: '0', label: 'Any length' },
+    { key: '60', label: '1 hour', shortLabel: '1h' },
+    { key: '120', label: '2 hours', shortLabel: '2h' },
+  ],
 };
 
 // Activate keyword filter on search page
