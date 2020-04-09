@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { bool, func, number, object, string } from 'prop-types';
 import { injectIntl, intlShape } from '../../util/reactIntl';
 
@@ -9,7 +9,6 @@ export class BookingDateRangeLengthFilterComponent extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { dates: null };
     this.popupControllerRef = null;
     this.plainControllerRef = null;
   }
@@ -29,6 +28,11 @@ export class BookingDateRangeLengthFilterComponent extends Component {
       intl,
       ...rest
     } = this.props;
+
+    // We need to sync the currently selected dates from the
+    // datepicker so we can enable the min duration only when there
+    // are dates selected.
+    const [selectedDates, setSelectedDates] = useState(null);
 
     const isDatesSelected = !!initialDateValuesRaw && !!initialDateValuesRaw.dates;
     const initialDateValues = isDatesSelected ? initialDateValuesRaw : { dates: null };
@@ -67,29 +71,45 @@ export class BookingDateRangeLengthFilterComponent extends Component {
 
     const onClearPopupMaybe =
       this.popupControllerRef && this.popupControllerRef.onReset
-        ? { onClear: () => this.popupControllerRef.onReset(null, null) }
+        ? {
+            onClear: () => {
+              this.popupControllerRef.onReset(null, null);
+              setSelectedDates(null);
+            },
+          }
         : {};
 
     const onCancelPopupMaybe =
       this.popupControllerRef && this.popupControllerRef.onReset
-        ? { onCancel: () => this.popupControllerRef.onReset(startDate, endDate) }
+        ? {
+            onCancel: () => {
+              this.popupControllerRef.onReset(startDate, endDate);
+              setSelectedDates(null);
+            },
+          }
         : {};
 
     const onClearPlainMaybe =
       this.plainControllerRef && this.plainControllerRef.onReset
-        ? { onClear: () => this.plainControllerRef.onReset(null, null) }
+        ? {
+            onClear: () => {
+              this.plainControllerRef.onReset(null, null);
+              setSelectedDates(null);
+            },
+          }
         : {};
 
     const handleSubmit = (param, values) => {
+      setSelectedDates(null);
       onSubmit(values);
     };
 
     const handleChange = (param, values) => {
       console.log('handleChange()', values);
-      this.setState({ dates: values[datesUrlParam] });
+      setSelectedDates(values[datesUrlParam]);
     };
 
-    const datesSelected = !!(initialDateValues.dates || this.state.dates);
+    const datesSelected = !!(initialDateValues.dates || selectedDates);
 
     // ask selected filter value form Kaisa
     // duration slot values, min 60mins
