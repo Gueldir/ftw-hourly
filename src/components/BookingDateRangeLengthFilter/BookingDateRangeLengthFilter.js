@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import { bool, func, number, object, string } from 'prop-types';
 import { injectIntl, intlShape } from '../../util/reactIntl';
 
@@ -8,6 +8,13 @@ import css from './BookingDateRangeLengthFilter.css';
 export class BookingDateRangeLengthFilterComponent extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      // We need to sync the currently selected dates from the
+      // datepicker so we can enable the min duration only when there
+      // are dates selected.
+      selectedDates: null,
+    };
 
     this.popupControllerRef = null;
     this.plainControllerRef = null;
@@ -28,11 +35,6 @@ export class BookingDateRangeLengthFilterComponent extends Component {
       intl,
       ...rest
     } = this.props;
-
-    // We need to sync the currently selected dates from the
-    // datepicker so we can enable the min duration only when there
-    // are dates selected.
-    const [selectedDates, setSelectedDates] = useState(null);
 
     const isDatesSelected = !!initialDateValuesRaw && !!initialDateValuesRaw.dates;
     const initialDateValues = isDatesSelected ? initialDateValuesRaw : { dates: null };
@@ -73,8 +75,8 @@ export class BookingDateRangeLengthFilterComponent extends Component {
       this.popupControllerRef && this.popupControllerRef.onReset
         ? {
             onClear: () => {
+              this.setState({ selectedDates: null });
               this.popupControllerRef.onReset(null, null);
-              setSelectedDates(null);
             },
           }
         : {};
@@ -83,8 +85,8 @@ export class BookingDateRangeLengthFilterComponent extends Component {
       this.popupControllerRef && this.popupControllerRef.onReset
         ? {
             onCancel: () => {
+              this.setState({ selectedDates: null });
               this.popupControllerRef.onReset(startDate, endDate);
-              setSelectedDates(null);
             },
           }
         : {};
@@ -93,23 +95,23 @@ export class BookingDateRangeLengthFilterComponent extends Component {
       this.plainControllerRef && this.plainControllerRef.onReset
         ? {
             onClear: () => {
+              this.setState({ selectedDates: null });
               this.plainControllerRef.onReset(null, null);
-              setSelectedDates(null);
             },
           }
         : {};
 
     const handleSubmit = (param, values) => {
-      setSelectedDates(null);
+      this.setState({ selectedDates: null });
       onSubmit(values);
     };
 
     const handleChange = (param, values) => {
       console.log('handleChange()', values);
-      setSelectedDates(values[datesUrlParam]);
+      this.setState({ selectedDates: values[datesUrlParam] });
     };
 
-    const datesSelected = !!(initialDateValues.dates || selectedDates);
+    const datesSelected = !!(initialDateValues.dates || this.state.selectedDates);
 
     // ask selected filter value form Kaisa
     // duration slot values, min 60mins
