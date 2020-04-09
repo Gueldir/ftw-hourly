@@ -63,9 +63,10 @@ class MainPanel extends Component {
         }
       : {};
 
-    // TODO: sort this out
     const hasPaginationInfo = !!pagination && pagination.totalItems != null;
-    const totalItems = searchParamsAreInSync && hasPaginationInfo ? pagination.totalItems : 0;
+    const listingsLength = listings ? listings.length : 0;
+    const totalItems =
+      searchParamsAreInSync && hasPaginationInfo ? pagination.totalItems : listingsLength;
     const listingsAreLoaded = !searchInProgress && searchParamsAreInSync;
 
     const classes = classNames(rootClassName || css.searchResultContainer, className);

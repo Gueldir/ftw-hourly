@@ -2,6 +2,7 @@ import unionWith from 'lodash/unionWith';
 import { storableError } from '../../util/errors';
 import { addMarketplaceEntities } from '../../ducks/marketplaceData.duck';
 import { convertUnitToSubUnit, unitDivisor } from '../../util/currency';
+import { formatDateStringToUTC } from '../../util/dates';
 import config from '../../config';
 
 // ================ Action types ================ //
@@ -131,16 +132,41 @@ export const searchListings = searchParams => (dispatch, getState, sdk) => {
       : {};
   };
 
-  const { perPage, price, dates, ...rest } = searchParams;
-  const priceMaybe = priceSearchParams(price);
+  const availabilityParams = (datesParam, minDurationParam) => {
+    const dateValues = datesParam ? datesParam.split(',') : [];
+    const hasDateValues = datesParam && dateValues.length === 2;
+    const startDate = hasDateValues ? dateValues[0] : null;
+    const endDate = hasDateValues ? dateValues[1] : null;
+    const minDurationMaybe =
+      minDurationParam && Number.isInteger(minDurationParam) && hasDateValues
+        ? { minDuration: minDurationParam }
+        : {};
 
-  // TODO: dates, minDuration
+    return hasDateValues
+      ? {
+          start: formatDateStringToUTC(startDate),
+          end: formatDateStringToUTC(endDate),
+          availability: 'time-partial',
+          ...minDurationMaybe,
+        }
+      : {};
+  };
+
+  const { perPage, price, dates, minDuration, ...rest } = searchParams;
+  const priceMaybe = priceSearchParams(price);
+  const availabilityMaybe = availabilityParams(dates, minDuration);
 
   const params = {
     ...rest,
     ...priceMaybe,
+    ...availabilityMaybe,
     per_page: perPage,
   };
+
+  console.log('searchListings()', {
+    searchParams,
+    params,
+  });
 
   return sdk.listings
     .query(params)

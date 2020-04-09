@@ -26,7 +26,7 @@ export class BookingDateRangeLengthFilterComponent extends Component {
       rootClassName,
       showAsPopup,
       initialDateValues: initialDateValuesRaw,
-      initialDurationValue: initialDurationValueRaw,
+      initialDurationValue,
       id,
       contentPlacementOffset,
       onSubmit,
@@ -38,9 +38,6 @@ export class BookingDateRangeLengthFilterComponent extends Component {
 
     const isDatesSelected = !!initialDateValuesRaw && !!initialDateValuesRaw.dates;
     const initialDateValues = isDatesSelected ? initialDateValuesRaw : { dates: null };
-
-    // TODO: ???
-    const initialDurationValue = initialDurationValueRaw;
 
     const startDate = isDatesSelected ? initialDateValues.dates.startDate : null;
     const endDate = isDatesSelected ? initialDateValues.dates.endDate : null;
