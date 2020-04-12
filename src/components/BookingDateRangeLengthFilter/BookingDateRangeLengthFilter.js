@@ -51,7 +51,6 @@ export class BookingDateRangeLengthFilterComponent extends Component {
       intl,
       ...rest
     } = this.props;
-    console.log({ dateRangeLengthFilter });
 
     const isDatesSelected = !!initialDateValuesRaw && !!initialDateValuesRaw.dates;
     const initialDateValues = isDatesSelected ? initialDateValuesRaw : { dates: null };
@@ -95,8 +94,9 @@ export class BookingDateRangeLengthFilterComponent extends Component {
         )
       : intl.formatMessage({ id: 'BookingDateRangeLengthFilter.labelPopup' });
 
-    // TODO: move to translations
-    const minDurationLabel = 'Minimum length';
+    const minDurationLabel = intl.formatMessage({
+      id: 'BookingDateRangeLengthFilter.minDurationLabel',
+    });
 
     const onClearPopupMaybe =
       this.popupControllerRef && this.popupControllerRef.onReset
@@ -134,7 +134,6 @@ export class BookingDateRangeLengthFilterComponent extends Component {
     };
 
     const handleChange = (param, values) => {
-      console.log('handleChange()', values);
       this.setState({ selectedDates: values[datesUrlParam] });
     };
 

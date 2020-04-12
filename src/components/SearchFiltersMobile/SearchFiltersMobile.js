@@ -321,8 +321,6 @@ class SearchFiltersMobileComponent extends Component {
     const initialDates = this.initialDateRangeValue(dateRangeLengthFilter.paramName);
     const initialMinDuration = this.initialValue(dateRangeLengthFilter.minDurationParamName);
 
-    console.log('mobile', { initialDates, initialMinDuration });
-
     const dateRangeLengthFilterElement =
       dateRangeLengthFilter && dateRangeLengthFilter.config.active ? (
         <BookingDateRangeLengthFilter
