@@ -9,7 +9,9 @@ import config from '../../config';
 
 import routeConfiguration from '../../routeConfiguration';
 import { createResourceLocatorString } from '../../util/routes';
+import { parseDateFromISO8601, stringifyDateToISO8601 } from '../../util/dates';
 import {
+  BookingDateRangeLengthFilter,
   ModalInMobile,
   Button,
   KeywordFilter,
@@ -37,9 +39,11 @@ class SearchFiltersMobileComponent extends Component {
     this.handlePrice = this.handlePrice.bind(this);
     this.handleKeyword = this.handleKeyword.bind(this);
     this.handleSortBy = this.handleSortBy.bind(this);
+    this.handleDateRangeLength = this.handleDateRangeLength.bind(this);
     this.initialValue = this.initialValue.bind(this);
     this.initialValues = this.initialValues.bind(this);
     this.initialPriceRangeValue = this.initialPriceRangeValue.bind(this);
+    this.initialDateRangeValue = this.initialDateRangeValue.bind(this);
   }
 
   // Open filters modal, set the initial parameters to current ones
@@ -123,210 +127,279 @@ class SearchFiltersMobileComponent extends Component {
     history.push(createResourceLocatorString('SearchPage', routeConfiguration(), {}, queryParams));
   }
 
-  // Reset all filter query parameters
-  resetAll(e) {
-    const { urlQueryParams, history, filterParamNames } = this.props;
+  handleDateRangeLength(values) {
+    const { urlQueryParams, history, dateRangeLengthFilter } = this.props;
 
-    const queryParams = omit(urlQueryParams, filterParamNames);
+    const hasDates = values && values[dateRangeLengthFilter.paramName];
+    const { startDate, endDate } = hasDates ? values[dateRangeLengthFilter.paramName] : {};
+    const start = startDate ? stringifyDateToISO8601(startDate) : null;
+    const end = endDate ? stringifyDateToISO8601(endDate) : null;
+    const minDuration =
+          hasDates && values && values[dateRangeLengthFilter.minDurationParamName]
+          ? values[dateRangeLengthFilter.minDurationParamName]
+          : null;
+
+    const restParams = omit(
+      urlQueryParams,
+      dateRangeLengthFilter.paramName,
+      dateRangeLengthFilter.minDurationParamName
+    );
+
+    const datesMaybe =
+          start != null && end != null ? { [dateRangeLengthFilter.paramName]: `${start},${end}` } : {};
+    const minDurationMaybe = minDuration
+          ? { [dateRangeLengthFilter.minDurationParamName]: minDuration }
+          : {};
+
+    const queryParams = {
+      ...datesMaybe,
+      ...minDurationMaybe,
+      ...restParams,
+    };
     history.push(createResourceLocatorString('SearchPage', routeConfiguration(), {}, queryParams));
+  }
 
-    // blur event target if event is passed
-    if (e && e.currentTarget) {
-      e.currentTarget.blur();
+    // Reset all filter query parameters
+    resetAll(e) {
+      const { urlQueryParams, history, filterParamNames } = this.props;
+
+      const queryParams = omit(urlQueryParams, filterParamNames);
+      history.push(createResourceLocatorString('SearchPage', routeConfiguration(), {}, queryParams));
+
+      // blur event target if event is passed
+      if (e && e.currentTarget) {
+        e.currentTarget.blur();
+      }
     }
-  }
 
-  // resolve initial value for a single value filter
-  initialValue(paramName) {
-    return this.props.urlQueryParams[paramName];
-  }
+    // resolve initial value for a single value filter
+    initialValue(paramName) {
+      return this.props.urlQueryParams[paramName];
+    }
 
-  // resolve initial values for a multi value filter
-  initialValues(paramName) {
-    const urlQueryParams = this.props.urlQueryParams;
-    return !!urlQueryParams[paramName] ? urlQueryParams[paramName].split(',') : [];
-  }
+    // resolve initial values for a multi value filter
+    initialValues(paramName) {
+      const urlQueryParams = this.props.urlQueryParams;
+      return !!urlQueryParams[paramName] ? urlQueryParams[paramName].split(',') : [];
+    }
 
-  initialPriceRangeValue(paramName) {
-    const urlQueryParams = this.props.urlQueryParams;
-    const price = urlQueryParams[paramName];
-    const valuesFromParams = !!price ? price.split(',').map(v => Number.parseInt(v, RADIX)) : [];
+    initialPriceRangeValue(paramName) {
+      const urlQueryParams = this.props.urlQueryParams;
+      const price = urlQueryParams[paramName];
+      const valuesFromParams = !!price ? price.split(',').map(v => Number.parseInt(v, RADIX)) : [];
 
-    return !!price && valuesFromParams.length === 2
-      ? {
+      return !!price && valuesFromParams.length === 2
+        ? {
           minPrice: valuesFromParams[0],
           maxPrice: valuesFromParams[1],
         }
       : null;
-  }
+    }
 
-  render() {
-    const {
-      rootClassName,
-      className,
-      sort,
-      listingsAreLoaded,
-      resultsCount,
-      searchInProgress,
-      showAsModalMaxWidth,
-      onMapIconClick,
-      onManageDisableScrolling,
-      selectedFiltersCount,
-      certificateFilter,
-      yogaStylesFilter,
-      priceFilter,
-      keywordFilter,
-      intl,
-    } = this.props;
+    initialDateRangeValue(paramName) {
+      const urlQueryParams = this.props.urlQueryParams;
+      const dates = urlQueryParams[paramName];
+      const rawValuesFromParams = !!dates ? dates.split(',') : [];
+      const valuesFromParams = rawValuesFromParams.map(v => parseDateFromISO8601(v));
+      const initialValues =
+            !!dates && valuesFromParams.length === 2
+        ? {
+          dates: { startDate: valuesFromParams[0], endDate: valuesFromParams[1] },
+        }
+      : { dates: null };
 
-    const classes = classNames(rootClassName || css.root, className);
+      return initialValues;
+    }
 
-    const resultsFound = (
-      <FormattedMessage id="SearchFilters.foundResults" values={{ count: resultsCount }} />
-    );
-    const noResults = <FormattedMessage id="SearchFilters.noResultsMobile" />;
-    const loadingResults = <FormattedMessage id="SearchFilters.loadingResultsMobile" />;
-    const filtersHeading = intl.formatMessage({ id: 'SearchFiltersMobile.heading' });
-    const modalCloseButtonMessage = intl.formatMessage({ id: 'SearchFiltersMobile.cancel' });
+    render() {
+      const {
+        rootClassName,
+        className,
+        sort,
+        listingsAreLoaded,
+        resultsCount,
+        searchInProgress,
+        showAsModalMaxWidth,
+        onMapIconClick,
+        onManageDisableScrolling,
+        selectedFiltersCount,
+        certificateFilter,
+        yogaStylesFilter,
+        priceFilter,
+        dateRangeLengthFilter,
+        keywordFilter,
+        intl,
+      } = this.props;
 
-    const showListingsLabel = intl.formatMessage(
-      { id: 'SearchFiltersMobile.showListings' },
-      { count: resultsCount }
-    );
+      const classes = classNames(rootClassName || css.root, className);
 
-    const filtersButtonClasses =
-      selectedFiltersCount > 0 ? css.filtersButtonSelected : css.filtersButton;
+      const resultsFound = (
+        <FormattedMessage id="SearchFilters.foundResults" values={{ count: resultsCount }} />
+      );
+      const noResults = <FormattedMessage id="SearchFilters.noResultsMobile" />;
+      const loadingResults = <FormattedMessage id="SearchFilters.loadingResultsMobile" />;
+      const filtersHeading = intl.formatMessage({ id: 'SearchFiltersMobile.heading' });
+      const modalCloseButtonMessage = intl.formatMessage({ id: 'SearchFiltersMobile.cancel' });
 
-    const certificateLabel = intl.formatMessage({
-      id: 'SearchFiltersMobile.certificateLabel',
-    });
-    const initialcertificate = certificateFilter
-      ? this.initialValue(certificateFilter.paramName)
-      : null;
+      const showListingsLabel = intl.formatMessage(
+        { id: 'SearchFiltersMobile.showListings' },
+        { count: resultsCount }
+      );
 
-    const certificateFilterElement = certificateFilter ? (
-      <SelectSingleFilter
-        urlParam={certificateFilter.paramName}
-        label={certificateLabel}
-        onSelect={this.handleSelectSingle}
-        liveEdit
-        options={certificateFilter.options}
-        initialValue={initialcertificate}
-        intl={intl}
-      />
-    ) : null;
+      const filtersButtonClasses =
+            selectedFiltersCount > 0 ? css.filtersButtonSelected : css.filtersButton;
 
-    const yogaStylesLabel = intl.formatMessage({ id: 'SearchFiltersMobile.yogaStylesLabel' });
+      const certificateLabel = intl.formatMessage({
+        id: 'SearchFiltersMobile.certificateLabel',
+      });
+      const initialcertificate = certificateFilter
+            ? this.initialValue(certificateFilter.paramName)
+            : null;
 
-    const initialyogaStyles = this.initialValues(yogaStylesFilter.paramName);
-
-    const yogaStylesFilterElement = yogaStylesFilter ? (
-      <SelectMultipleFilter
-        id="SearchFiltersMobile.yogaStylesFilter"
-        name="yogaStyles"
-        urlParam={yogaStylesFilter.paramName}
-        label={yogaStylesLabel}
-        onSubmit={this.handleSelectMultiple}
-        liveEdit
-        options={yogaStylesFilter.options}
-        initialValues={initialyogaStyles}
-      />
-    ) : null;
-
-    const initialPriceRange = this.initialPriceRangeValue(priceFilter.paramName);
-
-    const priceFilterElement = priceFilter ? (
-      <PriceFilter
-        id="SearchFiltersMobile.priceFilter"
-        urlParam={priceFilter.paramName}
-        onSubmit={this.handlePrice}
-        liveEdit
-        {...priceFilter.config}
-        initialValues={initialPriceRange}
-      />
-    ) : null;
-
-    const initialKeyword = this.initialValue(keywordFilter.paramName);
-    const keywordLabel = intl.formatMessage({
-      id: 'SearchFiltersMobile.keywordLabel',
-    });
-    const keywordFilterElement =
-      keywordFilter && keywordFilter.config.active ? (
-        <KeywordFilter
-          id={'SearchFiltersMobile.keywordFilter'}
-          name="keyword"
-          urlParam={keywordFilter.paramName}
-          label={keywordLabel}
-          onSubmit={this.handleKeyword}
+      const certificateFilterElement = certificateFilter ? (
+        <SelectSingleFilter
+          urlParam={certificateFilter.paramName}
+          label={certificateLabel}
+          onSelect={this.handleSelectSingle}
           liveEdit
-          showAsPopup={false}
-          initialValues={initialKeyword}
+          options={certificateFilter.options}
+          initialValue={initialcertificate}
+          intl={intl}
         />
       ) : null;
 
-    const isKeywordFilterActive = !!initialKeyword;
+      const yogaStylesLabel = intl.formatMessage({ id: 'SearchFiltersMobile.yogaStylesLabel' });
 
-    const sortBy = config.custom.sortConfig.active ? (
-      <SortBy
-        rootClassName={css.sortBy}
-        menuLabelRootClassName={css.sortByMenuLabel}
-        sort={sort}
-        showAsPopup
-        isKeywordFilterActive={isKeywordFilterActive}
-        onSelect={this.handleSortBy}
-      />
-    ) : null;
+      const initialyogaStyles = this.initialValues(yogaStylesFilter.paramName);
 
-    return (
-      <div className={classes}>
-        <div className={css.searchResultSummary}>
-          {listingsAreLoaded && resultsCount > 0 ? resultsFound : null}
-          {listingsAreLoaded && resultsCount === 0 ? noResults : null}
-          {searchInProgress ? loadingResults : null}
-        </div>
-        <div className={css.buttons}>
-          <Button rootClassName={filtersButtonClasses} onClick={this.openFilters}>
-            <FormattedMessage id="SearchFilters.filtersButtonLabel" className={css.mapIconText} />
-          </Button>
-          {sortBy}
-          <div className={css.mapIcon} onClick={onMapIconClick}>
-            <FormattedMessage id="SearchFilters.openMapView" className={css.mapIconText} />
+      const yogaStylesFilterElement = yogaStylesFilter ? (
+        <SelectMultipleFilter
+          id="SearchFiltersMobile.yogaStylesFilter"
+          name="yogaStyles"
+          urlParam={yogaStylesFilter.paramName}
+          label={yogaStylesLabel}
+          onSubmit={this.handleSelectMultiple}
+          liveEdit
+          options={yogaStylesFilter.options}
+          initialValues={initialyogaStyles}
+        />
+      ) : null;
+
+      const initialPriceRange = this.initialPriceRangeValue(priceFilter.paramName);
+
+      const priceFilterElement = priceFilter ? (
+        <PriceFilter
+          id="SearchFiltersMobile.priceFilter"
+          urlParam={priceFilter.paramName}
+          onSubmit={this.handlePrice}
+          liveEdit
+          {...priceFilter.config}
+          initialValues={initialPriceRange}
+        />
+      ) : null;
+
+      const initialKeyword = this.initialValue(keywordFilter.paramName);
+      const keywordLabel = intl.formatMessage({
+        id: 'SearchFiltersMobile.keywordLabel',
+      });
+      const keywordFilterElement =
+            keywordFilter && keywordFilter.config.active ? (
+              <KeywordFilter
+                id={'SearchFiltersMobile.keywordFilter'}
+                name="keyword"
+                urlParam={keywordFilter.paramName}
+                label={keywordLabel}
+                onSubmit={this.handleKeyword}
+                liveEdit
+                showAsPopup={false}
+                initialValues={initialKeyword}
+              />
+            ) : null;
+
+      const isKeywordFilterActive = !!initialKeyword;
+
+      const initialDates = this.initialDateRangeValue(dateRangeLengthFilter.paramName);
+      const initialMinDuration = this.initialValue(dateRangeLengthFilter.minDurationParamName);
+
+      console.log('mobile', {initialDates, initialMinDuration});
+
+      const dateRangeLengthFilterElement =
+            dateRangeLengthFilter && dateRangeLengthFilter.config.active ? (
+              <BookingDateRangeLengthFilter
+                id="SearchFilters.dateRangeLengthFilter"
+                dateRangeLengthFilter={dateRangeLengthFilter}
+                datesUrlParam={dateRangeLengthFilter.paramName}
+                durationUrlParam={dateRangeLengthFilter.minDurationParamName}
+                onSubmit={this.handleDateRangeLength}
+                liveEdit
+                showAsPopup={false}
+                initialDateValues={initialDates}
+                initialDurationValue={initialMinDuration}
+              />
+            ) : null;
+
+      const sortBy = config.custom.sortConfig.active ? (
+        <SortBy
+          rootClassName={css.sortBy}
+          menuLabelRootClassName={css.sortByMenuLabel}
+          sort={sort}
+          showAsPopup
+          isKeywordFilterActive={isKeywordFilterActive}
+          onSelect={this.handleSortBy}
+        />
+      ) : null;
+
+      return (
+        <div className={classes}>
+          <div className={css.searchResultSummary}>
+            {listingsAreLoaded && resultsCount > 0 ? resultsFound : null}
+            {listingsAreLoaded && resultsCount === 0 ? noResults : null}
+            {searchInProgress ? loadingResults : null}
           </div>
-        </div>
-        <ModalInMobile
-          id="SearchFiltersMobile.filters"
-          isModalOpenOnMobile={this.state.isFiltersOpenOnMobile}
-          onClose={this.cancelFilters}
-          showAsModalMaxWidth={showAsModalMaxWidth}
-          onManageDisableScrolling={onManageDisableScrolling}
-          containerClassName={css.modalContainer}
-          closeButtonMessage={modalCloseButtonMessage}
-        >
-          <div className={css.modalHeadingWrapper}>
-            <span className={css.modalHeading}>{filtersHeading}</span>
-            <button className={css.resetAllButton} onClick={e => this.resetAll(e)}>
-              <FormattedMessage id={'SearchFiltersMobile.resetAll'} />
-            </button>
-          </div>
-          {this.state.isFiltersOpenOnMobile ? (
-            <div className={css.filtersWrapper}>
-              {keywordFilterElement}
-              {yogaStylesFilterElement}
-              {certificateFilterElement}
-              {priceFilterElement}
-            </div>
-          ) : null}
-
-          <div className={css.showListingsContainer}>
-            <Button className={css.showListingsButton} onClick={this.closeFilters}>
-              {showListingsLabel}
+          <div className={css.buttons}>
+            <Button rootClassName={filtersButtonClasses} onClick={this.openFilters}>
+              <FormattedMessage id="SearchFilters.filtersButtonLabel" className={css.mapIconText} />
             </Button>
+            {sortBy}
+            <div className={css.mapIcon} onClick={onMapIconClick}>
+              <FormattedMessage id="SearchFilters.openMapView" className={css.mapIconText} />
+            </div>
           </div>
-        </ModalInMobile>
-      </div>
-    );
+          <ModalInMobile
+            id="SearchFiltersMobile.filters"
+            isModalOpenOnMobile={this.state.isFiltersOpenOnMobile}
+            onClose={this.cancelFilters}
+            showAsModalMaxWidth={showAsModalMaxWidth}
+            onManageDisableScrolling={onManageDisableScrolling}
+            containerClassName={css.modalContainer}
+            closeButtonMessage={modalCloseButtonMessage}
+          >
+            <div className={css.modalHeadingWrapper}>
+              <span className={css.modalHeading}>{filtersHeading}</span>
+              <button className={css.resetAllButton} onClick={e => this.resetAll(e)}>
+                <FormattedMessage id={'SearchFiltersMobile.resetAll'} />
+              </button>
+            </div>
+            {this.state.isFiltersOpenOnMobile ? (
+              <div className={css.filtersWrapper}>
+                {keywordFilterElement}
+                {yogaStylesFilterElement}
+                {certificateFilterElement}
+                {priceFilterElement}
+                {dateRangeLengthFilterElement}
+              </div>
+            ) : null}
+
+            <div className={css.showListingsContainer}>
+              <Button className={css.showListingsButton} onClick={this.closeFilters}>
+                {showListingsLabel}
+              </Button>
+            </div>
+          </ModalInMobile>
+        </div>
+      );
+    }
   }
-}
 
 SearchFiltersMobileComponent.defaultProps = {
   rootClassName: null,
@@ -339,6 +412,7 @@ SearchFiltersMobileComponent.defaultProps = {
   certificateFilter: null,
   yogaStylesFilter: null,
   priceFilter: null,
+  dateRangeLengthFilter: null,
 };
 
 SearchFiltersMobileComponent.propTypes = {
@@ -359,6 +433,7 @@ SearchFiltersMobileComponent.propTypes = {
   certificateFilter: propTypes.filterConfig,
   yogaStylesFilter: propTypes.filterConfig,
   priceFilter: propTypes.filterConfig,
+  dateRangeLengthFilter: propTypes.filterConfig,
 
   // from injectIntl
   intl: intlShape.isRequired,

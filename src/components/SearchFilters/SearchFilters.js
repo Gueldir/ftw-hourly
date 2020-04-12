@@ -199,7 +199,6 @@ const SearchFiltersComponent = props => {
   ) : null;
 
   const handleDateRangeLength = values => {
-    console.log('values:', values);
     const hasDates = values && values[dateRangeLengthFilter.paramName];
     const { startDate, endDate } = hasDates ? values[dateRangeLengthFilter.paramName] : {};
     const start = startDate ? stringifyDateToISO8601(startDate) : null;
@@ -226,7 +225,6 @@ const SearchFiltersComponent = props => {
       ...minDurationMaybe,
       ...restParams,
     };
-    console.log('query params:', queryParams);
     history.push(createResourceLocatorString('SearchPage', routeConfiguration(), {}, queryParams));
   };
 
