@@ -83,7 +83,7 @@ const EditListingDescriptionFormComponent = props => (
       const submitDisabled = invalid || disabled || submitInProgress;
 
       return (
-        <Form className={classes} onSubmit={handleSubmit}>
+        <Form className={classes} onSubmit={handleSubmit} >
           {errorMessageCreateListingDraft}
           {errorMessageUpdateListing}
           {errorMessageShowListing}
