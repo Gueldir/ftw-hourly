@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import { propTypes } from '../../util/types';
 import { maxLength, required, composeValidators } from '../../util/validators';
 import { Form, Button, FieldTextInput } from '../../components';
-import CustomCertificateSelectFieldMaybe from './CustomCertificateSelectFieldMaybe';
+import CustomCategorySelectFieldMaybe from './CustomCategorySelectFieldMaybe';
 
 import css from './EditListingDescriptionForm.css';
 
@@ -20,7 +20,7 @@ const EditListingDescriptionFormComponent = props => (
     mutators={{ ...arrayMutators }}
     render={formRenderProps => {
       const {
-        certificate,
+        category,
         className,
         disabled,
         ready,
@@ -112,10 +112,10 @@ const EditListingDescriptionFormComponent = props => (
             validate={composeValidators(required(descriptionRequiredMessage))}
           />
 
-          <CustomCertificateSelectFieldMaybe
-            id="certificate"
-            name="certificate"
-            certificate={certificate}
+          <CustomCategorySelectFieldMaybe
+            id="category"
+            name="category"
+            category={category}
             intl={intl}
             listing={listing}
             disabled={submitDisabled}
@@ -152,7 +152,7 @@ EditListingDescriptionFormComponent.propTypes = {
     showListingsError: propTypes.error,
     updateListingError: propTypes.error,
   }),
-  certificate: arrayOf(
+  category: arrayOf(
     shape({
       key: string.isRequired,
       label: string.isRequired,

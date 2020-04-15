@@ -49,8 +49,8 @@ const EditListingFeaturesFormComponent = props => (
         </p>
       ) : null;
 
-      const certificate = initialValues.certificate;
-      const options = config.custom[certificate];
+      const category = initialValues.category;
+      const options = config.custom[category];
       
       return (
         <Form className={classes} onSubmit={handleSubmit}>

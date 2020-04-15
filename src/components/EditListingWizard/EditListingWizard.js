@@ -274,14 +274,14 @@ class EditListingWizard extends Component {
     const tabsStatus = tabsActive(isNewListingFlow, currentListing);
 
     const { publicData } = currentListing.attributes; 
-    const certificate = publicData && publicData.certificate;
-    const options = config.custom.certificate.map((pair) => pair["key"] == certificate && pair["label"]);
+    const category = publicData && publicData.category;
+    const options = config.custom.category.map((pair) => pair["key"] == category && pair["label"]);
     const tabLabel = (intl, tab) => {
       let key, label = null;
       if (tab === DESCRIPTION) {
         key = 'EditListingWizard.tabLabelDescription';
       } else if (tab === FEATURES) {
-        key = certificate ? 'EditListingWizard.tabLabelFeatures' : 'EditListingWizard.tabLabelNoFeatures';
+        key = category ? 'EditListingWizard.tabLabelFeatures' : 'EditListingWizard.tabLabelNoFeatures';
         label = options;
       } else if (tab === POLICY) {
         key = 'EditListingWizard.tabLabelPolicy';
@@ -297,7 +297,7 @@ class EditListingWizard extends Component {
         key = 'EditListingWizard.tabLabelPhotos';
       }
 
-      return intl.formatMessage({ id: key }, { certificate: options } );
+      return intl.formatMessage({ id: key }, { category: options } );
     };
 
     // If selectedTab is not active, redirect to the beginning of wizard

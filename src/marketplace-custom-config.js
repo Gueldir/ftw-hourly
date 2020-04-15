@@ -8,10 +8,15 @@
   { key: 'spanish', label: 'Spanish' },
 ];
 
-export const certificate = [
+export const category = [
   //{ key: 'none', label: 'None', hideFromFilters: true, hideFromListingInfo: true },
   { key: 'sport', label: 'Sport' },
   { key: 'music', label: 'Music' },
+];
+
+export const certificate = [
+  { key: 'none', label: 'No certificate', hideFromFilters: true, hideFromListingInfo: true },
+  { key: 'certified', label: 'Certified' },
 ];
 
 export const sport = [

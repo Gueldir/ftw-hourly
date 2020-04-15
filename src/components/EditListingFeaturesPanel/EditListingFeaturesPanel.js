@@ -48,8 +48,8 @@ const EditListingFeaturesPanel = props => {
   );
 
   const yogaStyles = publicData && publicData.yogaStyles;
-  const certificate = publicData && publicData.certificate;
-  const initialValues = { yogaStyles, certificate };
+  const category = publicData && publicData.category;
+  const initialValues = { yogaStyles, category };
   
   return (
     <div className={classes}>
