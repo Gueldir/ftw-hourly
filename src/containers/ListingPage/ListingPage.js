@@ -192,7 +192,7 @@ export class ListingPageComponent extends Component {
       sendEnquiryError,
       monthlyTimeSlots,
       certificateConfig,
-      yogaStylesConfig,
+      //yogaStylesConfig,
     } = this.props;
 
     const listingId = new UUID(rawParams.id);
@@ -202,6 +202,9 @@ export class ListingPageComponent extends Component {
       isPendingApprovalVariant || isDraftVariant
         ? ensureOwnListing(getOwnListing(listingId))
         : ensureListing(getListing(listingId));
+    // Use the category customization and passes directly to stylesConfig the current styles
+    // available accordin to the selectionned category.
+    const yogaStylesConfig = config.custom[currentListing.attributes.publicData.certificate];
 
     const listingSlug = rawParams.slug || createSlug(currentListing.attributes.title || '');
     const params = { slug: listingSlug, ...rawParams };

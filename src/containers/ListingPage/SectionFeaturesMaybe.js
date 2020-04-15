@@ -20,7 +20,7 @@ const SectionFeaturesMaybe = props => {
       </h2>
       <PropertyGroup
         id="ListingPage.yogaStyles"
-        options={selectedConfigOptions}
+        options={options}
         selectedOptions={selectedOptions}
         twoColumns={selectedConfigOptions > 5}
       />

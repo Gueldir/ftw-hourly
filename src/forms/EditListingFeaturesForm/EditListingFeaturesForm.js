@@ -23,6 +23,7 @@ const EditListingFeaturesFormComponent = props => (
         className,
         name,
         handleSubmit,
+        initialValues,
         pristine,
         saveActionMsg,
         updated,
@@ -48,6 +49,9 @@ const EditListingFeaturesFormComponent = props => (
         </p>
       ) : null;
 
+      const certificate = initialValues.certificate;
+      const options = config.custom[certificate];
+      
       return (
         <Form className={classes} onSubmit={handleSubmit}>
           {errorMessage}
@@ -57,7 +61,7 @@ const EditListingFeaturesFormComponent = props => (
             className={css.features}
             id={name}
             name={name}
-            options={config.custom.yogaStyles}
+            options={options}
           />
 
           <Button

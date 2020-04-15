@@ -42,7 +42,7 @@ const EditListingDescriptionFormComponent = props => (
       const maxLengthMessage = intl.formatMessage(
         { id: 'EditListingDescriptionForm.maxLength' },
         {
-          maxLength: TITLE_MAX_LENGTH,
+          maxLength: TITLE_MAX_LENGTH
         }
       );
 

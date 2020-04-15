@@ -29,7 +29,7 @@ const EditListingFeaturesPanel = props => {
 
   const classes = classNames(rootClassName || css.root, className);
   const currentListing = ensureListing(listing);
-  const { publicData } = currentListing.attributes;
+  const { publicData } = currentListing.attributes;  
 
   const isPublished = currentListing.id && currentListing.attributes.state !== LISTING_STATE_DRAFT;
   const panelTitle = isPublished ? (
@@ -48,8 +48,9 @@ const EditListingFeaturesPanel = props => {
   );
 
   const yogaStyles = publicData && publicData.yogaStyles;
-  const initialValues = { yogaStyles };
-
+  const certificate = publicData && publicData.certificate;
+  const initialValues = { yogaStyles, certificate };
+  
   return (
     <div className={classes}>
       <h1 className={css.title}>{panelTitle}</h1>

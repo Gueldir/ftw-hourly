@@ -2,19 +2,20 @@
  * Marketplace specific configuration.
  */
 
-export const yogaStyles = [
-  { key: 'ashtanga', label: 'Ashtanga' },
-  { key: 'hatha', label: 'Hatha' },
-  { key: 'kundalini', label: 'Kundalini' },
-  { key: 'restorative', label: 'Restorative' },
-  { key: 'vinyasa', label: 'Vinyasa' },
-  { key: 'yin', label: 'Yin' },
+export const certificate = [
+  //{ key: 'none', label: 'None', hideFromFilters: true, hideFromListingInfo: true },
+  { key: 'sport', label: 'Sport' },
+  { key: 'music', label: 'Music' },
 ];
 
-export const certificate = [
-  { key: 'none', label: 'None', hideFromFilters: true, hideFromListingInfo: true },
-  { key: '200h', label: 'Registered yoga teacher 200h' },
-  { key: '500h', label: 'Registered yoga teacher 500h' },
+export const sport = [
+  { key: 'pilate', label: 'Pilate' },
+  { key: 'TRX', label: 'TRX' },
+];
+
+export const music = [
+  { key: 'vent', label: 'Vent' },
+  { key: 'corde', label: 'Corde' },
 ];
 
 // Price filter configuration
