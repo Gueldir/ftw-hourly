@@ -24,7 +24,6 @@ const EditListingDescriptionPanel = props => {
     updateInProgress,
     errors,
   } = props;
-
   const classes = classNames(rootClassName || css.root, className);
   const currentListing = ensureOwnListing(listing);
   const { description, title, publicData } = currentListing.attributes;
@@ -69,6 +68,7 @@ const EditListingDescriptionPanel = props => {
         updateInProgress={updateInProgress}
         fetchErrors={errors}
         certificate={config.custom.certificate}
+        listing={listing}
       />
     </div>
   );

@@ -22,8 +22,9 @@ import EditListingWizardTab, {
   AVAILABILITY,
   DESCRIPTION,
   FEATURES,
-  POLICY,
-  LOCATION,
+  //POLICY,
+  //LOCATION,
+  LANGUAGE,
   PRICING,
   PHOTOS,
 } from './EditListingWizardTab';
@@ -42,7 +43,8 @@ export const TABS = [
   DESCRIPTION,
   FEATURES,
   //POLICY,
-  LOCATION,
+  //LOCATION,
+  LANGUAGE,
   PRICING,
   ...availabilityMaybe,
   PHOTOS,
@@ -80,8 +82,10 @@ const tabCompleted = (tab, listing) => {
       return !!(publicData && publicData.yogaStyles);
     case POLICY:
       return !!(publicData && typeof publicData.rules !== 'undefined');
-    case LOCATION:
-      return !!(geolocation && publicData && publicData.location && publicData.location.address);
+    /*case LOCATION:
+      return !!(geolocation && publicData && publicData.location && publicData.location.address);*/
+    case LANGUAGE:
+      return !!(publicData && publicData.language);
     case PRICING:
       return !!price;
     case AVAILABILITY:
@@ -281,8 +285,10 @@ class EditListingWizard extends Component {
         label = options;
       } else if (tab === POLICY) {
         key = 'EditListingWizard.tabLabelPolicy';
-      } else if (tab === LOCATION) {
-        key = 'EditListingWizard.tabLabelLocation';
+      } /*else if (tab === LOCATION) {
+        key = 'EditListingWizard.tabLabelPolicy';
+      }*/ else if (tab === LANGUAGE) {
+        key = 'EditListingWizard.tabLabelLanguage';
       } else if (tab === PRICING) {
         key = 'EditListingWizard.tabLabelPricing';
       } else if (tab === AVAILABILITY) {

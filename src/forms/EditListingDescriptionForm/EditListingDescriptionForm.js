@@ -22,6 +22,7 @@ const EditListingDescriptionFormComponent = props => (
         className,
         disabled,
         ready,
+        listing,
         handleSubmit,
         intl,
         invalid,
@@ -114,6 +115,8 @@ const EditListingDescriptionFormComponent = props => (
             name="certificate"
             certificate={certificate}
             intl={intl}
+            listing={listing}
+            disabled={submitDisabled}
           />
 
           <Button

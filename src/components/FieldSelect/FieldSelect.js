@@ -31,6 +31,7 @@ const FieldSelectComponent = props => {
     meta,
     children,
     onChange,
+    buttonDisabled,
     ...rest
   } = props;
 
@@ -62,7 +63,7 @@ const FieldSelectComponent = props => {
   return (
     <div className={classes}>
       {label ? <label htmlFor={id}>{label}</label> : null}
-      <select {...selectProps}>{children}</select>
+      <select {...selectProps} disabled={buttonDisabled}>{children}</select>
       <ValidationError fieldMeta={meta} />
     </div>
   );
