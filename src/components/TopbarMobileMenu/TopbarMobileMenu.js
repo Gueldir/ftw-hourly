@@ -3,19 +3,13 @@
  * shows login actions for those who are not authenticated.
  */
 import React from 'react';
-import { bool, func, number, string } from 'prop-types';
+import PropTypes from 'prop-types';
 import { FormattedMessage } from '../../util/reactIntl';
 import classNames from 'classnames';
 import { ACCOUNT_SETTINGS_PAGES } from '../../routeConfiguration';
 import { propTypes } from '../../util/types';
 import { ensureCurrentUser } from '../../util/data';
-import {
-  AvatarLarge,
-  InlineTextButton,
-  NamedLink,
-  NotificationBadge,
-  OwnListingLink,
-} from '../../components';
+import { AvatarLarge, InlineTextButton, NamedLink, NotificationBadge } from '../../components';
 
 import css from './TopbarMobileMenu.css';
 
@@ -24,8 +18,6 @@ const TopbarMobileMenu = props => {
     isAuthenticated,
     currentPage,
     currentUserHasListings,
-    currentUserListing,
-    currentUserListingFetched,
     currentUser,
     notificationCount,
     onLogout,
@@ -100,11 +92,12 @@ const TopbarMobileMenu = props => {
           <FormattedMessage id="TopbarMobileMenu.inboxLink" />
           {notificationCountBadge}
         </NamedLink>
-        <OwnListingLink
-          listing={currentUserListing}
-          listingFetched={currentUserListingFetched}
-          className={css.navigationLink}
-        />
+        <NamedLink
+          className={classNames(css.navigationLink, currentPageClass('ManageListingsPage'))}
+          name="ManageListingsPage"
+        >
+          <FormattedMessage id="TopbarMobileMenu.yourListingsLink" />
+        </NamedLink>
         <NamedLink
           className={classNames(css.navigationLink, currentPageClass('ProfileSettingsPage'))}
           name="ProfileSettingsPage"
@@ -127,19 +120,13 @@ const TopbarMobileMenu = props => {
   );
 };
 
-TopbarMobileMenu.defaultProps = {
-  currentUser: null,
-  notificationCount: 0,
-  currentPage: null,
-  currentUserListing: null,
-  currentUserListingFetched: false,
-};
+TopbarMobileMenu.defaultProps = { currentUser: null, notificationCount: 0, currentPage: null };
+
+const { bool, func, number, string } = PropTypes;
 
 TopbarMobileMenu.propTypes = {
   isAuthenticated: bool.isRequired,
   currentUserHasListings: bool.isRequired,
-  currentUserListing: propTypes.ownListing,
-  currentUserListingFetched: bool,
   currentUser: propTypes.currentUser,
   currentPage: string,
   notificationCount: number,
