@@ -2,10 +2,11 @@ import React from 'react';
 import { arrayOf, bool, func, shape, string } from 'prop-types';
 import { compose } from 'redux';
 import { Form as FinalForm } from 'react-final-form';
+import arrayMutators from 'final-form-arrays';
 import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl';
 import classNames from 'classnames';
 import { propTypes } from '../../util/types';
-import { Form, Button, FieldSelect } from '../../components';
+import { Form, Button, FieldCheckboxGroup } from '../../components';
 import { required } from '../../util/validators';
 
 import css from './EditListingLanguageForm.css';
@@ -13,6 +14,7 @@ import css from './EditListingLanguageForm.css';
 export const EditListingLanguageFormComponent = props => (
   <FinalForm
     {...props}
+    mutators={{ ...arrayMutators }}
     render={fieldRenderProps => {
       const {
         className,
@@ -53,19 +55,13 @@ export const EditListingLanguageFormComponent = props => (
         <Form className={classes} onSubmit={handleSubmit}>
           {errorMessage}
 
-          <FieldSelect
+          <FieldCheckboxGroup
             className={css.language}
             name="language"
             id="language"
             validate={languageRequired}
-          >
-            <option value="">{languagePlaceholder}</option>
-            {languageOptions.map(c => (
-              <option key={c.key} value={c.key}>
-                {c.label}
-              </option>
-            ))}
-          </FieldSelect>
+            options={languageOptions}
+          />
 
           <Button
             className={css.submitButton}

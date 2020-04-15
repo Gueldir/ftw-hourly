@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FieldSelect } from '../../components';
+import { FieldSelect, FieldCheckboxGroup } from '../../components';
 import { required } from '../../util/validators';
 import config from '../../config';
 import { ensureListing } from '../../util/data';
@@ -66,19 +66,30 @@ class CustomCertificateSelectFieldMaybe extends Component {
             </option>
           ))}
         </FieldSelect>
-        <FieldSelect className={css.certificate} name="subcategories" id="subcategories" label={subCategoryLabel} validate={categoryRequired} buttonDisabled={this.state.buttonDisabled}>
-          <option disabled value="">
-            {subCategoryPlaceholder}
-          </option>
-          {this.state.value.map(c => (
-            <option key={c.key} value={c.key}>
-              {c.label}
-            </option>
-          ))}
-        </FieldSelect>
+        <FieldCheckboxGroup
+          className={css.certificate}
+          name="subcategories"
+          id="subcategories"
+          validate={categoryRequired}
+          options={this.state.value}
+          buttonDisabled={this.state.buttonDisabled}
+        />
       </div>
     ) : null;
   }
 }
 
 export default CustomCertificateSelectFieldMaybe;
+
+/* SUB-CATEGORY picking
+<FieldSelect className={css.certificate} name="subcategories" id="subcategories" label={subCategoryLabel} validate={categoryRequired} buttonDisabled={this.state.buttonDisabled}>
+  <option disabled value="">
+    {subCategoryPlaceholder}
+  </option>
+  {this.state.value.map(c => (
+    <option key={c.key} value={c.key}>
+      {c.label}
+    </option>
+  ))}
+</FieldSelect>
+*/

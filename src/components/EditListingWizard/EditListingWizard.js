@@ -281,7 +281,7 @@ class EditListingWizard extends Component {
       if (tab === DESCRIPTION) {
         key = 'EditListingWizard.tabLabelDescription';
       } else if (tab === FEATURES) {
-        key = 'EditListingWizard.tabLabelFeatures';
+        key = certificate ? 'EditListingWizard.tabLabelFeatures' : 'EditListingWizard.tabLabelNoFeatures';
         label = options;
       } else if (tab === POLICY) {
         key = 'EditListingWizard.tabLabelPolicy';
