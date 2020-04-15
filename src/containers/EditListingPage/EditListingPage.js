@@ -54,8 +54,8 @@ const { UUID } = sdkTypes;
 export const EditListingPageComponent = props => {
   const {
     currentUser,
-    currentUserListing,
-    currentUserListingFetched,
+    //currentUserListing,
+    //currentUserListingFetched,
     createStripeAccountError,
     fetchInProgress,
     fetchStripeAccountError,
@@ -128,7 +128,7 @@ export const EditListingPageComponent = props => {
         };
 
     return <NamedRedirect {...redirectProps} />;
-  } else if (allowOnlyOneListing && isNewURI && currentUserListingFetched && currentUserListing) {
+  } /*else if (allowOnlyOneListing && isNewURI && currentUserListingFetched && currentUserListing) {
     // If we allow only one listing per provider, we need to redirect to correct listing.
     return (
       <NamedRedirect
@@ -141,7 +141,7 @@ export const EditListingPageComponent = props => {
         }}
       />
     );
-  } else if (showForm) {
+  }*/ else if (showForm) {
     const {
       createListingDraftError = null,
       publishListingError = null,
