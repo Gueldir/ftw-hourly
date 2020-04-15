@@ -20,7 +20,7 @@ const EditListingDescriptionFormComponent = props => (
     mutators={{ ...arrayMutators }}
     render={formRenderProps => {
       const {
-        category,
+        certificate,
         className,
         disabled,
         ready,
@@ -113,12 +113,10 @@ const EditListingDescriptionFormComponent = props => (
           />
 
           <CustomCategorySelectFieldMaybe
-            id="category"
-            name="category"
-            category={category}
+            id="certificate"
+            name="certificate"
+            certificate={certificate}
             intl={intl}
-            listing={listing}
-            disabled={submitDisabled}
           />
 
           <Button

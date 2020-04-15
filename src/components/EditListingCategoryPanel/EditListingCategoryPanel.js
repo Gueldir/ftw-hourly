@@ -4,17 +4,18 @@ import classNames from 'classnames';
 import { FormattedMessage } from 'react-intl';
 import { ensureOwnListing } from '../../util/data';
 import { ListingLink } from '../../components';
-import { EditListingLanguageForm } from '../../forms';
+import { EditListingCategoryForm } from '../../forms';
 import config from '../../config.js';
 
-import css from './EditListingLanguagePanel.css';
+import css from './EditListingCategoryPanel.css';
 
-const EditListingLanguagePanel = props => {
+const EditListingCategoryPanel = props => {
   const {
     className,
     rootClassName,
     listing,
     onSubmit,
+    disabled,
     onChange,
     submitButtonText,
     panelUpdated,
@@ -28,30 +29,25 @@ const EditListingLanguagePanel = props => {
 
   const panelTitle = currentListing.id ? (
     <FormattedMessage
-      id="EditListingLanguagePanel.title"
-      values={{
-        listingTitle: (
-          <ListingLink listing={listing}>
-            <FormattedMessage id="EditListingPricingPanel.listingTitle" />
-          </ListingLink>
-        ),
-      }}
+      id="EditListingCategoryPanel.title"
+      values={{ listingTitle: <ListingLink listing={listing} /> }}
     />
   ) : (
-    <FormattedMessage id="EditListingLanguagePanel.createListingTitle" />
+    <FormattedMessage id="EditListingCategoryPanel.createListingTitle" />
   );
 
   return (
     <div className={classes}>
       <h1 className={css.title}>{panelTitle}</h1>
-      <EditListingLanguageForm
+      <EditListingCategoryForm
         className={css.form}
-        initialValues={{ language: publicData.language }}
+        initialValues={{ category: publicData.category, subcategories: publicData.subcategories }}
         onSubmit={values => {
-          const { language } = values;
+          const { category, subcategories } = values;
           const updateValues = {
             publicData: {
-              language,
+              category, 
+              subcategories,
             },
           };
           onSubmit(updateValues);
@@ -61,7 +57,8 @@ const EditListingLanguagePanel = props => {
         updated={panelUpdated}
         updateError={errors.updateListingError}
         updateInProgress={updateInProgress}
-        languageOptions={config.custom.languageOptions}
+        category={config.custom.category}
+        listing={listing}
       />
     </div>
   );
@@ -69,19 +66,20 @@ const EditListingLanguagePanel = props => {
 
 const { func, object, string, bool } = PropTypes;
 
-EditListingLanguagePanel.defaultProps = {
+EditListingCategoryPanel.defaultProps = {
   className: null,
   rootClassName: null,
   listing: null,
 };
 
-EditListingLanguagePanel.propTypes = {
+EditListingCategoryPanel.propTypes = {
   className: string,
   rootClassName: string,
 
   // We cannot use propTypes.listing since the listing might be a draft.
   listing: object,
 
+  disabled: bool.isRequired,
   onSubmit: func.isRequired,
   onChange: func.isRequired,
   submitButtonText: string.isRequired,
@@ -90,4 +88,4 @@ EditListingLanguagePanel.propTypes = {
   errors: object.isRequired,
 };
 
-export default EditListingLanguagePanel;
+export default EditListingCategoryPanel;

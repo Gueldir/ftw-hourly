@@ -2,7 +2,7 @@
  * Marketplace specific configuration.
  */
 
- export const languageOptions = [
+export const languageOptions = [
   { key: 'english', label: 'English' },
   { key: 'french', label: 'French' },
   { key: 'spanish', label: 'Spanish' },
