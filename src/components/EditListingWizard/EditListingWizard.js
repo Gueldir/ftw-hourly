@@ -22,7 +22,7 @@ import EditListingWizardTab, {
   AVAILABILITY,
   DESCRIPTION,
   FEATURES,
-  //POLICY,
+  POLICY,
   //LOCATION,
   LANGUAGE,
   PRICING,

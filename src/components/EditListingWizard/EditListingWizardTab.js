@@ -14,7 +14,8 @@ import {
   EditListingAvailabilityPanel,
   EditListingDescriptionPanel,
   EditListingFeaturesPanel,
-  EditListingLocationPanel,
+  EditListingLanguagePanel,
+  //EditListingLocationPanel,
   EditListingPhotosPanel,
   EditListingPoliciesPanel,
   EditListingPricingPanel,
@@ -27,7 +28,7 @@ export const DESCRIPTION = 'description';
 export const FEATURES = 'features';
 export const POLICY = 'policy';
 export const LOCATION = 'location';
-export const LANGUAGE, = 'language';
+export const LANGUAGE = 'language';
 export const PRICING = 'pricing';
 export const PHOTOS = 'photos';
 
@@ -211,7 +212,21 @@ const EditListingWizardTab = props => {
         />
       );
     }
-    case LOCATION: {
+    case LANGUAGE: {
+      const submitButtonTranslationKey = isNewListingFlow
+        ? 'EditListingWizard.saveNewLanguage'
+        : 'EditListingWizard.saveEditLanguage';
+      return (
+        <EditListingLanguagePanel
+          {...panelProps(LANGUAGE)}
+          submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
+          onSubmit={values => {
+            onCompleteEditListingWizardTab(tab, values);
+          }}
+        />
+      );
+    }
+    /*case LOCATION: {
       const submitButtonTranslationKey = isNewListingFlow
         ? 'EditListingWizard.saveNewLocation'
         : 'EditListingWizard.saveEditLocation';
@@ -224,7 +239,7 @@ const EditListingWizardTab = props => {
           }}
         />
       );
-    }
+    }*/
     case PRICING: {
       const submitButtonTranslationKey = isNewListingFlow
         ? 'EditListingWizard.saveNewPricing'

@@ -2,6 +2,12 @@
  * Marketplace specific configuration.
  */
 
+ export const languageOptions = [
+  { key: 'english', label: 'English' },
+  { key: 'french', label: 'French' },
+  { key: 'spanish', label: 'Spanish' },
+];
+
 export const certificate = [
   //{ key: 'none', label: 'None', hideFromFilters: true, hideFromListingInfo: true },
   { key: 'sport', label: 'Sport' },
