@@ -384,6 +384,7 @@
   "ListingCard.perUnit": "per hour",
   "ListingCard.unsupportedPrice": "({currency})",
   "ListingCard.unsupportedPriceTitle": "Unsupported currency ({currency})",
+  "ListingPage.bookingSubTitle": "Start by choosing your date and time slot.",
   "ListingPage.bookingTitle": "Book a session with {title}",
   "ListingPage.closedListing": "This teacher profile has been closed and sessions can't be booked.",
   "ListingPage.contactUser": "Contact",

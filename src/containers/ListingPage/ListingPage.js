@@ -50,6 +50,7 @@ import SectionAvatar from './SectionAvatar';
 import SectionHeading from './SectionHeading';
 import SectionDescriptionMaybe from './SectionDescriptionMaybe';
 import SectionFeaturesMaybe from './SectionFeaturesMaybe';
+import SectionHostMaybe from './SectionHostMaybe';
 import SectionReviews from './SectionReviews';
 import SectionMapMaybe from './SectionMapMaybe';
 import css from './ListingPage.css';
@@ -254,6 +255,7 @@ export class ListingPageComponent extends Component {
     const bookingTitle = (
       <FormattedMessage id="ListingPage.bookingTitle" values={{ title: richTitle }} />
     );
+    const bookingSubTitle = intl.formatMessage({ id: 'ListingPage.bookingSubTitle' });
 
     const topbar = <TopbarContainer />;
 
@@ -425,12 +427,20 @@ export class ListingPageComponent extends Component {
                   />
                   <SectionDescriptionMaybe description={description} />
                   <SectionFeaturesMaybe options={yogaStylesConfig} publicData={publicData} />
-                  <SectionMapMaybe
-                    geolocation={geolocation}
-                    publicData={publicData}
-                    listingId={currentListing.id}
-                  />
                   <SectionReviews reviews={reviews} fetchReviewsError={fetchReviewsError} />
+                  <SectionHostMaybe
+                      title={title}
+                      listing={currentListing}
+                      authorDisplayName={authorDisplayName}
+                      onContactUser={this.onContactUser}
+                      isEnquiryModalOpen={isAuthenticated && this.state.enquiryModalOpen}
+                      onCloseEnquiryModal={() => this.setState({ enquiryModalOpen: false })}
+                      sendEnquiryError={sendEnquiryError}
+                      sendEnquiryInProgress={sendEnquiryInProgress}
+                      onSubmitEnquiry={this.onSubmitEnquiry}
+                      currentUser={currentUser}
+                      onManageDisableScrolling={onManageDisableScrolling}
+                    />
                 </div>
                 <BookingPanel
                   className={css.bookingPanel}
@@ -438,7 +448,8 @@ export class ListingPageComponent extends Component {
                   isOwnListing={isOwnListing}
                   unitType={unitType}
                   onSubmit={handleBookingSubmit}
-                  title={bookingTitle}
+                  title={bookingTitle}                  
+                  subTitle={bookingSubTitle}
                   authorDisplayName={authorDisplayName}
                   onManageDisableScrolling={onManageDisableScrolling}
                   monthlyTimeSlots={monthlyTimeSlots}
