@@ -33,7 +33,7 @@ export const music = [
 // Note: unlike most prices this is not handled in subunits
 export const priceFilterConfig = {
   min: 0,
-  max: 1000,
+  max: 500,
   step: 5,
 };
 
