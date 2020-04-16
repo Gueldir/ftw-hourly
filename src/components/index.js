@@ -104,6 +104,7 @@ export { default as FieldCheckboxGroup } from './FieldCheckboxGroup/FieldCheckbo
 export { default as FieldPhoneNumberInput } from './FieldPhoneNumberInput/FieldPhoneNumberInput';
 // Fields and inputs using old naming pattern
 export { default as LocationAutocompleteInput, LocationAutocompleteInputField } from './LocationAutocompleteInput/LocationAutocompleteInput';
+export { default as SearchAutocompleteInput, SearchAutocompleteInputField } from './SearchAutocompleteInput/SearchAutocompleteInput';
 export { default as StripeBankAccountTokenInputField } from './StripeBankAccountTokenInputField/StripeBankAccountTokenInputField';
 
 // Tab navigation

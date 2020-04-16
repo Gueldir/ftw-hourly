@@ -3,13 +3,11 @@ import PropTypes from 'prop-types';
 import { Form as FinalForm, Field } from 'react-final-form';
 import { intlShape, injectIntl } from '../../util/reactIntl';
 import classNames from 'classnames';
-import { Form, LocationAutocompleteInput } from '../../components';
+import { Form, SearchAutocompleteInput } from '../../components';
 
 import css from './TopbarSearchForm.css';
 
-const identity = v => v;
-
-class TopbarSearchFormComponent extends Component {
+/*class TopbarSearchFormComponent extends Component {
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);
@@ -77,6 +75,75 @@ class TopbarSearchFormComponent extends Component {
                       inputRef={node => {
                         this.searchInput = node;
                       }}
+                      input={searchInput}
+                      meta={meta}
+                    />
+                  );
+                }}
+              />
+            </Form>
+          );
+        }}
+      />
+    );
+  }
+}*/
+
+class TopbarSearchFormComponent extends Component {
+  constructor(props) {
+    super(props);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.searchInput = React.createRef();
+  }
+
+  onSubmit(values) {
+    this.props.onSubmit({ keywords: values.keywords });
+    // blur search input to hide software keyboard
+    if (this.searchInput.current) {
+      //this.searchInput.current.blur();
+    }
+  }
+
+  render() {
+    return (
+      <FinalForm
+        {...this.props}
+        onSubmit={this.onSubmit}
+        render={formRenderProps => { 
+          const { rootClassName, className, intl, isMobile, handleSubmit } = formRenderProps;
+
+          const classes = classNames(rootClassName, className);
+
+          return (
+            <Form className={classes} onSubmit={handleSubmit}>
+              <Field
+                name="keywords"
+                render={({ input, meta }) => {
+                  const { onSubmit, ...restInput } = input;
+                  const searchOnSubmit = value => {
+                    onSubmit(value);
+                    this.onSubmit(value);
+                  };
+                  const searchInput = { ...restInput, onSubmit: searchOnSubmit };
+                  return (
+                    <SearchAutocompleteInput
+                      className={ isMobile ? css.mobileInputRoot : css.desktopInputRootClass }
+                      iconClassName={isMobile ? css.mobileIcon : css.desktopIcon}
+                      inputClassName={isMobile ? css.mobileInput : css.desktopInput}
+                      predictionsClassName={
+                        isMobile ? css.mobilePredictions : css.desktopPredictions
+                      }
+                      predictionsAttributionClassName={
+                        isMobile ? css.mobilePredictionsAttribution : null
+                      }
+                      id="keyword-search"
+                      ref={this.searchInput}
+                      type="text"
+                      placeholder={intl.formatMessage({
+                        id: 'TopbarSearchForm.placeholder',
+                      })}
+                      autoComplete="off"
+                      closeOnBlur={!isMobile}
                       input={searchInput}
                       meta={meta}
                     />
