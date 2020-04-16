@@ -7,7 +7,7 @@ import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl';
 import classNames from 'classnames';
 import { propTypes } from '../../util/types';
 import { maxLength, required, composeValidators } from '../../util/validators';
-import { Form, Button, FieldTextInput } from '../../components';
+import { Form, Button, FieldTextInput, FieldSelect } from '../../components';
 import CustomCategorySelectFieldMaybe from './CustomCategorySelectFieldMaybe';
 
 import css from './EditListingDescriptionForm.css';
@@ -29,6 +29,7 @@ const EditListingDescriptionFormComponent = props => (
         intl,
         invalid,
         pristine,
+        category,
         saveActionMsg,
         updated,
         updateInProgress,
@@ -60,6 +61,24 @@ const EditListingDescriptionFormComponent = props => (
         id: 'EditListingDescriptionForm.descriptionRequired',
       });
 
+      const categoryLabel = intl.formatMessage({
+        id: 'EditListingFeaturesForm.categoryLabel',
+      });
+      const subCategoryLabel = intl.formatMessage({
+        id: 'EditListingFeaturesForm.subCategoryLabel',
+      });
+      const categoryPlaceholder = intl.formatMessage({
+        id: 'EditListingFeaturesForm.categoryPlaceholder',
+      });  
+      const subCategoryPlaceholder = intl.formatMessage({
+        id: 'EditListingFeaturesForm.subCategoryPlaceholder',
+      });  
+      const categoryRequired = required(
+        intl.formatMessage({
+          id: 'EditListingFeaturesForm.categoryRequired',
+        })
+      );
+
       const { updateListingError, createListingDraftError, showListingsError } = fetchErrors || {};
       const errorMessageUpdateListing = updateListingError ? (
         <p className={css.error}>
@@ -84,7 +103,7 @@ const EditListingDescriptionFormComponent = props => (
       const submitReady = (updated && pristine) || ready;
       const submitInProgress = updateInProgress;
       const submitDisabled = invalid || disabled || submitInProgress;
-
+      
       return (
         <Form className={classes} onSubmit={handleSubmit}>
           {errorMessageCreateListingDraft}
@@ -101,6 +120,22 @@ const EditListingDescriptionFormComponent = props => (
             validate={composeValidators(required(titleRequiredMessage), maxLength60Message)}
             autoFocus
           />
+
+          <FieldSelect
+            className={css.category} 
+            name="category" 
+            id="category" 
+            label={categoryLabel} 
+            validate={categoryRequired}>
+            <option disabled value="">
+              {categoryPlaceholder}
+            </option>
+            {category.map(c => (
+              <option key={c.key} value={c.key}>
+                {c.label}
+              </option>
+            ))}
+          </FieldSelect>
 
           <FieldTextInput
             id="description"

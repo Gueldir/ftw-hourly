@@ -116,7 +116,7 @@ class TopbarSearchFormComponent extends Component {
 
           return (
             <Form className={classes} onSubmit={handleSubmit}>
-              <Field
+              {/*<Field
                 name="keywords"
                 render={({ input, meta }) => {
                   const { onSubmit, ...restInput } = input;
@@ -149,7 +149,7 @@ class TopbarSearchFormComponent extends Component {
                     />
                   );
                 }}
-              />
+              />*/}
             </Form>
           );
         }}

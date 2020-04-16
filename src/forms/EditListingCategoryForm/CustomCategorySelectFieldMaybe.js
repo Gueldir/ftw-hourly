@@ -6,37 +6,10 @@ import { ensureListing } from '../../util/data';
 
 import css from './EditListingCategoryForm.css';
 
-class CustomCategorySelectFieldMaybe extends Component {
-  constructor(props) {
-    super(props);
-    // If existing listing then initiate subcategories values from main category value
-    let currentListing = ensureListing(props.listing);
-    let { publicData } = currentListing.attributes; 
-    let categories = publicData && publicData.category;
-    let subCategories = categories ? config.custom[categories] : [];
-    let buttonDisabled = categories ? false : true;
-    this.state = { value: subCategories, buttonDisabled: buttonDisabled };
-    this.handleChange = this.handleChange.bind(this);
-  }
+const CustomCategorySelectFieldMaybe = props => {
+  const { name, id, category, intl, listing } = props;
 
-  handleChange(values) {
-    this.setState({value: config.custom[values]});
-    this.setState({buttonDisabled: false});
-  }
-
-  render() {
-    /* eslint-disable no-unused-vars */
-    const {
-      name,
-      id,
-      category,
-      disabled,
-      intl,
-      ...rest
-    } = this.props;
-    /* eslint-disable no-unused-vars */
-    
-    const categoryLabel = intl.formatMessage({
+  const categoryLabel = intl.formatMessage({
       id: 'EditListingFeaturesForm.categoryLabel',
     });
     const subCategoryLabel = intl.formatMessage({
@@ -53,50 +26,22 @@ class CustomCategorySelectFieldMaybe extends Component {
         id: 'EditListingFeaturesForm.categoryRequired',
       })
     );
+
+    const currentListing = ensureListing(listing);
+    const { publicData } = currentListing.attributes; 
+    const categories = publicData && publicData.category;
+    const subCategories = categories ? config.custom[categories] : [];
     
     return category ? (
-      <div>
-        <FieldSelect
-          className={css.category} 
-          name={name} 
-          id={id} 
-          label={categoryLabel} 
-          validate={categoryRequired} 
-          onChange={this.handleChange}>
-          <option disabled value="">
-            {categoryPlaceholder}
-          </option>
-          {category.map(c => (
-            <option key={c.key} value={c.key}>
-              {c.label}
-            </option>
-          ))}
-        </FieldSelect>
-        <FieldCheckboxGroup
-          className={css.category}
-          name="subcategories"
-          id="subcategories"
-          validate={categoryRequired}
-          options={this.state.value}
-          buttonDisabled={this.state.buttonDisabled}
-          twoColumns={this.state.value.length > 5}
-        />
-      </div>
+      <FieldCheckboxGroup
+        className={css.category}
+        name={categories}
+        id={categories}
+        validate={categoryRequired}
+        options={subCategories}
+        twoColumns={subCategories.length > 5}
+      />
     ) : null;
-  }
-}
+};
 
 export default CustomCategorySelectFieldMaybe;
-
-/* SUB-CATEGORY picking
-<FieldSelect className={css.category} name="subcategories" id="subcategories" label={subCategoryLabel} validate={categoryRequired} buttonDisabled={this.state.buttonDisabled}>
-  <option disabled value="">
-    {subCategoryPlaceholder}
-  </option>
-  {this.state.value.map(c => (
-    <option key={c.key} value={c.key}>
-      {c.label}
-    </option>
-  ))}
-</FieldSelect>
-*/

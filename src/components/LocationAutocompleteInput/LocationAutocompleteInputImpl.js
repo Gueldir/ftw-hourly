@@ -18,10 +18,7 @@ import css from './LocationAutocompleteInput.css';
 // focuses on the autocomplete input without typing a search. This can
 // be used to reduce typing and Geocoding API calls for common
 // searches.
-export const defaultPredictions = (config.maps.search.suggestCurrentLocation
-  ? [{ id: CURRENT_LOCATION_ID, predictionPlace: {} }]
-  : []
-).concat(config.maps.search.defaults);
+export const defaultPredictions = (config.custom.category);
 
 const DEBOUNCE_WAIT_TIME = 300;
 const DEBOUNCE_WAIT_TIME_FOR_SHORT_QUERIES = 1000;
@@ -142,11 +139,11 @@ const currentValue = props => {
 
   This component can work as the `component` prop to Final Form's
   <Field /> component. It takes a custom input value shape, and
-  controls the onChange callback that is called with the input value.
+  controls the onSubmit callback that is called with the input value.
 
   The component works by listening to the underlying input component
   and calling a Geocoder implementation for predictions. When the
-  predictions arrive, those are passed to Final Form in the onChange
+  predictions arrive, those are passed to Final Form in the onSubmit
   callback.
 
   See the LocationAutocompleteInput.example.js file for a usage
@@ -177,7 +174,7 @@ class LocationAutocompleteInputImpl extends Component {
     this.selectPrediction = this.selectPrediction.bind(this);
     this.selectItemIfNoneSelected = this.selectItemIfNoneSelected.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
-    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
     this.handleOnBlur = this.handleOnBlur.bind(this);
     this.handlePredictionsSelectStart = this.handlePredictionsSelectStart.bind(this);
     this.handlePredictionsSelectMove = this.handlePredictionsSelectMove.bind(this);
@@ -244,13 +241,13 @@ class LocationAutocompleteInputImpl extends Component {
   }
 
   // Handle input text change, fetch predictions if the value isn't empty
-  onChange(e) {
-    const onChange = this.props.input.onChange;
+  onSubmit(e) {
+    const onSubmit = this.props.input.onSubmit;
     const predictions = this.currentPredictions();
     const newValue = e.target.value;
 
     // Clear the current values since the input content is changed
-    onChange({
+    onSubmit({
       search: newValue,
       predictions: newValue ? predictions : [],
       selectedPlace: null,
@@ -307,7 +304,7 @@ class LocationAutocompleteInputImpl extends Component {
   // Select the prediction in the given item. This will fetch/read the
   // place details and set it as the selected place.
   selectPrediction(prediction) {
-    this.props.input.onChange({
+    this.props.input.onSubmit({
       ...this.props.input,
       selectedPlace: null,
     });
@@ -322,7 +319,7 @@ class LocationAutocompleteInputImpl extends Component {
           return;
         }
         this.setState({ fetchingPlaceDetails: false });
-        this.props.input.onChange({
+        this.props.input.onSubmit({
           search: place.address,
           predictions: [],
           selectedPlace: place,
@@ -332,7 +329,7 @@ class LocationAutocompleteInputImpl extends Component {
         this.setState({ fetchingPlaceDetails: false });
         // eslint-disable-next-line no-console
         console.error(e);
-        this.props.input.onChange({
+        this.props.input.onSubmit({
           ...this.props.input.value,
           selectedPlace: null,
         });
@@ -356,7 +353,7 @@ class LocationAutocompleteInputImpl extends Component {
     }
   }
   predict(search) {
-    const onChange = this.props.input.onChange;
+    const onSubmit = this.props.input.onSubmit;
     this.setState({ fetchingPredictions: true });
 
     return this.getGeocoder()
@@ -374,7 +371,7 @@ class LocationAutocompleteInputImpl extends Component {
         // takeLatest in Redux Saga, without canceling the earlier
         // requests.
         if (results.search === currentSearch) {
-          onChange({
+          onSubmit({
             search: results.search,
             predictions: results.predictions,
             selectedPlace: null,
@@ -386,7 +383,7 @@ class LocationAutocompleteInputImpl extends Component {
         // eslint-disable-next-line no-console
         console.error(e);
         const value = currentValue(this.props);
-        onChange({
+        onSubmit({
           ...value,
           selectedPlace: null,
         });
@@ -463,10 +460,6 @@ class LocationAutocompleteInputImpl extends Component {
     const isValid = valid && touched;
     const predictions = this.currentPredictions();
 
-    const handleOnFocus = e => {
-      this.setState({ inputHasFocus: true });
-      onFocus(e);
-    };
 
     const rootClass = classNames(rootClassName || css.root, className);
     const iconClass = classNames(iconClassName || css.icon);
@@ -497,16 +490,10 @@ class LocationAutocompleteInputImpl extends Component {
           name={name}
           value={search}
           disabled={this.state.fetchingPlaceDetails}
-          onFocus={handleOnFocus}
           onBlur={this.handleOnBlur}
-          onChange={this.onChange}
+          onSubmit={this.onSubmit}
           onKeyDown={this.onKeyDown}
-          ref={node => {
-            this.input = node;
-            if (inputRef) {
-              inputRef(node);
-            }
-          }}
+          inputRef={inputRef}
         />
         {renderPredictions ? (
           <LocationPredictionsList
@@ -563,7 +550,7 @@ LocationAutocompleteInputImpl.propTypes = {
       }),
       string,
     ]),
-    onChange: func.isRequired,
+    onSubmit: func.isRequired,
     onFocus: func.isRequired,
     onBlur: func.isRequired,
   }).isRequired,

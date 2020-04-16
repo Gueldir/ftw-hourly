@@ -53,25 +53,35 @@ export class SearchPageComponent extends Component {
 
   filters() {
     const {
+      categoryConfig,
       certificateConfig,
-      yogaStylesConfig,
+      musicConfig,
+      sportConfig,
       priceFilterConfig,
       keywordFilterConfig,
     } = this.props;
 
-    // Note: "certificate" and "yogaStyles" filters are not actually filtering anything by default.
+    // Note: "certificate" and "sport" filters are not actually filtering anything by default.
     // Currently, if you want to use them, we need to manually configure them to be available
     // for search queries. Read more from extended data document:
     // https://www.sharetribe.com/docs/references/extended-data/#data-schema
 
     return {
+      categoryFilter: {
+        paramName: 'pub_category',
+        options: categoryConfig,
+      },
       certificateFilter: {
         paramName: 'pub_certificate',
         options: certificateConfig.filter(c => !c.hideFromFilters),
       },
-      yogaStylesFilter: {
-        paramName: 'pub_yogaStyles',
-        options: yogaStylesConfig,
+      musicFilter: {
+        paramName: 'pub_music',
+        options: musicConfig,
+      },
+      sportFilter: {
+        paramName: 'pub_sport',
+        options: sportConfig,
       },
       priceFilter: {
         paramName: 'price',
@@ -193,6 +203,7 @@ export class SearchPageComponent extends Component {
     // N.B. openMobileMap button is sticky.
     // For some reason, stickyness doesn't work on Safari, if the element is <button>
     /* eslint-disable jsx-a11y/no-static-element-interactions */
+
     return (
       <Page
         scrollingDisabled={scrollingDisabled}
@@ -222,39 +233,14 @@ export class SearchPageComponent extends Component {
             searchParamsForPagination={parse(location.search)}
             showAsModalMaxWidth={MODAL_BREAKPOINT}
             primaryFilters={{
-              yogaStylesFilter: filters.yogaStylesFilter,
+              categoryFilter: filters.categoryFilter,
               certificateFilter: filters.certificateFilter,
+              musicFilter: filters.musicFilter,
+              sportFilter: filters.sportFilter,
               priceFilter: filters.priceFilter,
               keywordFilter: filters.keywordFilter,
             }}
           />
-          <ModalInMobile
-            className={css.mapPanel}
-            id="SearchPage.map"
-            isModalOpenOnMobile={this.state.isSearchMapOpenOnMobile}
-            onClose={() => this.setState({ isSearchMapOpenOnMobile: false })}
-            showAsModalMaxWidth={MODAL_BREAKPOINT}
-            onManageDisableScrolling={onManageDisableScrolling}
-          >
-            <div className={css.mapWrapper}>
-              {shouldShowSearchMap ? (
-                <SearchMap
-                  reusableContainerClassName={css.map}
-                  activeListingId={activeListingId}
-                  bounds={bounds}
-                  center={origin}
-                  isSearchMapOpenOnMobile={this.state.isSearchMapOpenOnMobile}
-                  location={location}
-                  listings={mapListings || []}
-                  onMapMoveEnd={this.onMapMoveEnd}
-                  onCloseAsModal={() => {
-                    onManageDisableScrolling('SearchPage.map', false);
-                  }}
-                  messages={intl.messages}
-                />
-              ) : null}
-            </div>
-          </ModalInMobile>
         </div>
       </Page>
     );
@@ -269,8 +255,10 @@ SearchPageComponent.defaultProps = {
   searchListingsError: null,
   searchParams: {},
   tab: 'listings',
+  categoryConfig: config.custom.category,
   certificateConfig: config.custom.certificate,
-  yogaStylesConfig: config.custom.yogaStyles,
+  musicConfig: config.custom.music,
+  sportConfig: config.custom.sport,
   priceFilterConfig: config.custom.priceFilterConfig,
   keywordFilterConfig: config.custom.keywordFilterConfig,
   activeListingId: null,
@@ -288,8 +276,10 @@ SearchPageComponent.propTypes = {
   searchListingsError: propTypes.error,
   searchParams: object,
   tab: oneOf(['filters', 'listings', 'map']).isRequired,
+  categoryConfig: array,
   certificateConfig: array,
-  yogaStylesConfig: array,
+  musicConfig: array,
+  sportConfig: array,
   priceFilterConfig: shape({
     min: number.isRequired,
     max: number.isRequired,

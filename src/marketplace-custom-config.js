@@ -12,6 +12,7 @@ export const category = [
   //{ key: 'none', label: 'None', hideFromFilters: true, hideFromListingInfo: true },
   { key: 'sport', label: 'Sport' },
   { key: 'music', label: 'Music' },
+  { key: 'art', label: 'Art' },
 ];
 
 export const certificate = [
@@ -25,6 +26,11 @@ export const sport = [
 ];
 
 export const music = [
+  { key: 'vent', label: 'Vent' },
+  { key: 'corde', label: 'Corde' },
+];
+
+export const art = [
   { key: 'vent', label: 'Vent' },
   { key: 'corde', label: 'Corde' },
 ];

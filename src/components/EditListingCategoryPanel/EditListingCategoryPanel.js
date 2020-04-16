@@ -41,13 +41,16 @@ const EditListingCategoryPanel = props => {
       <h1 className={css.title}>{panelTitle}</h1>
       <EditListingCategoryForm
         className={css.form}
-        initialValues={{ category: publicData.category, subcategories: publicData.subcategories }}
-        onSubmit={values => {
-          const { category, subcategories } = values;
+        initialValues={{ sport: publicData.sport, music: publicData.music }}
+        onSubmit={values => {     
+          // Remove sub categories from others categories if previously set before switching   
+          const resetValues = {sport: [], music: []};
+          resetValues[publicData.category] = values[publicData.category];
+          const { sport, music } = resetValues;
           const updateValues = {
             publicData: {
-              category, 
-              subcategories,
+              sport,
+              music,
             },
           };
           onSubmit(updateValues);

@@ -172,8 +172,10 @@ class SearchFiltersMobileComponent extends Component {
       onMapIconClick,
       onManageDisableScrolling,
       selectedFiltersCount,
+      categoryFilter,
       certificateFilter,
-      yogaStylesFilter,
+      musicFilter,
+      sportFilter,
       priceFilter,
       keywordFilter,
       intl,
@@ -197,6 +199,25 @@ class SearchFiltersMobileComponent extends Component {
     const filtersButtonClasses =
       selectedFiltersCount > 0 ? css.filtersButtonSelected : css.filtersButton;
 
+    const categoryLabel = intl.formatMessage({
+      id: 'SearchFiltersMobile.categoryLabel',
+    });
+    const initialcategory = categoryFilter
+      ? this.initialValue(categoryFilter.paramName)
+      : null;
+
+    const categoryFilterElement = categoryFilter ? (
+      <SelectSingleFilter
+        urlParam={categoryFilter.paramName}
+        label={categoryLabel}
+        onSelect={this.handleSelectSingle}
+        liveEdit
+        options={categoryFilter.options}
+        initialValue={initialcategory}
+        intl={intl}
+      />
+    ) : null;
+
     const certificateLabel = intl.formatMessage({
       id: 'SearchFiltersMobile.certificateLabel',
     });
@@ -216,20 +237,37 @@ class SearchFiltersMobileComponent extends Component {
       />
     ) : null;
 
-    const yogaStylesLabel = intl.formatMessage({ id: 'SearchFiltersMobile.yogaStylesLabel' });
+    const musicLabel = intl.formatMessage({ id: 'SearchFiltersMobile.musicLabel' });
 
-    const initialyogaStyles = this.initialValues(yogaStylesFilter.paramName);
-
-    const yogaStylesFilterElement = yogaStylesFilter ? (
+    const initialmusic = this.initialValues(musicFilter.paramName);
+    
+    const musicFilterElement = musicFilter && initialcategory == "music" ? (
       <SelectMultipleFilter
-        id="SearchFiltersMobile.yogaStylesFilter"
-        name="yogaStyles"
-        urlParam={yogaStylesFilter.paramName}
-        label={yogaStylesLabel}
+        id="SearchFiltersMobile.musicFilter"
+        name="music"
+        urlParam={musicFilter.paramName}
+        label={musicLabel}
         onSubmit={this.handleSelectMultiple}
         liveEdit
-        options={yogaStylesFilter.options}
-        initialValues={initialyogaStyles}
+        options={musicFilter.options}
+        initialValues={initialmusic}
+      />
+    ) : null;
+
+    const sportLabel = intl.formatMessage({ id: 'SearchFiltersMobile.sportLabel' });
+
+    const initialsport = this.initialValues(sportFilter.paramName);
+
+    const sportFilterElement = sportFilter && initialcategory == "sport" ? (
+      <SelectMultipleFilter
+        id="SearchFiltersMobile.sportFilter"
+        name="sport"
+        urlParam={sportFilter.paramName}
+        label={sportLabel}
+        onSubmit={this.handleSelectMultiple}
+        liveEdit
+        options={sportFilter.options}
+        initialValues={initialsport}
       />
     ) : null;
 
@@ -289,9 +327,6 @@ class SearchFiltersMobileComponent extends Component {
             <FormattedMessage id="SearchFilters.filtersButtonLabel" className={css.mapIconText} />
           </Button>
           {sortBy}
-          <div className={css.mapIcon} onClick={onMapIconClick}>
-            <FormattedMessage id="SearchFilters.openMapView" className={css.mapIconText} />
-          </div>
         </div>
         <ModalInMobile
           id="SearchFiltersMobile.filters"
@@ -310,10 +345,12 @@ class SearchFiltersMobileComponent extends Component {
           </div>
           {this.state.isFiltersOpenOnMobile ? (
             <div className={css.filtersWrapper}>
-              {keywordFilterElement}
-              {yogaStylesFilterElement}
+              {categoryFilterElement}
+              {musicFilterElement}
+              {sportFilterElement}
               {certificateFilterElement}
               {priceFilterElement}
+              {keywordFilterElement}
             </div>
           ) : null}
 
@@ -336,8 +373,10 @@ SearchFiltersMobileComponent.defaultProps = {
   searchingInProgress: false,
   selectedFiltersCount: 0,
   filterParamNames: [],
+  categoryFilter: null,
   certificateFilter: null,
-  yogaStylesFilter: null,
+  musicFilter: null,
+  sportFilter: null,
   priceFilter: null,
 };
 
@@ -356,8 +395,10 @@ SearchFiltersMobileComponent.propTypes = {
   onCloseModal: func.isRequired,
   selectedFiltersCount: number,
   filterParamNames: array,
+  categoryFilter: propTypes.filterConfig,
   certificateFilter: propTypes.filterConfig,
-  yogaStylesFilter: propTypes.filterConfig,
+  musicFilter: propTypes.filterConfig,
+  sportFilter: propTypes.filterConfig,
   priceFilter: propTypes.filterConfig,
 
   // from injectIntl

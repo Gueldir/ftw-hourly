@@ -54,7 +54,7 @@ const TopbarDesktop = props => {
 
   const notificationDot = notificationCount > 0 ? <div className={css.notificationDot} /> : null;
 
-  const inboxLink = authenticatedOnClientSide ? (
+  const inboxLink = (
     <NamedLink
       className={css.inboxLink}
       name="InboxPage"
@@ -65,7 +65,43 @@ const TopbarDesktop = props => {
         {notificationDot}
       </span>
     </NamedLink>
-  ) : null;
+  );
+
+  const sportLink = (
+    <NamedLink
+      className={css.inboxLink}
+      name="SearchPage"
+      to={{ search: 'pub_category=sport', }}
+    >
+      <span className={css.inbox}>
+        <FormattedMessage id="TopbarDesktop.sport" />
+      </span>
+    </NamedLink>
+  );
+
+  const musicLink = (
+    <NamedLink
+      className={css.inboxLink}
+      name="SearchPage"
+      to={{  search: 'pub_category=music', }}
+    >
+      <span className={css.inbox}>
+        <FormattedMessage id="TopbarDesktop.music" />
+      </span>
+    </NamedLink>
+  );
+
+  const artLink = (
+    <NamedLink
+      className={css.inboxLink}
+      name="SearchPage"
+      to={{  search: 'pub_category=art', }}
+    >
+      <span className={css.inbox}>
+        <FormattedMessage id="TopbarDesktop.art" />
+      </span>
+    </NamedLink>
+  );
 
   const currentPageClass = page => {
     const isAccountSettingsPage =
@@ -141,6 +177,9 @@ const TopbarDesktop = props => {
           alt={intl.formatMessage({ id: 'TopbarDesktop.logo' })}
         />
       </NamedLink>
+      {sportLink}
+      {musicLink}
+      {artLink}
       {search}
       <NamedLink className={css.createListingLink} name="NewListingPage">
         <span className={css.createListing}>

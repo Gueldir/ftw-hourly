@@ -54,8 +54,10 @@ const SearchFiltersComponent = props => {
     listingsAreLoaded,
     resultsCount,
     searchInProgress,
+    categoryFilter,
     certificateFilter,
-    yogaStylesFilter,
+    sportFilter,
+    musicFilter,
     priceFilter,
     keywordFilter,
     isSearchFiltersPanelOpen,
@@ -68,20 +70,36 @@ const SearchFiltersComponent = props => {
   const hasNoResult = listingsAreLoaded && resultsCount === 0;
   const classes = classNames(rootClassName || css.root, { [css.longInfo]: hasNoResult }, className);
 
+  const categoryLabel = intl.formatMessage({
+    id: 'SearchFilters.categoryLabel',
+  });
+
   const certificateLabel = intl.formatMessage({
     id: 'SearchFilters.certificateLabel',
   });
 
-  const yogaStylesLabel = intl.formatMessage({
-    id: 'SearchFilters.yogaStylesLabel',
+  const sportLabel = intl.formatMessage({
+    id: 'SearchFilters.sportLabel',
+  });
+
+  const musicLabel = intl.formatMessage({
+    id: 'SearchFilters.musicLabel',
   });
 
   const keywordLabel = intl.formatMessage({
     id: 'SearchFilters.keywordLabel',
   });
 
-  const initialyogaStyles = yogaStylesFilter
-    ? initialValues(urlQueryParams, yogaStylesFilter.paramName)
+  const initialcategory = categoryFilter
+    ? initialValues(urlQueryParams, categoryFilter.paramName)
+    : null;
+
+  const initialsport = sportFilter
+    ? initialValues(urlQueryParams, sportFilter.paramName)
+    : null;
+
+  const initialmusic = musicFilter
+    ? initialValues(urlQueryParams, musicFilter.paramName)
     : null;
 
   const initialcertificate = certificateFilter
@@ -135,6 +153,18 @@ const SearchFiltersComponent = props => {
     history.push(createResourceLocatorString('SearchPage', routeConfiguration(), {}, queryParams));
   };
 
+  const categoryFilterElement = categoryFilter ? (
+    <SelectSingleFilter
+      urlParam={categoryFilter.paramName}
+      label={categoryLabel}
+      onSelect={handleSelectOption}
+      showAsPopup
+      options={categoryFilter.options}
+      initialValue={initialcategory[0]}
+      contentPlacementOffset={FILTER_DROPDOWN_OFFSET}
+    />
+  ) : null;
+
   const certificateFilterElement = certificateFilter ? (
     <SelectSingleFilter
       urlParam={certificateFilter.paramName}
@@ -147,16 +177,30 @@ const SearchFiltersComponent = props => {
     />
   ) : null;
 
-  const yogaStylesFilterElement = yogaStylesFilter ? (
+  const musicFilterElement = initialcategory[0] == "music" ? (
     <SelectMultipleFilter
-      id={'SearchFilters.yogaStylesFilter'}
-      name="yogaStyles"
-      urlParam={yogaStylesFilter.paramName}
-      label={yogaStylesLabel}
+      id={'SearchFilters.musicFilter'}
+      name="music"
+      urlParam={musicFilter.paramName}
+      label={musicLabel}
       onSubmit={handleSelectOptions}
       showAsPopup
-      options={yogaStylesFilter.options}
-      initialValues={initialyogaStyles}
+      options={musicFilter.options}
+      initialValues={initialmusic}
+      contentPlacementOffset={FILTER_DROPDOWN_OFFSET}
+    />
+  ) : null;
+
+  const sportFilterElement = initialcategory[0] == "sport" ? (
+    <SelectMultipleFilter
+      id={'SearchFilters.sportFilter'}
+      name="sport"
+      urlParam={sportFilter.paramName}
+      label={sportLabel}
+      onSubmit={handleSelectOptions}
+      showAsPopup
+      options={sportFilter.options}
+      initialValues={initialsport}
       contentPlacementOffset={FILTER_DROPDOWN_OFFSET}
     />
   ) : null;
@@ -237,24 +281,27 @@ const SearchFiltersComponent = props => {
       </div>
 
       <div className={css.filters}>
-        {yogaStylesFilterElement}
+        {categoryFilterElement}
+        {musicFilterElement}
+        {sportFilterElement}
         {certificateFilterElement}
         {priceFilterElement}
         {keywordFilterElement}
         {toggleSearchFiltersPanelButton}
+
+        {hasNoResult ? (
+          <div className={css.noSearchResults}>
+            <FormattedMessage id="SearchFilters.noResults" />
+          </div>
+        ) : null}
+
+        {searchInProgress ? (
+          <div className={css.loadingResults}>
+            <FormattedMessage id="SearchFilters.loadingResults" />
+          </div>
+        ) : null}
+      
       </div>
-
-      {hasNoResult ? (
-        <div className={css.noSearchResults}>
-          <FormattedMessage id="SearchFilters.noResults" />
-        </div>
-      ) : null}
-
-      {searchInProgress ? (
-        <div className={css.loadingResults}>
-          <FormattedMessage id="SearchFilters.loadingResults" />
-        </div>
-      ) : null}
     </div>
   );
 };
@@ -264,8 +311,10 @@ SearchFiltersComponent.defaultProps = {
   className: null,
   resultsCount: null,
   searchingInProgress: false,
+  musicFilter: null,
+  categoryFilter: null,
   certificateFilter: null,
-  yogaStylesFilter: null,
+  sportFilter: null,
   priceFilter: null,
   isSearchFiltersPanelOpen: false,
   toggleSearchFiltersPanel: null,
@@ -280,8 +329,10 @@ SearchFiltersComponent.propTypes = {
   resultsCount: number,
   searchingInProgress: bool,
   onManageDisableScrolling: func.isRequired,
+  musicFilter: propTypes.filterConfig,
+  categoryFilter: propTypes.filterConfig,
   certificateFilter: propTypes.filterConfig,
-  yogaStylesFilter: propTypes.filterConfig,
+  sportFilter: propTypes.filterConfig,
   priceFilter: propTypes.filterConfig,
   isSearchFiltersPanelOpen: bool,
   toggleSearchFiltersPanel: func,
