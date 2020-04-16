@@ -50,6 +50,7 @@ import SectionAvatar from './SectionAvatar';
 import SectionHeading from './SectionHeading';
 import SectionDescriptionMaybe from './SectionDescriptionMaybe';
 import SectionFeaturesMaybe from './SectionFeaturesMaybe';
+import SectionLanguage from './SectionLanguage';
 import SectionHostMaybe from './SectionHostMaybe';
 import SectionReviews from './SectionReviews';
 import SectionMapMaybe from './SectionMapMaybe';
@@ -193,6 +194,7 @@ export class ListingPageComponent extends Component {
       sendEnquiryError,
       monthlyTimeSlots,
       certificateConfig,
+      //languageOptions,
       //yogaStylesConfig,
     } = this.props;
 
@@ -205,7 +207,8 @@ export class ListingPageComponent extends Component {
         : ensureListing(getListing(listingId));
     // Use the category customization and passes directly to stylesConfig the current styles
     // available accordin to the selectionned category.
-    const yogaStylesConfig = config.custom[currentListing.attributes.publicData.certificate];
+    const yogaStylesConfig = config.custom[currentListing.attributes.publicData.category];
+    const languageOptions = config.custom.languageOptions;
 
     const listingSlug = rawParams.slug || createSlug(currentListing.attributes.title || '');
     const params = { slug: listingSlug, ...rawParams };
@@ -427,6 +430,7 @@ export class ListingPageComponent extends Component {
                   />
                   <SectionDescriptionMaybe description={description} />
                   <SectionFeaturesMaybe options={yogaStylesConfig} publicData={publicData} />
+                  <SectionLanguage options={languageOptions} publicData={publicData} />
                   <SectionReviews reviews={reviews} fetchReviewsError={fetchReviewsError} />
                   <SectionHostMaybe
                       title={title}
@@ -495,6 +499,7 @@ ListingPageComponent.defaultProps = {
   sendEnquiryError: null,
   certificateConfig: config.custom.certificate,
   yogaStylesConfig: config.custom.yogaStyles,
+  capacityOptions: config.custom.capacityOptions,
 };
 
 ListingPageComponent.propTypes = {
@@ -543,6 +548,7 @@ ListingPageComponent.propTypes = {
 
   certificateConfig: array,
   yogaStylesConfig: array,
+  capacityOptions: array,
 };
 
 const mapStateToProps = state => {

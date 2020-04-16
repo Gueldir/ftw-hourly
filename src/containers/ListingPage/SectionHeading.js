@@ -47,8 +47,12 @@ const SectionHeading = props => {
       <div className={css.heading}>
         <h1 className={css.title}>{richTitle}</h1>
         <div className={css.author}>
-          {showCertificate ? <span>{certificate.label}</span> : null}
-          <span className={css.separator}>•</span>
+          {showCertificate ?
+            <span>
+              <span>{certificate.label}</span>
+              <span className={css.separator}>•</span>
+            </span>
+          : null}
           <FormattedMessage id="ListingPage.hostedBy" values={{ name: hostLink }} />
           {showContactUser ? (
             <span className={css.contactWrapper}>
