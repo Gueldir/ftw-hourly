@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { array, arrayOf, bool, func, number, object, string } from 'prop-types';
 import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
+import { minutesBetween } from '../../util/dates';
 import classNames from 'classnames';
 import {
   TRANSITION_REQUEST_PAYMENT_AFTER_ENQUIRY,
@@ -109,7 +110,7 @@ export class TransactionPanelComponent extends Component {
     this.isMobSaf = isMobileSafari();
     this.currentDate = setInterval(
       () => this.tick(),
-      1000
+      10000
     );
   }
 
@@ -325,17 +326,16 @@ export class TransactionPanelComponent extends Component {
       currentListing.images && currentListing.images.length > 0 ? currentListing.images[0] : null;
 
     const bookingRange = transaction.booking && transaction.booking.attributes;
-    const isSessionStarted =
-      bookingRange && (bookingRange.start < this.state.date && this.state.date < bookingRange.end) ? false : true;
+    const minutes = bookingRange && bookingRange.start > this.state.date ? minutesBetween(this.state.date, bookingRange.start) : 0;
+    const isSessionStarted = minutes <= 5 && this.state.date < bookingRange.end ? false : true;
 
-    // TBD: Change the password method to be shared by provider and customers
     const loadMeetingRoom = () => {
       const roomId = currentProvider.attributes.profile.abbreviatedName + currentProvider.id.uuid.substring(currentProvider.id.uuid.length - 5, currentProvider.id.uuid.length);
       const roomPwd = currentTransaction.attributes.protectedData.roomPwd;
       const userName = currentUser.attributes.profile.displayName;
       const roomName = currentProvider.attributes.profile.displayName + "'s session"
       const domain = 'meet.jit.si';
-      const moderator = isProvider && isProvider ? 'moderator' : '';
+      const moderator = isProvider && isProvider ? 'moderator' : null;
       const options = {
           roomName: roomId,
           parentNode: document.getElementById('jitsi'),
@@ -348,7 +348,8 @@ export class TransactionPanelComponent extends Component {
           disableSimulcast: false,
           enableWelcomePage: true,
           enableUserRolesBasedOnToken: true,
-          lockRoomGuestEnabled: false,
+          enableFeaturesBasedOnToken: true,
+          //lockRoomGuestEnabled: false,
           /*localRecording: {
             enabled: true,
             format: 'flac',
@@ -383,9 +384,12 @@ export class TransactionPanelComponent extends Component {
       };
 
       const api = new window.JitsiMeetExternalAPI(domain, options);
-      api.on('videoConferenceJoined', () => {
+      api.on('passwordRequired', () => {
         api.executeCommand('password', roomPwd);
+      });
+      api.on('videoConferenceJoined', () => {
         api.executeCommand('subject', roomName);
+        api.executeCommand('password', roomPwd);
       });
       api.on('readyToClose', () => {
         this.setState({ isMeetingModalOpen: false });
