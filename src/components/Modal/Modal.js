@@ -113,13 +113,15 @@ export class ModalComponent extends Component {
       isClosedClassName,
       isOpen,
       usePortal,
+      buttonClose,
     } = this.props;
 
     const closeModalMessage = intl.formatMessage({ id: 'Modal.closeModal' });
     const closeButtonClasses = classNames(css.close, {
       [css.closeLight]: lightCloseButton,
     });
-    const closeBtn = isOpen ? (
+    // Dismiss close button if buttonClose is true (for meeting room)
+    const closeBtn = (isOpen && !buttonClose) ? (
       <Button
         onClick={this.handleClose}
         rootClassName={closeButtonClasses}

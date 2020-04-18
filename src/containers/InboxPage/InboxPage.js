@@ -3,6 +3,7 @@ import { arrayOf, bool, number, oneOf, shape, string } from 'prop-types';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
+import { formatMoney } from '../../util/currency';
 import classNames from 'classnames';
 import {
   txIsAccepted,
@@ -171,11 +172,11 @@ const BookingInfoMaybe = props => {
   // add the price after the BookingTimeInfo component. You can get the price by uncommenting
   // sthe following lines:
 
-  // const bookingPrice = isOrder ? tx.attributes.payinTotal : tx.attributes.payoutTotal;
-  // const price = bookingPrice ? formatMoney(intl, bookingPrice) : null;
+  const bookingPrice = isOrder ? tx.attributes.payinTotal : tx.attributes.payoutTotal;
+  const price = bookingPrice ? formatMoney(intl, bookingPrice) : null;
 
   // Remember to also add formatMoney function from 'util/currency.js' and add this after BookingTimeInfo:
-  // <div className={css.itemPrice}>{price}</div>
+  //  <div className={css.itemPrice}>{price}</div>
 
   return (
     <div className={classNames(css.bookingInfoWrapper, bookingClassName)}>
@@ -187,7 +188,7 @@ const BookingInfoMaybe = props => {
         unitType={unitType}
         dateType={DATE_TYPE_DATETIME}
         timeZone={timeZone}
-      />
+      /><div className={css.itemPrice}>{price}</div>
     </div>
   );
 };

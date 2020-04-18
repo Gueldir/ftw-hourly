@@ -31,7 +31,6 @@ import { manageDisableScrolling, isScrollingDisabled } from '../../ducks/UI.duck
 import { initializeCardPaymentData } from '../../ducks/stripe.duck.js';
 import {
   Page,
-  Modal,
   NamedLink,
   NamedRedirect,
   LayoutSingleColumn,
@@ -41,7 +40,6 @@ import {
   Footer,
   BookingPanel,
 } from '../../components';
-import { EnquiryForm } from '../../forms';
 import { TopbarContainer, NotFoundPage } from '../../containers';
 
 import { sendEnquiry, loadData, setInitialValues, fetchTimeSlots } from './ListingPage.duck';
@@ -50,8 +48,10 @@ import SectionAvatar from './SectionAvatar';
 import SectionHeading from './SectionHeading';
 import SectionDescriptionMaybe from './SectionDescriptionMaybe';
 import SectionFeaturesMaybe from './SectionFeaturesMaybe';
+import SectionLanguage from './SectionLanguage';
+import SectionHostMaybe from './SectionHostMaybe';
 import SectionReviews from './SectionReviews';
-import SectionMapMaybe from './SectionMapMaybe';
+//import SectionMapMaybe from './SectionMapMaybe';
 import css from './ListingPage.css';
 
 const MIN_LENGTH_FOR_LONG_WORDS_IN_TITLE = 16;
@@ -192,7 +192,8 @@ export class ListingPageComponent extends Component {
       sendEnquiryError,
       monthlyTimeSlots,
       certificateConfig,
-      yogaStylesConfig,
+      //languageOptions,
+      //yogaStylesConfig,
     } = this.props;
 
     const listingId = new UUID(rawParams.id);
@@ -202,6 +203,10 @@ export class ListingPageComponent extends Component {
       isPendingApprovalVariant || isDraftVariant
         ? ensureOwnListing(getOwnListing(listingId))
         : ensureListing(getListing(listingId));
+    // Use the category customization and passes directly to stylesConfig the current styles
+    // available accordin to the selectionned category.
+    const yogaStylesConfig = config.custom[currentListing.attributes.publicData.category];
+    const languageOptions = config.custom.languageOptions;
 
     const listingSlug = rawParams.slug || createSlug(currentListing.attributes.title || '');
     const params = { slug: listingSlug, ...rawParams };
@@ -233,7 +238,7 @@ export class ListingPageComponent extends Component {
 
     const {
       description = '',
-      geolocation = null,
+      //geolocation = null,
       price = null,
       title = '',
       publicData,
@@ -251,6 +256,7 @@ export class ListingPageComponent extends Component {
     const bookingTitle = (
       <FormattedMessage id="ListingPage.bookingTitle" values={{ title: richTitle }} />
     );
+    const bookingSubTitle = intl.formatMessage({ id: 'ListingPage.bookingSubTitle' });
 
     const topbar = <TopbarContainer />;
 
@@ -422,12 +428,21 @@ export class ListingPageComponent extends Component {
                   />
                   <SectionDescriptionMaybe description={description} />
                   <SectionFeaturesMaybe options={yogaStylesConfig} publicData={publicData} />
-                  <SectionMapMaybe
-                    geolocation={geolocation}
-                    publicData={publicData}
-                    listingId={currentListing.id}
-                  />
+                  <SectionLanguage options={languageOptions} publicData={publicData} />
                   <SectionReviews reviews={reviews} fetchReviewsError={fetchReviewsError} />
+                  <SectionHostMaybe
+                      title={title}
+                      listing={currentListing}
+                      authorDisplayName={authorDisplayName}
+                      onContactUser={this.onContactUser}
+                      isEnquiryModalOpen={isAuthenticated && this.state.enquiryModalOpen}
+                      onCloseEnquiryModal={() => this.setState({ enquiryModalOpen: false })}
+                      sendEnquiryError={sendEnquiryError}
+                      sendEnquiryInProgress={sendEnquiryInProgress}
+                      onSubmitEnquiry={this.onSubmitEnquiry}
+                      currentUser={currentUser}
+                      onManageDisableScrolling={onManageDisableScrolling}
+                    />
                 </div>
                 <BookingPanel
                   className={css.bookingPanel}
@@ -435,7 +450,8 @@ export class ListingPageComponent extends Component {
                   isOwnListing={isOwnListing}
                   unitType={unitType}
                   onSubmit={handleBookingSubmit}
-                  title={bookingTitle}
+                  title={bookingTitle}                  
+                  subTitle={bookingSubTitle}
                   authorDisplayName={authorDisplayName}
                   onManageDisableScrolling={onManageDisableScrolling}
                   monthlyTimeSlots={monthlyTimeSlots}
@@ -443,23 +459,6 @@ export class ListingPageComponent extends Component {
                 />
               </div>
             </div>
-            <Modal
-              id="ListingPage.enquiry"
-              contentClassName={css.enquiryModalContent}
-              isOpen={isAuthenticated && this.state.enquiryModalOpen}
-              onClose={() => this.setState({ enquiryModalOpen: false })}
-              onManageDisableScrolling={onManageDisableScrolling}
-            >
-              <EnquiryForm
-                className={css.enquiryForm}
-                submitButtonWrapperClassName={css.enquirySubmitButtonWrapper}
-                listingTitle={title}
-                authorDisplayName={authorDisplayName}
-                sendEnquiryError={sendEnquiryError}
-                onSubmit={this.onSubmitEnquiry}
-                inProgress={sendEnquiryInProgress}
-              />
-            </Modal>
           </LayoutWrapperMain>
           <LayoutWrapperFooter>
             <Footer />
@@ -481,6 +480,7 @@ ListingPageComponent.defaultProps = {
   sendEnquiryError: null,
   certificateConfig: config.custom.certificate,
   yogaStylesConfig: config.custom.yogaStyles,
+  capacityOptions: config.custom.capacityOptions,
 };
 
 ListingPageComponent.propTypes = {
@@ -529,6 +529,7 @@ ListingPageComponent.propTypes = {
 
   certificateConfig: array,
   yogaStylesConfig: array,
+  capacityOptions: array,
 };
 
 const mapStateToProps = state => {

@@ -8,7 +8,7 @@ import { types as sdkTypes } from '../../util/sdkLoader';
 import {
   LISTING_PAGE_PARAM_TYPE_DRAFT,
   LISTING_PAGE_PARAM_TYPE_NEW,
-  LISTING_PAGE_PARAM_TYPE_EDIT,
+  //LISTING_PAGE_PARAM_TYPE_EDIT,
   LISTING_PAGE_PARAM_TYPES,
   LISTING_PAGE_PENDING_APPROVAL_VARIANT,
   createSlug,
@@ -54,8 +54,8 @@ const { UUID } = sdkTypes;
 export const EditListingPageComponent = props => {
   const {
     currentUser,
-    currentUserListing,
-    currentUserListingFetched,
+    //currentUserListing,
+    //currentUserListingFetched,
     createStripeAccountError,
     fetchInProgress,
     fetchStripeAccountError,
@@ -80,7 +80,7 @@ export const EditListingPageComponent = props => {
     page,
     params,
     scrollingDisabled,
-    allowOnlyOneListing,
+    //allowOnlyOneListing,
     stripeAccountFetched,
     stripeAccount,
     updateStripeAccountError,
@@ -128,7 +128,7 @@ export const EditListingPageComponent = props => {
         };
 
     return <NamedRedirect {...redirectProps} />;
-  } else if (allowOnlyOneListing && isNewURI && currentUserListingFetched && currentUserListing) {
+  } /*else if (allowOnlyOneListing && isNewURI && currentUserListingFetched && currentUserListing) {
     // If we allow only one listing per provider, we need to redirect to correct listing.
     return (
       <NamedRedirect
@@ -141,7 +141,7 @@ export const EditListingPageComponent = props => {
         }}
       />
     );
-  } else if (showForm) {
+  }*/ else if (showForm) {
     const {
       createListingDraftError = null,
       publishListingError = null,
@@ -296,10 +296,10 @@ EditListingPageComponent.propTypes = {
   currentUserListing: propTypes.ownListing,
   currentUserListingFetched: bool,
   onAddAvailabilityException: func.isRequired,
-  onFetchAvailabilityExceptions: func.isRequired,
-  onCreateAvailabilityException: func.isRequired,
+  //onFetchAvailabilityExceptions: func.isRequired,
+  //onCreateAvailabilityException: func.isRequired,
   onDeleteAvailabilityException: func.isRequired,
-  onFetchBookings: func.isRequired,
+  //onFetchBookings: func.isRequired,
   onGetStripeConnectAccountLink: func.isRequired,
   onCreateListingDraft: func.isRequired,
   onPublishListingDraft: func.isRequired,

@@ -2,26 +2,44 @@
  * Marketplace specific configuration.
  */
 
-export const yogaStyles = [
-  { key: 'ashtanga', label: 'Ashtanga' },
-  { key: 'hatha', label: 'Hatha' },
-  { key: 'kundalini', label: 'Kundalini' },
-  { key: 'restorative', label: 'Restorative' },
-  { key: 'vinyasa', label: 'Vinyasa' },
-  { key: 'yin', label: 'Yin' },
+export const languageOptions = [
+  { key: 'english', label: 'English' },
+  { key: 'french', label: 'French' },
+  { key: 'spanish', label: 'Spanish' },
+];
+
+export const category = [
+  //{ key: 'none', label: 'None', hideFromFilters: true, hideFromListingInfo: true },
+  { key: 'sport', label: 'Sport' },
+  { key: 'music', label: 'Music' },
+  { key: 'art', label: 'Art' },
 ];
 
 export const certificate = [
-  { key: 'none', label: 'None', hideFromFilters: true, hideFromListingInfo: true },
-  { key: '200h', label: 'Registered yoga teacher 200h' },
-  { key: '500h', label: 'Registered yoga teacher 500h' },
+  { key: 'none', label: 'No certificate', hideFromFilters: true, hideFromListingInfo: true },
+  { key: 'certified', label: 'Certified' },
+];
+
+export const sport = [
+  { key: 'pilate', label: 'Pilate' },
+  { key: 'TRX', label: 'TRX' },
+];
+
+export const music = [
+  { key: 'vent', label: 'Vent' },
+  { key: 'corde', label: 'Corde' },
+];
+
+export const art = [
+  { key: 'vent', label: 'Vent' },
+  { key: 'corde', label: 'Corde' },
 ];
 
 // Price filter configuration
 // Note: unlike most prices this is not handled in subunits
 export const priceFilterConfig = {
   min: 0,
-  max: 1000,
+  max: 500,
   step: 5,
 };
 

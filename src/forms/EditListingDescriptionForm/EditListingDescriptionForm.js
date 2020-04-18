@@ -2,11 +2,12 @@ import React from 'react';
 import { arrayOf, bool, func, shape, string } from 'prop-types';
 import { compose } from 'redux';
 import { Form as FinalForm } from 'react-final-form';
+import arrayMutators from 'final-form-arrays';
 import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl';
 import classNames from 'classnames';
 import { propTypes } from '../../util/types';
 import { maxLength, required, composeValidators } from '../../util/validators';
-import { Form, Button, FieldTextInput } from '../../components';
+import { Form, Button, FieldTextInput, FieldSelect } from '../../components';
 import CustomCertificateSelectFieldMaybe from './CustomCertificateSelectFieldMaybe';
 
 import css from './EditListingDescriptionForm.css';
@@ -16,6 +17,7 @@ const TITLE_MAX_LENGTH = 60;
 const EditListingDescriptionFormComponent = props => (
   <FinalForm
     {...props}
+    mutators={{ ...arrayMutators }}
     render={formRenderProps => {
       const {
         certificate,
@@ -26,10 +28,11 @@ const EditListingDescriptionFormComponent = props => (
         intl,
         invalid,
         pristine,
+        category,
         saveActionMsg,
         updated,
         updateInProgress,
-        fetchErrors,
+        fetchErrors
       } = formRenderProps;
 
       const titleMessage = intl.formatMessage({ id: 'EditListingDescriptionForm.title' });
@@ -42,7 +45,7 @@ const EditListingDescriptionFormComponent = props => (
       const maxLengthMessage = intl.formatMessage(
         { id: 'EditListingDescriptionForm.maxLength' },
         {
-          maxLength: TITLE_MAX_LENGTH,
+          maxLength: TITLE_MAX_LENGTH
         }
       );
 
@@ -56,6 +59,18 @@ const EditListingDescriptionFormComponent = props => (
       const descriptionRequiredMessage = intl.formatMessage({
         id: 'EditListingDescriptionForm.descriptionRequired',
       });
+
+      const categoryLabel = intl.formatMessage({
+        id: 'EditListingFeaturesForm.categoryLabel',
+      });
+      const categoryPlaceholder = intl.formatMessage({
+        id: 'EditListingFeaturesForm.categoryPlaceholder',
+      });  
+      const categoryRequired = required(
+        intl.formatMessage({
+          id: 'EditListingFeaturesForm.categoryRequired',
+        })
+      );
 
       const { updateListingError, createListingDraftError, showListingsError } = fetchErrors || {};
       const errorMessageUpdateListing = updateListingError ? (
@@ -81,7 +96,7 @@ const EditListingDescriptionFormComponent = props => (
       const submitReady = (updated && pristine) || ready;
       const submitInProgress = updateInProgress;
       const submitDisabled = invalid || disabled || submitInProgress;
-
+      
       return (
         <Form className={classes} onSubmit={handleSubmit}>
           {errorMessageCreateListingDraft}
@@ -98,6 +113,22 @@ const EditListingDescriptionFormComponent = props => (
             validate={composeValidators(required(titleRequiredMessage), maxLength60Message)}
             autoFocus
           />
+
+          <FieldSelect
+            className={css.category} 
+            name="category" 
+            id="category" 
+            label={categoryLabel} 
+            validate={categoryRequired}>
+            <option disabled value="">
+              {categoryPlaceholder}
+            </option>
+            {category.map(c => (
+              <option key={c.key} value={c.key}>
+                {c.label}
+              </option>
+            ))}
+          </FieldSelect>
 
           <FieldTextInput
             id="description"
@@ -147,7 +178,7 @@ EditListingDescriptionFormComponent.propTypes = {
     showListingsError: propTypes.error,
     updateListingError: propTypes.error,
   }),
-  certificate: arrayOf(
+  category: arrayOf(
     shape({
       key: string.isRequired,
       label: string.isRequired,

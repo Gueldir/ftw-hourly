@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { array, arrayOf, bool, func, number, object, string } from 'prop-types';
 import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
+import { minutesBetween } from '../../util/dates';
 import classNames from 'classnames';
 import {
   TRANSITION_REQUEST_PAYMENT_AFTER_ENQUIRY,
@@ -27,6 +28,7 @@ import {
   BookingPanel,
   NamedLink,
   ReviewModal,
+  MeetingModal,
   UserDisplayName,
 } from '../../components';
 import { SendMessageForm } from '../../forms';
@@ -39,6 +41,7 @@ import DetailCardHeadingsMaybe from './DetailCardHeadingsMaybe';
 import DetailCardImage from './DetailCardImage';
 import FeedSection from './FeedSection';
 import SaleActionButtonsMaybe from './SaleActionButtonsMaybe';
+import MeetingJoinButtonsMaybe from './MeetingJoinButtonsMaybe';
 import PanelHeading, {
   HEADING_ENQUIRED,
   HEADING_PAYMENT_PENDING,
@@ -86,12 +89,16 @@ export class TransactionPanelComponent extends Component {
     this.state = {
       sendMessageFormFocused: false,
       isReviewModalOpen: false,
+      isMeetingModalOpen: false,
       reviewSubmitted: false,
+      date: new Date()
     };
+
     this.isMobSaf = false;
     this.sendMessageFormName = 'TransactionPanel.SendMessageForm';
 
     this.onOpenReviewModal = this.onOpenReviewModal.bind(this);
+    this.onOpenMeetingModal = this.onOpenMeetingModal.bind(this);
     this.onSubmitReview = this.onSubmitReview.bind(this);
     this.onSendMessageFormFocus = this.onSendMessageFormFocus.bind(this);
     this.onSendMessageFormBlur = this.onSendMessageFormBlur.bind(this);
@@ -101,10 +108,26 @@ export class TransactionPanelComponent extends Component {
 
   componentDidMount() {
     this.isMobSaf = isMobileSafari();
+    this.currentDate = setInterval(
+      () => this.tick(),
+      10000
+    );
   }
 
   onOpenReviewModal() {
     this.setState({ isReviewModalOpen: true });
+  }
+
+  onOpenMeetingModal() {
+    this.setState({ isMeetingModalOpen: true });
+  }
+
+  componentWillUnmount() {  
+    clearInterval(this.currentDate);
+  }
+
+  tick() {
+    this.setState({date: new Date()});
   }
 
   onSubmitReview(values) {
@@ -243,6 +266,7 @@ export class TransactionPanelComponent extends Component {
           headingState: HEADING_ACCEPTED,
           showDetailCardHeadings: isCustomer,
           showAddress: isCustomer,
+          showMeetingButton: isCustomer || (isProvider && !isCustomerBanned),
         };
       } else if (txIsDeclined(tx)) {
         return {
@@ -301,6 +325,78 @@ export class TransactionPanelComponent extends Component {
     const firstImage =
       currentListing.images && currentListing.images.length > 0 ? currentListing.images[0] : null;
 
+    const bookingRange = transaction.booking && transaction.booking.attributes;
+    const minutes = bookingRange && bookingRange.start > this.state.date ? minutesBetween(this.state.date, bookingRange.start) : 0;
+    const isSessionStarted = minutes <= 5 && this.state.date < bookingRange.end ? false : true;
+
+    const loadMeetingRoom = () => {
+      const roomId = currentProvider.attributes.profile.abbreviatedName + currentProvider.id.uuid.substring(currentProvider.id.uuid.length - 5, currentProvider.id.uuid.length);
+      const roomPwd = currentTransaction.attributes.protectedData.roomPwd;
+      const userName = currentUser.attributes.profile.displayName;
+      const roomName = currentProvider.attributes.profile.displayName + "'s session"
+      const domain = 'meet.jit.si';
+      const moderator = isProvider && isProvider ? 'moderator' : null;
+      const options = {
+          roomName: roomId,
+          parentNode: document.getElementById('jitsi'),
+          interfaceConfigOverwrite: {
+          filmStripOnly: false,
+          SHOW_JITSI_WATERMARK: false,
+          jwt: moderator
+        },
+        configOverwrite: {
+          disableSimulcast: false,
+          enableWelcomePage: true,
+          enableUserRolesBasedOnToken: true,
+          enableFeaturesBasedOnToken: true,
+          //lockRoomGuestEnabled: false,
+          /*localRecording: {
+            enabled: true,
+            format: 'flac',
+          }*/
+        },
+        userInfo: {
+          displayName: userName
+        },
+        interfaceConfigOverwrite: {
+          TOOLBAR_ALWAYS_VISIBLE: false,
+          SHOW_JITSI_WATERMARK: false,
+          SHOW_WATERMARK_FOR_GUESTS: true,
+          SHOW_BRAND_WATERMARK: false,
+          SHOW_POWERED_BY: false,
+          APP_NAME: 'Virtualhub session',
+          NATIVE_APP_NAME: 'Virtualhub session',
+          PROVIDER_NAME: roomName,
+          LANG_DETECTION: true, // Allow i18n to detect the system language
+          INVITATION_POWERED_BY: true,
+          TOOLBAR_BUTTONS: [
+              'microphone', 'camera', 'closedcaptions', 'desktop', 'fullscreen',
+              'fodeviceselection', 'hangup', 'chat', 'recording',
+              'sharedvideo', 'settings',
+              'videoquality',
+              'tileview', 'download', 'help', 'mute-everyone', 'localrecording'
+          ],
+          SETTINGS_SECTIONS: [ 'devices', 'language', moderator ],
+          VIDEO_LAYOUT_FIT: 'both',
+          filmStripOnly: false,
+          HIDE_KICK_BUTTON_FOR_GUESTS: true,
+        }
+      };
+
+      const api = new window.JitsiMeetExternalAPI(domain, options);
+      api.on('passwordRequired', () => {
+        api.executeCommand('password', roomPwd);
+      });
+      api.on('videoConferenceJoined', () => {
+        api.executeCommand('subject', roomName);
+        api.executeCommand('password', roomPwd);
+      });
+      api.on('readyToClose', () => {
+        this.setState({ isMeetingModalOpen: false });
+        api.dispose();
+      });
+    }
+
     const saleButtons = (
       <SaleActionButtonsMaybe
         showButtons={stateData.showSaleButtons}
@@ -310,6 +406,18 @@ export class TransactionPanelComponent extends Component {
         declineSaleError={declineSaleError}
         onAcceptSale={() => onAcceptSale(currentTransaction.id)}
         onDeclineSale={() => onDeclineSale(currentTransaction.id)}
+      />
+    );
+    const meetingButton = (
+      <MeetingJoinButtonsMaybe
+        acceptInProgress={acceptInProgress}
+        declineInProgress={declineInProgress}
+        acceptSaleError={acceptSaleError}
+        declineSaleError={declineSaleError}
+        showButtons={stateData.showMeetingButton}
+        onOpenMeetingModal={this.onOpenMeetingModal}
+        loadMeetingRoom={loadMeetingRoom}
+        buttonsDisabled={isSessionStarted}
       />
     );
 
@@ -392,8 +500,11 @@ export class TransactionPanelComponent extends Component {
               messages={messages}
               oldestMessagePageFetched={oldestMessagePageFetched}
               onOpenReviewModal={this.onOpenReviewModal}
+              onOpenMeetingModal={this.onOpenMeetingModal}
               onShowMoreMessages={() => onShowMoreMessages(currentTransaction.id)}
+              onCloseModal={() => this.setState({ isMeetingModalOpen: false })}
               totalMessagePages={totalMessagePages}
+              currentDate={this.state.date}
             />
             {showSendMessageForm ? (
               <SendMessageForm
@@ -412,6 +523,10 @@ export class TransactionPanelComponent extends Component {
 
             {stateData.showSaleButtons ? (
               <div className={css.mobileActionButtons}>{saleButtons}</div>
+            ) : null}
+
+            {stateData.showMeetingButton ? (
+              <div className={css.mobileActionButtons}>{meetingButton}</div>
             ) : null}
           </div>
 
@@ -459,6 +574,9 @@ export class TransactionPanelComponent extends Component {
               {stateData.showSaleButtons ? (
                 <div className={css.desktopActionButtons}>{saleButtons}</div>
               ) : null}
+              {stateData.showMeetingButton ? (
+                <div className={css.desktopActionButtons}>{meetingButton}</div>
+              ) : null}
             </div>
           </div>
         </div>
@@ -472,6 +590,12 @@ export class TransactionPanelComponent extends Component {
           reviewSent={this.state.reviewSubmitted}
           sendReviewInProgress={sendReviewInProgress}
           sendReviewError={sendReviewError}
+        />
+        <MeetingModal
+          id="ConnectMeetingModal"
+          isOpen={this.state.isMeetingModalOpen}
+          onCloseModal={() => this.setState({ isMeetingModalOpen: false })}
+          onManageDisableScrolling={onManageDisableScrolling}
         />
       </div>
     );

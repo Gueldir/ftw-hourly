@@ -1,4 +1,5 @@
 import React from 'react';
+import { array, shape, string } from 'prop-types';
 import { FormattedMessage } from '../../util/reactIntl';
 import { PropertyGroup } from '../../components';
 
@@ -10,7 +11,7 @@ const SectionFeaturesMaybe = props => {
     return null;
   }
 
-  const selectedOptions = publicData && publicData.yogaStyles ? publicData.yogaStyles : [];
+  const selectedOptions = publicData && publicData[publicData.category] ? publicData[publicData.category] : [];
   const selectedConfigOptions = options.filter(o => selectedOptions.find(s => s === o.key));
 
   return (
@@ -20,12 +21,19 @@ const SectionFeaturesMaybe = props => {
       </h2>
       <PropertyGroup
         id="ListingPage.yogaStyles"
-        options={selectedConfigOptions}
+        options={options}
         selectedOptions={selectedOptions}
         twoColumns={selectedConfigOptions > 5}
       />
     </div>
   );
+};
+
+SectionFeaturesMaybe.propTypes = {
+  options: array.isRequired,
+  publicData: shape({
+    selectedOptions: string,
+  }).isRequired,
 };
 
 export default SectionFeaturesMaybe;

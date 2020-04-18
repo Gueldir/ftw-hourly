@@ -13,8 +13,10 @@ import { createResourceLocatorString } from '../../util/routes';
 import {
   EditListingAvailabilityPanel,
   EditListingDescriptionPanel,
-  EditListingFeaturesPanel,
-  EditListingLocationPanel,
+  EditListingCategoryPanel,
+  //EditListingFeaturesPanel,
+  EditListingLanguagePanel,
+  //EditListingLocationPanel,
   EditListingPhotosPanel,
   EditListingPoliciesPanel,
   EditListingPricingPanel,
@@ -25,17 +27,21 @@ import css from './EditListingWizard.css';
 export const AVAILABILITY = 'availability';
 export const DESCRIPTION = 'description';
 export const FEATURES = 'features';
+export const CATEGORY = 'category';
 export const POLICY = 'policy';
 export const LOCATION = 'location';
+export const LANGUAGE = 'language';
 export const PRICING = 'pricing';
 export const PHOTOS = 'photos';
 
 // EditListingWizardTab component supports these tabs
 export const SUPPORTED_TABS = [
   DESCRIPTION,
+  CATEGORY,
   FEATURES,
   POLICY,
   LOCATION,
+  LANGUAGE,
   PRICING,
   AVAILABILITY,
   PHOTOS,
@@ -181,7 +187,21 @@ const EditListingWizardTab = props => {
         />
       );
     }
-    case FEATURES: {
+    case CATEGORY: {
+      const submitButtonTranslationKey = isNewListingFlow
+        ? 'EditListingWizard.saveNewLanguage'
+        : 'EditListingWizard.saveEditLanguage';
+      return (
+        <EditListingCategoryPanel
+          {...panelProps(CATEGORY)}
+          submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
+          onSubmit={values => {
+            onCompleteEditListingWizardTab(tab, values);
+          }}
+        />
+      );
+    }
+    /*case FEATURES: {
       const submitButtonTranslationKey = isNewListingFlow
         ? 'EditListingWizard.saveNewFeatures'
         : 'EditListingWizard.saveEditFeatures';
@@ -194,7 +214,7 @@ const EditListingWizardTab = props => {
           }}
         />
       );
-    }
+    }*/
     case POLICY: {
       const submitButtonTranslationKey = isNewListingFlow
         ? 'EditListingWizard.saveNewPolicies'
@@ -209,7 +229,21 @@ const EditListingWizardTab = props => {
         />
       );
     }
-    case LOCATION: {
+    case LANGUAGE: {
+      const submitButtonTranslationKey = isNewListingFlow
+        ? 'EditListingWizard.saveNewLanguage'
+        : 'EditListingWizard.saveEditLanguage';
+      return (
+        <EditListingLanguagePanel
+          {...panelProps(LANGUAGE)}
+          submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
+          onSubmit={values => {
+            onCompleteEditListingWizardTab(tab, values);
+          }}
+        />
+      );
+    }
+    /*case LOCATION: {
       const submitButtonTranslationKey = isNewListingFlow
         ? 'EditListingWizard.saveNewLocation'
         : 'EditListingWizard.saveEditLocation';
@@ -222,7 +256,7 @@ const EditListingWizardTab = props => {
           }}
         />
       );
-    }
+    }*/
     case PRICING: {
       const submitButtonTranslationKey = isNewListingFlow
         ? 'EditListingWizard.saveNewPricing'

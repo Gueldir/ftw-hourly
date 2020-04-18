@@ -21,9 +21,11 @@ import { StripeConnectAccountForm } from '../../forms';
 import EditListingWizardTab, {
   AVAILABILITY,
   DESCRIPTION,
-  FEATURES,
+  CATEGORY,
+  //FEATURES,
   POLICY,
-  LOCATION,
+  //LOCATION,
+  LANGUAGE,
   PRICING,
   PHOTOS,
 } from './EditListingWizardTab';
@@ -40,9 +42,11 @@ const availabilityMaybe = config.enableAvailability ? [AVAILABILITY] : [];
 // If you want to add a free text field to your listings you can enable the POLICY tab
 export const TABS = [
   DESCRIPTION,
-  FEATURES,
+  CATEGORY,
+  //FEATURES,
   //POLICY,
-  LOCATION,
+  //LOCATION,
+  LANGUAGE,
   PRICING,
   ...availabilityMaybe,
   PHOTOS,
@@ -53,27 +57,6 @@ const MAX_HORIZONTAL_NAV_SCREEN_WIDTH = 1023;
 
 const STRIPE_ONBOARDING_RETURN_URL_SUCCESS = 'success';
 const STRIPE_ONBOARDING_RETURN_URL_FAILURE = 'failure';
-
-const tabLabel = (intl, tab) => {
-  let key = null;
-  if (tab === DESCRIPTION) {
-    key = 'EditListingWizard.tabLabelDescription';
-  } else if (tab === FEATURES) {
-    key = 'EditListingWizard.tabLabelFeatures';
-  } else if (tab === POLICY) {
-    key = 'EditListingWizard.tabLabelPolicy';
-  } else if (tab === LOCATION) {
-    key = 'EditListingWizard.tabLabelLocation';
-  } else if (tab === PRICING) {
-    key = 'EditListingWizard.tabLabelPricing';
-  } else if (tab === AVAILABILITY) {
-    key = 'EditListingWizard.tabLabelAvailability';
-  } else if (tab === PHOTOS) {
-    key = 'EditListingWizard.tabLabelPhotos';
-  }
-
-  return intl.formatMessage({ id: key });
-};
 
 /**
  * Check if a wizard tab is completed.
@@ -87,7 +70,6 @@ const tabCompleted = (tab, listing) => {
   const {
     availabilityPlan,
     description,
-    geolocation,
     price,
     title,
     publicData,
@@ -97,12 +79,16 @@ const tabCompleted = (tab, listing) => {
   switch (tab) {
     case DESCRIPTION:
       return !!(description && title);
-    case FEATURES:
-      return !!(publicData && publicData.yogaStyles);
+    case CATEGORY:
+      return !!(publicData && publicData.category);
+    /*case FEATURES:
+      return !!(publicData && publicData.yogaStyles);*/
     case POLICY:
       return !!(publicData && typeof publicData.rules !== 'undefined');
-    case LOCATION:
-      return !!(geolocation && publicData && publicData.location && publicData.location.address);
+    /*case LOCATION:
+      return !!(geolocation && publicData && publicData.location && publicData.location.address);*/
+    case LANGUAGE:
+      return !!(publicData && publicData.language);
     case PRICING:
       return !!price;
     case AVAILABILITY:
@@ -289,6 +275,32 @@ class EditListingWizard extends Component {
     const classes = classNames(rootClasses, className);
     const currentListing = ensureListing(listing);
     const tabsStatus = tabsActive(isNewListingFlow, currentListing);
+
+    //const { publicData } = currentListing.attributes; 
+    //const category = publicData && publicData.category;
+    //const options = config.custom.category.map((pair) => pair["key"] === category && pair["label"]);
+    const tabLabel = (intl, tab) => {
+      let key/*, label*/ = null;
+      if (tab === DESCRIPTION) {
+        key = 'EditListingWizard.tabLabelDescription';
+      } else if (tab === CATEGORY) {
+        key = 'EditListingWizard.tabLabelCategory';
+      } else if (tab === POLICY) {
+        key = 'EditListingWizard.tabLabelPolicy';
+      } /*else if (tab === LOCATION) {
+        key = 'EditListingWizard.tabLabelPolicy';
+      }*/ else if (tab === LANGUAGE) {
+        key = 'EditListingWizard.tabLabelLanguage';
+      } else if (tab === PRICING) {
+        key = 'EditListingWizard.tabLabelPricing';
+      } else if (tab === AVAILABILITY) {
+        key = 'EditListingWizard.tabLabelAvailability';
+      } else if (tab === PHOTOS) {
+        key = 'EditListingWizard.tabLabelPhotos';
+      }
+
+      return intl.formatMessage({ id: key });
+    };
 
     // If selectedTab is not active, redirect to the beginning of wizard
     if (!tabsStatus[selectedTab]) {

@@ -35,7 +35,7 @@ import omit from 'lodash/omit';
 
 import routeConfiguration from '../../routeConfiguration';
 import { createResourceLocatorString } from '../../util/routes';
-import { SelectSingleFilter, SelectMultipleFilter, InlineTextButton } from '../../components';
+import { SelectMultipleFilter, InlineTextButton } from '../../components';
 import css from './SearchFiltersPanel.css';
 
 // Dropdown container can have a positional offset (in pixels)
@@ -131,6 +131,8 @@ class SearchFiltersPanelComponent extends Component {
   initialValue(paramName) {
     const currentQueryParams = this.state.currentQueryParams;
     const urlQueryParams = this.props.urlQueryParams;
+    console.log(currentQueryParams);
+    console.log(urlQueryParams);
 
     // initialValue for a select should come either from state.currentQueryParam or urlQueryParam
     const currentQueryParam = currentQueryParams[paramName];
@@ -154,42 +156,57 @@ class SearchFiltersPanelComponent extends Component {
   }
 
   render() {
-    const { rootClassName, className, intl, categoryFilter, amenitiesFilter } = this.props;
+    const { rootClassName, className, intl, musicFilter, sportFilter } = this.props;
     const classes = classNames(rootClassName || css.root, className);
 
-    const initialCategory = this.initialValue(categoryFilter.paramName);
-    const initialAmenities = this.initialValues(amenitiesFilter.paramName);
+    //const initialCategory = this.initialValue(musicFilter.paramName);
+    const initialsport = this.initialValues(sportFilter.paramName);
+    const initialmusic = this.initialValues(musicFilter.paramName);
 
-    const categoryLabel = intl.formatMessage({
-      id: 'SearchFiltersPanel.categoryLabel',
+    const musicLabel = intl.formatMessage({
+      id: 'SearchFiltersPanel.musicLabel',
     });
 
-    const amenitiesLabel = intl.formatMessage({
-      id: 'SearchFiltersPanel.amenitiesLabel',
+    const sportLabel = intl.formatMessage({
+      id: 'SearchFiltersPanel.sportLabel',
     });
 
-    const categoryFilterElement = categoryFilter ? (
+    /*const musicFilterElement = musicFilter ? (
       <SelectSingleFilter
-        urlParam={categoryFilter.paramName}
-        label={categoryLabel}
+        urlParam={musicFilter.paramName}
+        label={musicLabel}
         onSelect={this.handleSelectSingle}
         liveEdit
-        options={categoryFilter.options}
+        options={musicFilter.options}
         initialValue={initialCategory}
+        contentPlacementOffset={FILTER_DROPDOWN_OFFSET}
+      />
+    ) : null;*/
+
+    const musicFilterElement = musicFilter ? (
+      <SelectMultipleFilter
+        id={'SearchFiltersPanel.musicFilter'}
+        name="music"
+        urlParam={musicFilter.paramName}
+        label={musicLabel}
+        onSubmit={this.handleSelectMultiple}
+        liveEdit
+        options={musicFilter.options}
+        initialValues={initialmusic}
         contentPlacementOffset={FILTER_DROPDOWN_OFFSET}
       />
     ) : null;
 
-    const amenitiesFilterElement = amenitiesFilter ? (
+    const sportFilterElement = sportFilter ? (
       <SelectMultipleFilter
-        id={'SearchFiltersPanel.amenitiesFilter'}
-        name="amenities"
-        urlParam={amenitiesFilter.paramName}
-        label={amenitiesLabel}
+        id={'SearchFiltersPanel.sportFilter'}
+        name="sport"
+        urlParam={sportFilter.paramName}
+        label={sportLabel}
         onSubmit={this.handleSelectMultiple}
         liveEdit
-        options={amenitiesFilter.options}
-        initialValues={initialAmenities}
+        options={sportFilter.options}
+        initialValues={initialsport}
         contentPlacementOffset={FILTER_DROPDOWN_OFFSET}
       />
     ) : null;
@@ -197,8 +214,8 @@ class SearchFiltersPanelComponent extends Component {
     return (
       <div className={classes}>
         <div className={css.filtersWrapper}>
-          {categoryFilterElement}
-          {amenitiesFilterElement}
+          {musicFilterElement}
+          {sportFilterElement}
         </div>
         <div className={css.footer}>
           <InlineTextButton rootClassName={css.resetAllButton} onClick={this.resetAll}>

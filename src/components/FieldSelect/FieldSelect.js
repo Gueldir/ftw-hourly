@@ -17,6 +17,7 @@ const handleChange = (propsOnChange, inputOnChange) => event => {
   }
   // Notify Final Form that the input has changed.
   // (Final Form knows how to deal with synthetic events of React.)
+  console.log(event)
   inputOnChange(event);
 };
 
@@ -31,6 +32,7 @@ const FieldSelectComponent = props => {
     meta,
     children,
     onChange,
+    buttonDisabled,
     ...rest
   } = props;
 
@@ -62,7 +64,7 @@ const FieldSelectComponent = props => {
   return (
     <div className={classes}>
       {label ? <label htmlFor={id}>{label}</label> : null}
-      <select {...selectProps}>{children}</select>
+      <select {...selectProps} disabled={buttonDisabled}>{children}</select>
       <ValidationError fieldMeta={meta} />
     </div>
   );

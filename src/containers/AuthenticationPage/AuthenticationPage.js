@@ -132,7 +132,8 @@ export class AuthenticationPageComponent extends Component {
 
     const handleSubmitSignup = values => {
       const { fname, lname, ...rest } = values;
-      const params = { firstName: fname.trim(), lastName: lname.trim(), ...rest };
+      const meetingPwd = Math.random().toString(36).slice(2);
+      const params = { firstName: fname.trim(), lastName: lname.trim(), roomPwd: meetingPwd.trim(), ...rest };
       submitSignup(params);
     };
 

@@ -1,13 +1,14 @@
 import React from 'react';
-import { bool, func, shape, string } from 'prop-types';
+import { arrayOf, bool, func, shape, string } from 'prop-types';
 import classNames from 'classnames';
 import { Form as FinalForm } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
-import { FormattedMessage } from '../../util/reactIntl';
+import { intlShape, FormattedMessage } from '../../util/reactIntl';
 
 import { propTypes } from '../../util/types';
-import config from '../../config';
-import { Button, FieldCheckboxGroup, Form } from '../../components';
+import { Button, Form } from '../../components';
+
+import CustomCategorySelectFieldMaybe from './CustomCategorySelectFieldMaybe';
 
 import css from './EditListingFeaturesForm.css';
 
@@ -17,13 +18,15 @@ const EditListingFeaturesFormComponent = props => (
     mutators={{ ...arrayMutators }}
     render={formRenderProps => {
       const {
+        category,
         disabled,
         ready,
         rootClassName,
         className,
-        name,
+        intl,
         handleSubmit,
         pristine,
+        listing,
         saveActionMsg,
         updated,
         updateInProgress,
@@ -47,17 +50,19 @@ const EditListingFeaturesFormComponent = props => (
           <FormattedMessage id="EditListingFeaturesForm.showListingFailed" />
         </p>
       ) : null;
-
+      
       return (
         <Form className={classes} onSubmit={handleSubmit}>
           {errorMessage}
           {errorMessageShowListing}
 
-          <FieldCheckboxGroup
-            className={css.features}
-            id={name}
-            name={name}
-            options={config.custom.yogaStyles}
+          <CustomCategorySelectFieldMaybe
+            id="category"
+            name="category"
+            category={category}
+            intl={intl}
+            listing={listing}
+            disabled={submitDisabled}
           />
 
           <Button
@@ -84,6 +89,7 @@ EditListingFeaturesFormComponent.defaultProps = {
 EditListingFeaturesFormComponent.propTypes = {
   rootClassName: string,
   className: string,
+  intl: intlShape.isRequired,
   name: string.isRequired,
   onSubmit: func.isRequired,
   saveActionMsg: string.isRequired,
@@ -95,6 +101,12 @@ EditListingFeaturesFormComponent.propTypes = {
     showListingsError: propTypes.error,
     updateListingError: propTypes.error,
   }),
+  category: arrayOf(
+    shape({
+      key: string.isRequired,
+      label: string.isRequired,
+    })
+  ),
 };
 
 const EditListingFeaturesForm = EditListingFeaturesFormComponent;

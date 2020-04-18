@@ -19,7 +19,9 @@ const FeedSection = props => {
     oldestMessagePageFetched,
     onShowMoreMessages,
     onOpenReviewModal,
-    totalMessagePages,
+    onOpenMeetingModal,
+    onCloseModal,
+    totalMessagePages
   } = props;
 
   const txTransitions = currentTransaction.attributes.transitions
@@ -54,8 +56,10 @@ const FeedSection = props => {
         currentUser={currentUser}
         hasOlderMessages={hasOlderMessages && !fetchMessagesInProgress}
         onOpenReviewModal={onOpenReviewModal}
+        onOpenMeetingModal={onOpenMeetingModal}
         onShowOlderMessages={onShowMoreMessages}
         fetchMessagesInProgress={fetchMessagesInProgress}
+        onCloseModal={onCloseModal}
       />
     </div>
   ) : null;
