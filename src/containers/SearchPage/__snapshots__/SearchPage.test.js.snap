@@ -40,18 +40,23 @@ exports[`SearchPageComponent matches snapshot 1`] = `
       }
       primaryFilters={
         Object {
-          "certificateFilter": Object {
-            "options": Array [
-              Object {
-                "key": "200h",
-                "label": "Registered yoga teacher 200h",
-              },
-              Object {
-                "key": "500h",
-                "label": "Registered yoga teacher 500h",
-              },
-            ],
-            "paramName": "pub_certificate",
+          "dateRangeLengthFilter": Object {
+            "config": Object {
+              "active": true,
+              "options": Array [
+                Object {
+                  "key": "0",
+                  "label": "Any length",
+                },
+                Object {
+                  "key": "60",
+                  "label": "1 hour",
+                  "shortLabel": "1h",
+                },
+              ],
+            },
+            "minDurationParamName": "minDuration",
+            "paramName": "dates",
           },
           "keywordFilter": Object {
             "config": Object {
@@ -67,35 +72,6 @@ exports[`SearchPageComponent matches snapshot 1`] = `
             },
             "paramName": "price",
           },
-          "yogaStylesFilter": Object {
-            "options": Array [
-              Object {
-                "key": "ashtanga",
-                "label": "Ashtanga",
-              },
-              Object {
-                "key": "hatha",
-                "label": "Hatha",
-              },
-              Object {
-                "key": "kundalini",
-                "label": "Kundalini",
-              },
-              Object {
-                "key": "restorative",
-                "label": "Restorative",
-              },
-              Object {
-                "key": "vinyasa",
-                "label": "Vinyasa",
-              },
-              Object {
-                "key": "yin",
-                "label": "Yin",
-              },
-            ],
-            "paramName": "pub_yogaStyles",
-          },
         }
       }
       resultsCount={0}
@@ -104,7 +80,36 @@ exports[`SearchPageComponent matches snapshot 1`] = `
       searchListingsError={null}
       searchParamsAreInSync={true}
       searchParamsForPagination={Object {}}
-      secondaryFilters={null}
+      secondaryFilters={
+        Object {
+          "certificateFilter": Object {
+            "options": Array [
+              Object {
+                "key": "cat1",
+                "label": "Cat 1",
+              },
+              Object {
+                "key": "cat2",
+                "label": "Cat 2",
+              },
+            ],
+            "paramName": "pub_certificate",
+          },
+          "yogaStylesFilter": Object {
+            "options": Array [
+              Object {
+                "key": "dog1",
+                "label": "Dog 1",
+              },
+              Object {
+                "key": "dog2",
+                "label": "Dog 2",
+              },
+            ],
+            "paramName": "pub_yogaStyles",
+          },
+        }
+      }
       showAsModalMaxWidth={768}
       urlQueryParams={Object {}}
     />

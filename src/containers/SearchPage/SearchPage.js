@@ -59,6 +59,7 @@ export class SearchPageComponent extends Component {
       sportConfig,
       priceFilterConfig,
       keywordFilterConfig,
+      dateRangeLengthFilterConfig,
     } = this.props;
 
     // Note: "certificate" and "sport" filters are not actually filtering anything by default.
@@ -86,6 +87,11 @@ export class SearchPageComponent extends Component {
       priceFilter: {
         paramName: 'price',
         config: priceFilterConfig,
+      },
+      dateRangeLengthFilter: {
+        paramName: 'dates',
+        minDurationParamName: 'minDuration',
+        config: dateRangeLengthFilterConfig,
       },
       keywordFilter: {
         paramName: 'keywords',
@@ -227,11 +233,14 @@ export class SearchPageComponent extends Component {
             showAsModalMaxWidth={MODAL_BREAKPOINT}
             primaryFilters={{
               categoryFilter: filters.categoryFilter,
-              certificateFilter: filters.certificateFilter,
               musicFilter: filters.musicFilter,
               sportFilter: filters.sportFilter,
-              priceFilter: filters.priceFilter,
+              dateRangeLengthFilter: filters.dateRangeLengthFilter,
               keywordFilter: filters.keywordFilter,
+            }}
+            secondaryFilters={{
+              certificateFilter: filters.certificateFilter,
+              priceFilter: filters.priceFilter,
             }}
           />
         </div>
@@ -254,6 +263,7 @@ SearchPageComponent.defaultProps = {
   sportConfig: config.custom.sport,
   priceFilterConfig: config.custom.priceFilterConfig,
   keywordFilterConfig: config.custom.keywordFilterConfig,
+  dateRangeLengthFilterConfig: config.custom.dateRangeLengthFilterConfig,
   activeListingId: null,
 };
 
@@ -278,6 +288,7 @@ SearchPageComponent.propTypes = {
     max: number.isRequired,
     step: number.isRequired,
   }),
+  dateRangeLengthFilterConfig: object,
 
   // from withRouter
   history: shape({

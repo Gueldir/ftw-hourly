@@ -35,11 +35,9 @@ import omit from 'lodash/omit';
 
 import routeConfiguration from '../../routeConfiguration';
 import { createResourceLocatorString } from '../../util/routes';
-import { SelectMultipleFilter, InlineTextButton } from '../../components';
+import { propTypes } from '../../util/types';
+import { SelectSingleFilter, SelectMultipleFilter, InlineTextButton } from '../../components';
 import css from './SearchFiltersPanel.css';
-
-// Dropdown container can have a positional offset (in pixels)
-const FILTER_DROPDOWN_OFFSET = -14;
 
 class SearchFiltersPanelComponent extends Component {
   constructor(props) {
@@ -131,8 +129,6 @@ class SearchFiltersPanelComponent extends Component {
   initialValue(paramName) {
     const currentQueryParams = this.state.currentQueryParams;
     const urlQueryParams = this.props.urlQueryParams;
-    console.log(currentQueryParams);
-    console.log(urlQueryParams);
 
     // initialValue for a select should come either from state.currentQueryParam or urlQueryParam
     const currentQueryParam = currentQueryParams[paramName];
@@ -156,7 +152,7 @@ class SearchFiltersPanelComponent extends Component {
   }
 
   render() {
-    const { rootClassName, className, intl, musicFilter, sportFilter } = this.props;
+    const { rootClassName, className, intl, certificateFilter, musicFilter, sportFilter } = this.props;
     const classes = classNames(rootClassName || css.root, className);
 
     //const initialCategory = this.initialValue(musicFilter.paramName);
@@ -168,20 +164,26 @@ class SearchFiltersPanelComponent extends Component {
     });
 
     const sportLabel = intl.formatMessage({
-      id: 'SearchFiltersPanel.sportLabel',
-    });
 
-    /*const musicFilterElement = musicFilter ? (
+      id: 'SearchFiltersPanel.sportLabel',
+    const certificateLabel = intl.formatMessage({
+      id: 'SearchFiltersPanel.certificateLabel',
+    });
+    const initialcertificate = certificateFilter
+      ? this.initialValue(certificateFilter.paramName)
+      : null;
+
+    const certificateFilterElement = certificateFilter ? (
       <SelectSingleFilter
-        urlParam={musicFilter.paramName}
-        label={musicLabel}
+        urlParam={certificateFilter.paramName}
+        label={certificateLabel}
         onSelect={this.handleSelectSingle}
         liveEdit
-        options={musicFilter.options}
-        initialValue={initialCategory}
-        contentPlacementOffset={FILTER_DROPDOWN_OFFSET}
+        options={certificateFilter.options}
+        initialValue={initialcertificate}
+        intl={intl}
       />
-    ) : null;*/
+    ) : null;
 
     const musicFilterElement = musicFilter ? (
       <SelectMultipleFilter
@@ -216,6 +218,7 @@ class SearchFiltersPanelComponent extends Component {
         <div className={css.filtersWrapper}>
           {musicFilterElement}
           {sportFilterElement}
+          {certificateFilterElement}
         </div>
         <div className={css.footer}>
           <InlineTextButton rootClassName={css.resetAllButton} onClick={this.resetAll}>
@@ -237,6 +240,8 @@ SearchFiltersPanelComponent.defaultProps = {
   rootClassName: null,
   className: null,
   filterParamNames: [],
+  certificateFilter: null,
+  yogaStylesFilter: null,
 };
 
 SearchFiltersPanelComponent.propTypes = {
@@ -245,6 +250,8 @@ SearchFiltersPanelComponent.propTypes = {
   urlQueryParams: object.isRequired,
   onClosePanel: func.isRequired,
   filterParamNames: array,
+  certificateFilter: propTypes.filterConfig,
+  yogaStylesFilter: propTypes.filterConfig,
 
   // from injectIntl
   intl: intlShape.isRequired,

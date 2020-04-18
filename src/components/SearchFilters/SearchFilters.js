@@ -7,6 +7,8 @@ import { withRouter } from 'react-router-dom';
 import omit from 'lodash/omit';
 
 import config from '../../config';
+import { BookingDateRangeLengthFilter, PriceFilter, KeywordFilter, SortBy } from '../../components';
+import { parseDateFromISO8601, stringifyDateToISO8601 } from '../../util/dates';
 import {
   SelectSingleFilter,
   SelectMultipleFilter,
@@ -45,6 +47,20 @@ const initialPriceRangeValue = (queryParams, paramName) => {
     : null;
 };
 
+const initialDateRangeValue = (queryParams, paramName) => {
+  const dates = queryParams[paramName];
+  const rawValuesFromParams = !!dates ? dates.split(',') : [];
+  const valuesFromParams = rawValuesFromParams.map(v => parseDateFromISO8601(v));
+  const initialValues =
+    !!dates && valuesFromParams.length === 2
+      ? {
+          dates: { startDate: valuesFromParams[0], endDate: valuesFromParams[1] },
+        }
+      : { dates: null };
+
+  return initialValues;
+};
+
 const SearchFiltersComponent = props => {
   const {
     rootClassName,
@@ -59,6 +75,7 @@ const SearchFiltersComponent = props => {
     sportFilter,
     musicFilter,
     priceFilter,
+    dateRangeLengthFilter,
     keywordFilter,
     isSearchFiltersPanelOpen,
     toggleSearchFiltersPanel,
@@ -110,6 +127,20 @@ const SearchFiltersComponent = props => {
     ? initialPriceRangeValue(urlQueryParams, priceFilter.paramName)
     : null;
 
+  const initialDates = dateRangeLengthFilter
+    ? initialDateRangeValue(urlQueryParams, dateRangeLengthFilter.paramName)
+    : null;
+
+  const initialMinDuration = dateRangeLengthFilter
+    ? initialValue(urlQueryParams, dateRangeLengthFilter.minDurationParamName)
+    : null;
+
+  const initialKeyword = keywordFilter
+    ? initialValue(urlQueryParams, keywordFilter.paramName)
+    : null;
+
+  const isKeywordFilterActive = !!initialKeyword;
+    
   const handleSelectOptions = (urlParam, options) => {
     const queryParams =
       options && options.length > 0
@@ -128,12 +159,6 @@ const SearchFiltersComponent = props => {
 
     history.push(createResourceLocatorString('SearchPage', routeConfiguration(), {}, queryParams));
   };
-
-  const initialKeyword = keywordFilter
-    ? initialValue(urlQueryParams, keywordFilter.paramName)
-    : null;
-
-  const isKeywordFilterActive = !!initialKeyword;
 
   const handlePrice = (urlParam, range) => {
     const { minPrice, maxPrice } = range || {};
@@ -217,6 +242,51 @@ const SearchFiltersComponent = props => {
     />
   ) : null;
 
+  const handleDateRangeLength = values => {
+    const hasDates = values && values[dateRangeLengthFilter.paramName];
+    const { startDate, endDate } = hasDates ? values[dateRangeLengthFilter.paramName] : {};
+    const start = startDate ? stringifyDateToISO8601(startDate) : null;
+    const end = endDate ? stringifyDateToISO8601(endDate) : null;
+    const minDuration =
+      hasDates && values && values[dateRangeLengthFilter.minDurationParamName]
+        ? values[dateRangeLengthFilter.minDurationParamName]
+        : null;
+
+    const restParams = omit(
+      urlQueryParams,
+      dateRangeLengthFilter.paramName,
+      dateRangeLengthFilter.minDurationParamName
+    );
+
+    const datesMaybe =
+      start != null && end != null ? { [dateRangeLengthFilter.paramName]: `${start},${end}` } : {};
+    const minDurationMaybe = minDuration
+      ? { [dateRangeLengthFilter.minDurationParamName]: minDuration }
+      : {};
+
+    const queryParams = {
+      ...datesMaybe,
+      ...minDurationMaybe,
+      ...restParams,
+    };
+    history.push(createResourceLocatorString('SearchPage', routeConfiguration(), {}, queryParams));
+  };
+
+  const dateRangeLengthFilterElement =
+    dateRangeLengthFilter && dateRangeLengthFilter.config.active ? (
+      <BookingDateRangeLengthFilter
+        id="SearchFilters.dateRangeLengthFilter"
+        dateRangeLengthFilter={dateRangeLengthFilter}
+        datesUrlParam={dateRangeLengthFilter.paramName}
+        durationUrlParam={dateRangeLengthFilter.minDurationParamName}
+        onSubmit={handleDateRangeLength}
+        showAsPopup
+        contentPlacementOffset={FILTER_DROPDOWN_OFFSET}
+        initialDateValues={initialDates}
+        initialDurationValue={initialMinDuration}
+      />
+    ) : null;
+
   const keywordFilterElement =
     keywordFilter && keywordFilter.config.active ? (
       <KeywordFilter
@@ -285,23 +355,23 @@ const SearchFiltersComponent = props => {
         {musicFilterElement}
         {sportFilterElement}
         {certificateFilterElement}
+        {dateRangeLengthFilterElement}
         {priceFilterElement}
         {keywordFilterElement}
         {toggleSearchFiltersPanelButton}
-
-        {hasNoResult ? (
-          <div className={css.noSearchResults}>
-            <FormattedMessage id="SearchFilters.noResults" />
-          </div>
-        ) : null}
-
-        {searchInProgress ? (
-          <div className={css.loadingResults}>
-            <FormattedMessage id="SearchFilters.loadingResults" />
-          </div>
-        ) : null}
-      
       </div>
+
+      {hasNoResult ? (
+        <div className={css.noSearchResults}>
+          <FormattedMessage id="SearchFilters.noResults" />
+        </div>
+      ) : null}
+
+      {searchInProgress ? (
+        <div className={css.loadingResults}>
+          <FormattedMessage id="SearchFilters.loadingResults" />
+        </div>
+      ) : null}
     </div>
   );
 };
@@ -316,6 +386,7 @@ SearchFiltersComponent.defaultProps = {
   certificateFilter: null,
   sportFilter: null,
   priceFilter: null,
+  dateRangeLengthFilter: null,
   isSearchFiltersPanelOpen: false,
   toggleSearchFiltersPanel: null,
   searchFiltersPanelSelectedCount: 0,
@@ -334,6 +405,7 @@ SearchFiltersComponent.propTypes = {
   certificateFilter: propTypes.filterConfig,
   sportFilter: propTypes.filterConfig,
   priceFilter: propTypes.filterConfig,
+  dateRangeLengthFilter: propTypes.filterConfig,
   isSearchFiltersPanelOpen: bool,
   toggleSearchFiltersPanel: func,
   searchFiltersPanelSelectedCount: number,

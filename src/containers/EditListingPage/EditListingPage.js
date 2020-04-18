@@ -19,7 +19,6 @@ import { getMarketplaceEntities } from '../../ducks/marketplaceData.duck';
 import { manageDisableScrolling, isScrollingDisabled } from '../../ducks/UI.duck';
 import {
   stripeAccountClearError,
-  createStripeAccount,
   getStripeConnectAccountLink,
 } from '../../ducks/stripeConnectAccount.duck';
 import { EditListingWizard, Footer, NamedRedirect, Page, UserNav } from '../../components';
@@ -383,7 +382,6 @@ const mapDispatchToProps = dispatch => ({
   onManageDisableScrolling: (componentId, disableScrolling) =>
     dispatch(manageDisableScrolling(componentId, disableScrolling)),
   onPayoutDetailsFormChange: () => dispatch(stripeAccountClearError()),
-  onPayoutDetailsSubmit: values => dispatch(createStripeAccount(values)),
   onPayoutDetailsFormSubmit: (values, isUpdateCall) =>
     dispatch(savePayoutDetails(values, isUpdateCall)),
   onGetStripeConnectAccountLink: params => dispatch(getStripeConnectAccountLink(params)),

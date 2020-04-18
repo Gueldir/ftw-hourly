@@ -17,18 +17,27 @@ https://github.com/sharetribe/flex-template-web/
 
 ## Upcoming version 2020-XX-XX
 
+## [v6.5.0] 2020-04-17
+
+- [change] Reorganize search filters [#89](https://github.com/sharetribe/ftw-hourly/pull/89)
+- [fix] Remove unnecessary required props, which were introduced accidentally in upstream update
+  (v6.3.0). [#88](https://github.com/sharetribe/ftw-hourly/pull/88/)
+- [add] Time-based availability filtering with a start/end date + min booking duration search filter
+  [#85](https://github.com/sharetribe/ftw-hourly/pull/85)
+
 ## [v6.4.1] 2020-04-09
 
 ### One change in this template
 
-- [fix] Fix user display name references in example tx process email templates [#86](https://github.com/sharetribe/ftw-hourly/pull/86/)
-
+- [fix] Fix user display name references in example tx process email templates
+  [#86](https://github.com/sharetribe/ftw-hourly/pull/86/)
 
 ### Updates from upstream
 
 This is update from [upstream](https://github.com/sharetribe/ftw-daily): v4.4.2
 
-- [fix] Handle deleted reviews in ActivityFeed [#1283](https://github.com/sharetribe/ftw-daily/pull/1283)
+- [fix] Handle deleted reviews in ActivityFeed
+  [#1283](https://github.com/sharetribe/ftw-daily/pull/1283)
 
 [v6.4.1]: https://github.com/sharetribe/ftw-hourly/compare/v6.4.0...v6.4.1
 
@@ -36,11 +45,11 @@ This is update from [upstream](https://github.com/sharetribe/ftw-daily): v4.4.2
 
 This is update from [upstream](https://github.com/sharetribe/ftw-daily): v4.4.1
 
-- [change] Improve the search page sorting and filters UI for different screen sizes [#1280](https://github.com/sharetribe/ftw-daily/pull/1280)
+- [change] Improve the search page sorting and filters UI for different screen sizes
+  [#1280](https://github.com/sharetribe/ftw-daily/pull/1280)
 - [add] Search result sorting [#1277](https://github.com/sharetribe/ftw-daily/pull/1277)
 
 [v6.4.0]: https://github.com/sharetribe/ftw-hourly/compare/v6.3.0...v6.4.0
-
 
 ## [v6.3.0] 2020-03-16
 
