@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { FieldSelect, FieldCheckboxGroup } from '../../components';
-import { required, composeValidators } from '../../util/validators';
+import { required } from '../../util/validators';
 import config from '../../config';
 import { ensureListing } from '../../util/data';
 

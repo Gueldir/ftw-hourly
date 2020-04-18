@@ -177,7 +177,7 @@ const SearchFiltersComponent = props => {
     />
   ) : null;
 
-  const musicFilterElement = initialcategory[0] == "music" ? (
+  const musicFilterElement = initialcategory[0] === "music" ? (
     <SelectMultipleFilter
       id={'SearchFilters.musicFilter'}
       name="music"
@@ -191,7 +191,7 @@ const SearchFiltersComponent = props => {
     />
   ) : null;
 
-  const sportFilterElement = initialcategory[0] == "sport" ? (
+  const sportFilterElement = initialcategory[0] === "sport" ? (
     <SelectMultipleFilter
       id={'SearchFilters.sportFilter'}
       name="sport"

@@ -6,8 +6,7 @@ import arrayMutators from 'final-form-arrays';
 import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl';
 import classNames from 'classnames';
 import { propTypes } from '../../util/types';
-import { Form, Button, FieldCheckboxGroup } from '../../components';
-import { required } from '../../util/validators';
+import { Form, Button } from '../../components';
 import CustomCategorySelectFieldMaybe from './CustomCategorySelectFieldMaybe';
 
 import css from './EditListingCategoryForm.css';
@@ -32,22 +31,12 @@ export const EditListingCategoryFormComponent = props => (
         category,
       } = fieldRenderProps;
 
-      const categoryPlaceholder = intl.formatMessage({
-        id: 'EditListingCategoryForm.categoryPlaceholder',
-      });
-
       const errorMessage = updateError ? (
         <p className={css.error}>
           <FormattedMessage id="EditListingCategoryForm.updateFailed" />
         </p>
       ) : null;
-
-      const categoryRequired = required(
-        intl.formatMessage({
-          id: 'EditListingCategoryForm.categoryRequired',
-        })
-      );
-
+      
       const classes = classNames(css.root, className);
       const submitReady = updated && pristine;
       const submitInProgress = updateInProgress;

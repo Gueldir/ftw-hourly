@@ -22,7 +22,7 @@ import EditListingWizardTab, {
   AVAILABILITY,
   DESCRIPTION,
   CATEGORY,
-  FEATURES,
+  //FEATURES,
   POLICY,
   //LOCATION,
   LANGUAGE,
@@ -70,7 +70,6 @@ const tabCompleted = (tab, listing) => {
   const {
     availabilityPlan,
     description,
-    geolocation,
     price,
     title,
     publicData,
@@ -277,11 +276,11 @@ class EditListingWizard extends Component {
     const currentListing = ensureListing(listing);
     const tabsStatus = tabsActive(isNewListingFlow, currentListing);
 
-    const { publicData } = currentListing.attributes; 
-    const category = publicData && publicData.category;
-    const options = config.custom.category.map((pair) => pair["key"] == category && pair["label"]);
+    //const { publicData } = currentListing.attributes; 
+    //const category = publicData && publicData.category;
+    //const options = config.custom.category.map((pair) => pair["key"] === category && pair["label"]);
     const tabLabel = (intl, tab) => {
-      let key, label = null;
+      let key/*, label*/ = null;
       if (tab === DESCRIPTION) {
         key = 'EditListingWizard.tabLabelDescription';
       } else if (tab === CATEGORY) {

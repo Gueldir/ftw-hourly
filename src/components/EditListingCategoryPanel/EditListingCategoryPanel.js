@@ -15,7 +15,6 @@ const EditListingCategoryPanel = props => {
     rootClassName,
     listing,
     onSubmit,
-    disabled,
     onChange,
     submitButtonText,
     panelUpdated,

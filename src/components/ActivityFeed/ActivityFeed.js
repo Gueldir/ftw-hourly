@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { string, arrayOf, bool, func, number } from 'prop-types';
 import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
 import dropWhile from 'lodash/dropWhile';
@@ -109,7 +109,11 @@ const resolveTransitionMessage = (
   ownRole,
   otherUsersName,
   intl,
-  onOpenReviewModal
+  onOpenReviewModal,
+  onOpenMeetingModal,
+  onCloseModal,
+  provider,
+  currentUser
 ) => {
   const isOwnTransition = transition.by === ownRole;
   const currentTransition = transition.transition;
@@ -127,9 +131,9 @@ const resolveTransitionMessage = (
       );
     case TRANSITION_ACCEPT:
       return isOwnTransition ? (
-        <FormattedMessage id="ActivityFeed.ownTransitionAccept" />
+          <FormattedMessage id="ActivityFeed.ownTransitionAccept" />    
       ) : (
-        <FormattedMessage id="ActivityFeed.transitionAccept" values={{ displayName }} />
+          <FormattedMessage id="ActivityFeed.transitionAccept" values={{ displayName }} />
       );
     case TRANSITION_DECLINE:
       return isOwnTransition ? (
@@ -211,7 +215,7 @@ const reviewByAuthorId = (transaction, userId) => {
 };
 
 const Transition = props => {
-  const { transition, transaction, currentUser, intl, onOpenReviewModal } = props;
+  const { transition, transaction, currentUser, intl, onOpenReviewModal, onOpenMeetingModal, onCloseModal } = props;
 
   const currentTransaction = ensureTransaction(transaction);
   const customer = currentTransaction.customer;
@@ -240,7 +244,11 @@ const Transition = props => {
     ownRole,
     otherUsersName,
     intl,
-    onOpenReviewModal
+    onOpenReviewModal,
+    onOpenMeetingModal,
+    onCloseModal,
+    provider,
+    currentUser
   );
   const currentTransition = transition.transition;
 
@@ -287,6 +295,8 @@ Transition.propTypes = {
   currentUser: propTypes.currentUser.isRequired,
   intl: intlShape.isRequired,
   onOpenReviewModal: func.isRequired,
+  onOpenMeetingModal: func.isRequired,
+  onCloseModal: func.isRequired,
 };
 
 const EmptyTransition = () => {
@@ -332,9 +342,11 @@ export const ActivityFeedComponent = props => {
     currentUser,
     hasOlderMessages,
     onOpenReviewModal,
+    onOpenMeetingModal,
+    onCloseModal,
     onShowOlderMessages,
     fetchMessagesInProgress,
-    intl,
+    intl
   } = props;
   const classes = classNames(rootClassName || css.root, className);
 
@@ -359,6 +371,7 @@ export const ActivityFeedComponent = props => {
 
   const transitionComponent = transition => {
     if (transitionsAvailable) {
+
       return (
         <Transition
           transition={transition}
@@ -366,6 +379,8 @@ export const ActivityFeedComponent = props => {
           currentUser={currentUser}
           intl={intl}
           onOpenReviewModal={onOpenReviewModal}
+          onOpenMeetingModal={onOpenMeetingModal}
+          onCloseModal={onCloseModal}
         />
       );
     } else {

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Form as FinalForm, Field } from 'react-final-form';
+import { Form as FinalForm } from 'react-final-form';
 import { intlShape, injectIntl } from '../../util/reactIntl';
 import classNames from 'classnames';
-import { Form, SearchAutocompleteInput } from '../../components';
+import { Form } from '../../components';
 
-import css from './TopbarSearchForm.css';
+//import css from './TopbarSearchForm.css';
 
 /*class TopbarSearchFormComponent extends Component {
   constructor(props) {
@@ -110,7 +110,7 @@ class TopbarSearchFormComponent extends Component {
         {...this.props}
         onSubmit={this.onSubmit}
         render={formRenderProps => { 
-          const { rootClassName, className, intl, isMobile, handleSubmit } = formRenderProps;
+          const { rootClassName, className, /*intl, isMobile,*/ handleSubmit } = formRenderProps;
 
           const classes = classNames(rootClassName, className);
 

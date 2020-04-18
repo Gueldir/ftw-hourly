@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { any, arrayOf, bool, func, number, shape, string, oneOfType, object } from 'prop-types';
-import { FormattedMessage } from '../../util/reactIntl';
+import { any, bool, func, shape, string, oneOfType } from 'prop-types';
 import classNames from 'classnames';
 import debounce from 'lodash/debounce';
 import { IconSpinner } from '../../components';
@@ -8,8 +7,7 @@ import { propTypes } from '../../util/types';
 import config from '../../config';
 
 import IconHourGlass from './IconHourGlass';
-import IconCurrentSearch from './IconCurrentSearch';
-import Geocoder, { GeocoderAttribution, CURRENT_LOCATION_ID } from './GeocoderMapbox';
+import Geocoder, { CURRENT_LOCATION_ID } from './GeocoderMapbox';
 // import Geocoder, { GeocoderAttribution, CURRENT_LOCATION_ID } from './GeocoderGoogleMaps';
 
 import css from './SearchAutocompleteInput.css';
@@ -34,11 +32,6 @@ const DIRECTION_UP = 'up';
 const DIRECTION_DOWN = 'down';
 const TOUCH_TAP_RADIUS = 5; // Movement within 5px from touch start is considered a tap
 
-// Touch devices need to be able to distinguish touches for scrolling and touches to tap
-const getTouchCoordinates = nativeEvent => {
-  const touch = nativeEvent && nativeEvent.changedTouches ? nativeEvent.changedTouches[0] : null;
-  return touch ? { x: touch.screenX, y: touch.screenY } : null;
-};
 // Get the current value with defaults from the given
 // SearchAutocompleteInput props.
 const currentValue = props => {
@@ -359,35 +352,26 @@ class SearchAutocompleteInputImpl extends Component {
       className,
       iconClassName,
       inputClassName,
-      predictionsClassName,
-      predictionsAttributionClassName,
+      //predictionsClassName,
+      //predictionsAttributionClassName,
       validClassName,
       placeholder,
       input,
       meta,
       inputRef,
     } = this.props;
-    const { name, onFocus } = input;
-    const { search } = currentValue(this.props);
+    //const { name, onFocus } = input;
     const { touched, valid } = meta || {};
     const isValid = valid && touched;
-    const predictions = this.currentPredictions();
-
-    const handleOnFocus = e => {
-      this.setState({ inputHasFocus: true });
-      onFocus(e);
-    };
 
     const rootClass = classNames(rootClassName || css.root, className);
     const iconClass = classNames(iconClassName || css.icon);
     const inputClass = classNames(inputClassName || css.input, { [validClassName]: isValid });
-    const predictionsClass = classNames(predictionsClassName);
 
     // Only render predictions when the input has focus. For
     // development and easier workflow with the browser devtools, you
     // might want to hardcode this to `true`. Otherwise the dropdown
     // list will disappear.
-    const renderPredictions = this.state.inputHasFocus;
 
     return (
       <div className={rootClass}>

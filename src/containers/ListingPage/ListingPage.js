@@ -31,7 +31,6 @@ import { manageDisableScrolling, isScrollingDisabled } from '../../ducks/UI.duck
 import { initializeCardPaymentData } from '../../ducks/stripe.duck.js';
 import {
   Page,
-  Modal,
   NamedLink,
   NamedRedirect,
   LayoutSingleColumn,
@@ -41,7 +40,6 @@ import {
   Footer,
   BookingPanel,
 } from '../../components';
-import { EnquiryForm } from '../../forms';
 import { TopbarContainer, NotFoundPage } from '../../containers';
 
 import { sendEnquiry, loadData, setInitialValues, fetchTimeSlots } from './ListingPage.duck';
@@ -53,7 +51,7 @@ import SectionFeaturesMaybe from './SectionFeaturesMaybe';
 import SectionLanguage from './SectionLanguage';
 import SectionHostMaybe from './SectionHostMaybe';
 import SectionReviews from './SectionReviews';
-import SectionMapMaybe from './SectionMapMaybe';
+//import SectionMapMaybe from './SectionMapMaybe';
 import css from './ListingPage.css';
 
 const MIN_LENGTH_FOR_LONG_WORDS_IN_TITLE = 16;
@@ -240,7 +238,7 @@ export class ListingPageComponent extends Component {
 
     const {
       description = '',
-      geolocation = null,
+      //geolocation = null,
       price = null,
       title = '',
       publicData,
@@ -461,23 +459,6 @@ export class ListingPageComponent extends Component {
                 />
               </div>
             </div>
-            <Modal
-              id="ListingPage.enquiry"
-              contentClassName={css.enquiryModalContent}
-              isOpen={isAuthenticated && this.state.enquiryModalOpen}
-              onClose={() => this.setState({ enquiryModalOpen: false })}
-              onManageDisableScrolling={onManageDisableScrolling}
-            >
-              <EnquiryForm
-                className={css.enquiryForm}
-                submitButtonWrapperClassName={css.enquirySubmitButtonWrapper}
-                listingTitle={title}
-                authorDisplayName={authorDisplayName}
-                sendEnquiryError={sendEnquiryError}
-                onSubmit={this.onSubmitEnquiry}
-                inProgress={sendEnquiryInProgress}
-              />
-            </Modal>
           </LayoutWrapperMain>
           <LayoutWrapperFooter>
             <Footer />

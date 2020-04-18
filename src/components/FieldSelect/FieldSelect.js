@@ -17,6 +17,7 @@ const handleChange = (propsOnChange, inputOnChange) => event => {
   }
   // Notify Final Form that the input has changed.
   // (Final Form knows how to deal with synthetic events of React.)
+  console.log(event)
   inputOnChange(event);
 };
 

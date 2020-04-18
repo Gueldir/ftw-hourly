@@ -3,11 +3,10 @@ import { arrayOf, bool, func, shape, string } from 'prop-types';
 import classNames from 'classnames';
 import { Form as FinalForm } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
-import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl';
+import { intlShape, FormattedMessage } from '../../util/reactIntl';
 
 import { propTypes } from '../../util/types';
-import config from '../../config';
-import { Button, FieldCheckboxGroup, Form } from '../../components';
+import { Button, Form } from '../../components';
 
 import CustomCategorySelectFieldMaybe from './CustomCategorySelectFieldMaybe';
 
@@ -24,10 +23,8 @@ const EditListingFeaturesFormComponent = props => (
         ready,
         rootClassName,
         className,
-        name,
         intl,
         handleSubmit,
-        initialValues,
         pristine,
         listing,
         saveActionMsg,
@@ -53,8 +50,6 @@ const EditListingFeaturesFormComponent = props => (
           <FormattedMessage id="EditListingFeaturesForm.showListingFailed" />
         </p>
       ) : null;
-
-      const options = config.custom[category];
       
       return (
         <Form className={classes} onSubmit={handleSubmit}>

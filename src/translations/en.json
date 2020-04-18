@@ -1062,6 +1062,7 @@
   "TransactionPage.loadingOrderData": "Loading order data.",
   "TransactionPage.loadingSaleData": "Loading sale data.",
   "TransactionPage.title": "Sale details: {title}",
+  "TransactionPanel.joinMeetingRoom": "Start video session",
   "TransactionPanel.acceptButton": "Accept",
   "TransactionPanel.acceptSaleFailed": "Oops, accepting failed. Please try again.",
   "TransactionPanel.activityHeading": "Activity",

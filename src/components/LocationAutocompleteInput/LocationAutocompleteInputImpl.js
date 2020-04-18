@@ -454,7 +454,7 @@ class LocationAutocompleteInputImpl extends Component {
       meta,
       inputRef,
     } = this.props;
-    const { name, onFocus } = input;
+    const { name, /*onFocus*/ } = input;
     const { search } = currentValue(this.props);
     const { touched, valid } = meta || {};
     const isValid = valid && touched;

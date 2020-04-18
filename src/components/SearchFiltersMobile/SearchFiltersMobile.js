@@ -169,7 +169,6 @@ class SearchFiltersMobileComponent extends Component {
       resultsCount,
       searchInProgress,
       showAsModalMaxWidth,
-      onMapIconClick,
       onManageDisableScrolling,
       selectedFiltersCount,
       categoryFilter,
@@ -241,7 +240,7 @@ class SearchFiltersMobileComponent extends Component {
 
     const initialmusic = this.initialValues(musicFilter.paramName);
     
-    const musicFilterElement = musicFilter && initialcategory == "music" ? (
+    const musicFilterElement = musicFilter && initialcategory === "music" ? (
       <SelectMultipleFilter
         id="SearchFiltersMobile.musicFilter"
         name="music"
@@ -258,7 +257,7 @@ class SearchFiltersMobileComponent extends Component {
 
     const initialsport = this.initialValues(sportFilter.paramName);
 
-    const sportFilterElement = sportFilter && initialcategory == "sport" ? (
+    const sportFilterElement = sportFilter && initialcategory === "sport" ? (
       <SelectMultipleFilter
         id="SearchFiltersMobile.sportFilter"
         name="sport"

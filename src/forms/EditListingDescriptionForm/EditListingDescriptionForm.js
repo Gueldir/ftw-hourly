@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import { propTypes } from '../../util/types';
 import { maxLength, required, composeValidators } from '../../util/validators';
 import { Form, Button, FieldTextInput, FieldSelect } from '../../components';
-import CustomCategorySelectFieldMaybe from './CustomCategorySelectFieldMaybe';
+import CustomCertificateSelectFieldMaybe from './CustomCertificateSelectFieldMaybe';
 
 import css from './EditListingDescriptionForm.css';
 
@@ -24,7 +24,6 @@ const EditListingDescriptionFormComponent = props => (
         className,
         disabled,
         ready,
-        listing,
         handleSubmit,
         intl,
         invalid,
@@ -33,7 +32,7 @@ const EditListingDescriptionFormComponent = props => (
         saveActionMsg,
         updated,
         updateInProgress,
-        fetchErrors,
+        fetchErrors
       } = formRenderProps;
 
       const titleMessage = intl.formatMessage({ id: 'EditListingDescriptionForm.title' });
@@ -64,14 +63,8 @@ const EditListingDescriptionFormComponent = props => (
       const categoryLabel = intl.formatMessage({
         id: 'EditListingFeaturesForm.categoryLabel',
       });
-      const subCategoryLabel = intl.formatMessage({
-        id: 'EditListingFeaturesForm.subCategoryLabel',
-      });
       const categoryPlaceholder = intl.formatMessage({
         id: 'EditListingFeaturesForm.categoryPlaceholder',
-      });  
-      const subCategoryPlaceholder = intl.formatMessage({
-        id: 'EditListingFeaturesForm.subCategoryPlaceholder',
       });  
       const categoryRequired = required(
         intl.formatMessage({
@@ -147,7 +140,7 @@ const EditListingDescriptionFormComponent = props => (
             validate={composeValidators(required(descriptionRequiredMessage))}
           />
 
-          <CustomCategorySelectFieldMaybe
+          <CustomCertificateSelectFieldMaybe
             id="certificate"
             name="certificate"
             certificate={certificate}

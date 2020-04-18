@@ -1,0 +1,38 @@
+@import '../../marketplace.css';
+
+.root {
+  @apply --marketplaceModalBaseStyles;
+  padding: 0;
+
+  @media (--viewportMedium) {
+    flex-basis: 567px;
+  }
+}
+
+.jitsi {
+  width: 1024px;
+  height: 720px;
+}
+
+.modalContent {
+  flex-grow: 1;
+}
+
+/* Icon of the modal */
+.modalIcon {
+  @apply --marketplaceModalIconStyles;
+}
+
+/* Title of the modal */
+.modalTitle {
+  @apply --marketplaceModalTitleStyles;
+}
+
+.reviewee {
+  white-space: nowrap;
+}
+
+/* Paragraph for the Modal */
+.modalMessage {
+  @apply --marketplaceModalParagraphStyles;
+}

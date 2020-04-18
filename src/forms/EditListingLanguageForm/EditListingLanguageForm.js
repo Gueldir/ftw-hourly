@@ -59,6 +59,7 @@ export const EditListingLanguageFormComponent = props => (
             className={css.language}
             name="language"
             id="language"
+            placeholder={languagePlaceholder}
             validate={languageRequired}
             options={languageOptions}
           />
