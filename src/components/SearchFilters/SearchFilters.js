@@ -7,9 +7,9 @@ import { withRouter } from 'react-router-dom';
 import omit from 'lodash/omit';
 
 import config from '../../config';
-import { BookingDateRangeLengthFilter, PriceFilter, KeywordFilter, SortBy } from '../../components';
 import { parseDateFromISO8601, stringifyDateToISO8601 } from '../../util/dates';
 import {
+  BookingDateRangeLengthFilter,
   SelectSingleFilter,
   SelectMultipleFilter,
   PriceFilter,
@@ -149,7 +149,7 @@ const SearchFiltersComponent = props => {
 
     history.push(createResourceLocatorString('SearchPage', routeConfiguration(), {}, queryParams));
   };
-
+  
   const handleSelectOption = (urlParam, option) => {
     // query parameters after selecting the option
     // if no option is passed, clear the selection for the filter
@@ -336,7 +336,7 @@ const SearchFiltersComponent = props => {
       contentPlacementOffset={FILTER_DROPDOWN_OFFSET}
     />
   ) : null;
-
+  // Can add {toggleSearchFiltersPanelButton} to filters to enable More Filters button
   return (
     <div className={classes}>
       <div className={css.searchOptions}>
@@ -358,20 +358,20 @@ const SearchFiltersComponent = props => {
         {dateRangeLengthFilterElement}
         {priceFilterElement}
         {keywordFilterElement}
-        {toggleSearchFiltersPanelButton}
+
+        {hasNoResult ? (
+          <div className={css.noSearchResults}>
+            <FormattedMessage id="SearchFilters.noResults" />
+          </div>
+        ) : null}
+
+        {searchInProgress ? (
+          <div className={css.loadingResults}>
+            <FormattedMessage id="SearchFilters.loadingResults" />
+          </div>
+        ) : null}
+
       </div>
-
-      {hasNoResult ? (
-        <div className={css.noSearchResults}>
-          <FormattedMessage id="SearchFilters.noResults" />
-        </div>
-      ) : null}
-
-      {searchInProgress ? (
-        <div className={css.loadingResults}>
-          <FormattedMessage id="SearchFilters.loadingResults" />
-        </div>
-      ) : null}
     </div>
   );
 };

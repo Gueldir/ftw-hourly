@@ -156,19 +156,21 @@ class SearchFiltersPanelComponent extends Component {
     const classes = classNames(rootClassName || css.root, className);
 
     //const initialCategory = this.initialValue(musicFilter.paramName);
-    const initialsport = this.initialValues(sportFilter.paramName);
-    const initialmusic = this.initialValues(musicFilter.paramName);
+    //const initialsport = this.initialValues(sportFilter.paramName);
+    //const initialmusic = this.initialValues(musicFilter.paramName);
 
     const musicLabel = intl.formatMessage({
       id: 'SearchFiltersPanel.musicLabel',
     });
 
     const sportLabel = intl.formatMessage({
-
       id: 'SearchFiltersPanel.sportLabel',
+    });
+
     const certificateLabel = intl.formatMessage({
       id: 'SearchFiltersPanel.certificateLabel',
     });
+
     const initialcertificate = certificateFilter
       ? this.initialValue(certificateFilter.paramName)
       : null;
@@ -185,39 +187,9 @@ class SearchFiltersPanelComponent extends Component {
       />
     ) : null;
 
-    const musicFilterElement = musicFilter ? (
-      <SelectMultipleFilter
-        id={'SearchFiltersPanel.musicFilter'}
-        name="music"
-        urlParam={musicFilter.paramName}
-        label={musicLabel}
-        onSubmit={this.handleSelectMultiple}
-        liveEdit
-        options={musicFilter.options}
-        initialValues={initialmusic}
-        contentPlacementOffset={FILTER_DROPDOWN_OFFSET}
-      />
-    ) : null;
-
-    const sportFilterElement = sportFilter ? (
-      <SelectMultipleFilter
-        id={'SearchFiltersPanel.sportFilter'}
-        name="sport"
-        urlParam={sportFilter.paramName}
-        label={sportLabel}
-        onSubmit={this.handleSelectMultiple}
-        liveEdit
-        options={sportFilter.options}
-        initialValues={initialsport}
-        contentPlacementOffset={FILTER_DROPDOWN_OFFSET}
-      />
-    ) : null;
-
     return (
       <div className={classes}>
         <div className={css.filtersWrapper}>
-          {musicFilterElement}
-          {sportFilterElement}
           {certificateFilterElement}
         </div>
         <div className={css.footer}>

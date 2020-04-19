@@ -21,6 +21,16 @@ class SelectSingleFilterPlain extends Component {
     if (e && e.currentTarget) {
       e.currentTarget.blur();
     }
+    // TBD: Enhance the second call to onSelect, setTimeout is used to bypass the React's protection
+    // for loop probably detected when too many calls are made within a tiny timeframe
+    setTimeout(
+      () => {
+        if (urlParam == "pub_category") {
+          let subCatToClear = ["pub_sport","pub_music","pub_art"];
+          this.props.onSelect(subCatToClear);
+        }
+      }
+    ,);
   }
 
   toggleIsOpen() {

@@ -417,13 +417,10 @@ class SearchFiltersMobileComponent extends Component {
               {categoryFilterElement}
               {musicFilterElement}
               {sportFilterElement}
-              {dateRangeLengthFilterElement}
-              {priceFilterElement}
-              {keywordFilterElement}
-              {yogaStylesFilterElement}
               {certificateFilterElement}
-              {priceFilterElement}
               {keywordFilterElement}
+              {priceFilterElement}
+              {dateRangeLengthFilterElement}
             </div>
           ) : null}
 

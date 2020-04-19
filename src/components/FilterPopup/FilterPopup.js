@@ -16,7 +16,6 @@ class FilterPopup extends Component {
     this.state = { isOpen: false };
     this.filter = null;
     this.filterContent = null;
-
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClear = this.handleClear.bind(this);

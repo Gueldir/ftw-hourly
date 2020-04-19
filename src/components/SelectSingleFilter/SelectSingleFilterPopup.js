@@ -26,7 +26,17 @@ class SelectSingleFilterPopup extends Component {
 
   selectOption(urlParam, option) {
     this.setState({ isOpen: false });
-    this.props.onSelect(urlParam, option);
+    this.props.onSelect(urlParam, option);    
+    // TBD: Enhance the second call to onSelect, setTimeout is used to bypass the React's protection
+    // for loop probably detected when too many calls are made within a tiny timeframe
+    setTimeout(
+      () => {
+        if (urlParam == "pub_category") {
+          let subCatToClear = ["pub_sport","pub_music","pub_art"];
+          this.props.onSelect(subCatToClear);
+        }
+      }
+    ,);
   }
 
   render() {

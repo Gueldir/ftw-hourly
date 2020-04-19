@@ -71,7 +71,7 @@ const TopbarDesktop = props => {
     <NamedLink
       className={css.inboxLink}
       name="SearchPage"
-      to={{ search: 'pub_category=sport', }}
+      to={{ search: 'pub_category=sport&pub_sport=&pub_music=&pub_art=', }}
     >
       <span className={css.inbox}>
         <FormattedMessage id="TopbarDesktop.sport" />
@@ -83,7 +83,7 @@ const TopbarDesktop = props => {
     <NamedLink
       className={css.inboxLink}
       name="SearchPage"
-      to={{  search: 'pub_category=music', }}
+      to={{  search: 'pub_category=music&pub_sport=&pub_music=&pub_art=', }}
     >
       <span className={css.inbox}>
         <FormattedMessage id="TopbarDesktop.music" />
@@ -95,7 +95,7 @@ const TopbarDesktop = props => {
     <NamedLink
       className={css.inboxLink}
       name="SearchPage"
-      to={{  search: 'pub_category=art', }}
+      to={{  search: 'pub_category=art&pub_sport=&pub_music=&pub_art=', }}
     >
       <span className={css.inbox}>
         <FormattedMessage id="TopbarDesktop.art" />

@@ -61,6 +61,7 @@ export const dateRangeLengthFilterConfig = {
   // Options for the minimum duration of the booking
   options: [
     { key: '0', label: 'Any length' },
+    { key: '30', label: '30 minutes', shortLabel: '30m' },
     { key: '60', label: '1 hour', shortLabel: '1h' },
     { key: '120', label: '2 hours', shortLabel: '2h' },
   ],

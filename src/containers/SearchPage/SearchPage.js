@@ -235,12 +235,12 @@ export class SearchPageComponent extends Component {
               categoryFilter: filters.categoryFilter,
               musicFilter: filters.musicFilter,
               sportFilter: filters.sportFilter,
-              dateRangeLengthFilter: filters.dateRangeLengthFilter,
+              certificateFilter: filters.certificateFilter,
               keywordFilter: filters.keywordFilter,
+              priceFilter: filters.priceFilter,
+              dateRangeLengthFilter: filters.dateRangeLengthFilter,
             }}
             secondaryFilters={{
-              certificateFilter: filters.certificateFilter,
-              priceFilter: filters.priceFilter,
             }}
           />
         </div>
