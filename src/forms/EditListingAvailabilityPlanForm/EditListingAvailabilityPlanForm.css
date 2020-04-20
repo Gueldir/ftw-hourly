@@ -142,7 +142,7 @@
 .dashBetweenTimes {
   padding-left: 6px;
   padding-right: 6px;
-  padding-bottom: 8px;
+  padding-bottom: 3px;
 }
 
 .buttonSetHours {
@@ -196,4 +196,17 @@
   &:select {
     margin-right: 0;
   }
+}
+
+.seatsSelect input {  
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0;
+  background: none;
+  padding-right: 0;
+  padding-left: 6px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  width: 42px;
 }

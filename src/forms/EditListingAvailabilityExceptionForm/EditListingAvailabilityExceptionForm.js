@@ -34,6 +34,7 @@ import {
   Form,
   IconArrowHead,
   PrimaryButton,
+  FieldTextInput
 } from '../../components';
 
 import css from './EditListingAvailabilityExceptionForm.css';
@@ -537,6 +538,22 @@ const EditListingAvailabilityExceptionForm = props => {
                 value="not-available"
                 checkedClassName={css.checkedNotAvailable}
                 showAsRequired={pristine}
+              />
+            </div>
+            <div className={css.radioButtons}>
+              <FieldTextInput
+                id="seats"
+                name="seats"
+                className={css.seatsSelect}
+                label={intl.formatMessage({
+                  id: 'EditListingAvailabilityExceptionForm.exceptionSeatsLabel',
+                })}
+                placeholder={4}
+                defaultValue={1}
+                type="number"
+                min={1}
+                max={10}
+                step="1"
               />
             </div>
             <div className={css.section}>

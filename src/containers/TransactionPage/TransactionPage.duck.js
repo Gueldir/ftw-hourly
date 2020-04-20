@@ -294,7 +294,7 @@ const timeSlotsRequest = params => (dispatch, getState, sdk) => {
   });
 };
 
-export const fetchTimeSlots = (listingId, start, end, timeZone) => (dispatch, getState, sdk) => {
+export const fetchTimeSlots = (listingId, start, end, timeZone, seats) => (dispatch, getState, sdk) => {
   const monthId = monthIdStringInTimeZone(start, timeZone);
 
   dispatch(fetchTimeSlotsRequest(monthId));
@@ -305,7 +305,7 @@ export const fetchTimeSlots = (listingId, start, end, timeZone) => (dispatch, ge
     page: 1,
   };
 
-  return dispatch(timeSlotsRequest({ listingId, start, end, ...extraParams }))
+  return dispatch(timeSlotsRequest({ listingId, start, end, seats, ...extraParams }))
     .then(timeSlots => {
       dispatch(fetchTimeSlotsSuccess(monthId, timeSlots));
     })

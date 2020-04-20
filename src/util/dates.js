@@ -791,8 +791,8 @@ export const formatDateToText = (intl, date, timeZone) => {
  * @returns {int} quantity of hours between start and end
  *
  */
-export const calculateQuantityFromHours = (startDate, endDate) => {
-  return moment(endDate).diff(moment(startDate), 'hours', true);
+export const calculateQuantityFromHours = (startDate, endDate, seats) => {
+  return moment(endDate).diff(moment(startDate), 'hours', true) * (seats ? seats : 1);
 };
 
 // Checks if time-range contains a day (moment)

@@ -133,12 +133,13 @@ export const TransactionPageComponent = props => {
 
   // Customer can create a booking, if the tx is in "enquiry" state.
   const handleSubmitBookingRequest = values => {
-    const { bookingStartTime, bookingEndTime, ...restOfValues } = values;
+    const { bookingStartTime, bookingEndTime, seats, ...restOfValues } = values;
     const bookingStart = timestampToDate(bookingStartTime);
     const bookingEnd = timestampToDate(bookingEndTime);
-
+    
     const bookingData = {
       quantity: calculateQuantityFromHours(bookingStart, bookingEnd),
+      seats,
       ...restOfValues,
     };
 
@@ -401,8 +402,8 @@ const mapDispatchToProps = dispatch => {
       dispatch(sendReview(role, tx, reviewRating, reviewContent)),
     callSetInitialValues: (setInitialValues, values) => dispatch(setInitialValues(values)),
     onInitializeCardPaymentData: () => dispatch(initializeCardPaymentData()),
-    onFetchTimeSlots: (listingId, start, end, timeZone) =>
-      dispatch(fetchTimeSlots(listingId, start, end, timeZone)),
+    onFetchTimeSlots: (listingId, start, end, timeZone, seats) =>
+      dispatch(fetchTimeSlots(listingId, start, end, timeZone, seats)),
   };
 };
 

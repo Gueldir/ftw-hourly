@@ -22,7 +22,7 @@ import {
 } from '../../util/dates';
 import { propTypes } from '../../util/types';
 import { bookingDateRequired } from '../../util/validators';
-import { FieldDateInput, FieldSelect } from '../../components';
+import { FieldDateInput, FieldSelect, FieldTextInput } from '../../components';
 
 import NextMonthIcon from './NextMonthIcon';
 import PreviousMonthIcon from './PreviousMonthIcon';
@@ -251,6 +251,7 @@ class FieldDateAndTimeInput extends Component {
         form.change('bookingStartTime', null);
         form.change('bookingEndDate', { date: null });
         form.change('bookingEndTime', null);
+        form.change('seats', null);
       });
       // Reset the currentMonth too if bookingStartDate is cleared
       this.setState({ currentMonth: getMonthStartInTimeZone(TODAY, timeZone) });
@@ -263,6 +264,7 @@ class FieldDateAndTimeInput extends Component {
     const startDate = timeOfDayFromLocalToTimeZone(value.date, timeZone);
     const timeSlots = getMonthlyTimeSlots(monthlyTimeSlots, this.state.currentMonth, timeZone);
     const timeSlotsOnSelectedDate = getTimeSlots(timeSlots, startDate, timeZone);
+    const seats = 1;
 
     const { startTime, endDate, endTime } = getAllTimeValues(
       intl,
@@ -275,6 +277,7 @@ class FieldDateAndTimeInput extends Component {
       form.change('bookingStartTime', startTime);
       form.change('bookingEndDate', { date: endDate });
       form.change('bookingEndTime', endTime);
+      form.change('seats', seats);
     });
   };
 
@@ -282,7 +285,8 @@ class FieldDateAndTimeInput extends Component {
     const { monthlyTimeSlots, timeZone, intl, form, values } = this.props;
     const timeSlots = getMonthlyTimeSlots(monthlyTimeSlots, this.state.currentMonth, timeZone);
     const startDate = values.bookingStartDate.date;
-    const timeSlotsOnSelectedDate = getTimeSlots(timeSlots, startDate, timeZone);
+    const timeSlotsOnSelectedDate = getTimeSlots(timeSlots, startDate, timeZone);    
+    const seats = 1;
 
     const { endDate, endTime } = getAllTimeValues(
       intl,
@@ -295,6 +299,7 @@ class FieldDateAndTimeInput extends Component {
     form.batch(() => {
       form.change('bookingEndDate', { date: endDate });
       form.change('bookingEndTime', endTime);
+      form.change('seats', seats);
     });
   };
 
@@ -308,11 +313,11 @@ class FieldDateAndTimeInput extends Component {
     // This callback function (onBookingStartDateChange) is called from react-dates component.
     // It gets raw value as a param - browser's local time instead of time in listing's timezone.
     const endDate = timeOfDayFromLocalToTimeZone(value.date, timeZone);
-
     const { bookingStartDate, bookingStartTime } = values;
     const startDate = bookingStartDate.date;
     const timeSlots = getMonthlyTimeSlots(monthlyTimeSlots, this.state.currentMonth, timeZone);
-    const timeSlotsOnSelectedDate = getTimeSlots(timeSlots, startDate, timeZone);
+    const timeSlotsOnSelectedDate = getTimeSlots(timeSlots, startDate, timeZone);    
+    const seats = 1;
 
     const { endTime } = getAllTimeValues(
       intl,
@@ -427,8 +432,10 @@ class FieldDateAndTimeInput extends Component {
       findNextBoundary(timeZone, TODAY)
     );
 
+    const seats = timeSlotsOnSelectedDate && timeSlotsOnSelectedDate[0] && timeSlotsOnSelectedDate[0].attributes.seats;
     const startTimeLabel = intl.formatMessage({ id: 'FieldDateTimeInput.startTime' });
     const endTimeLabel = intl.formatMessage({ id: 'FieldDateTimeInput.endTime' });
+    const isUncontrolled = seats > 1 ? true : false;
     /**
      * NOTE: In this template the field for the end date is hidden by default.
      * If you want to enable longer booking periods, showing the end date in the form requires some code changes:
@@ -438,6 +445,7 @@ class FieldDateAndTimeInput extends Component {
      */
 
     return (
+      <div>
       <div className={classes}>
         <div className={css.formRow}>
           <div className={classNames(css.field, css.startDate)}>
@@ -541,6 +549,26 @@ class FieldDateAndTimeInput extends Component {
               )}
             </FieldSelect>
           </div>
+        </div>
+      </div>
+        <div className={classes}>
+          <FieldTextInput
+            id={formId ? `${formId}.seats` : 'seats'}
+            name="seats"
+            label={intl.formatMessage(                      
+              { id: 'BookingTimeForm.seatsBookedLabel' },
+              { seats: (seats ? seats <= 1 ? 1 : seats : 1) }
+            )}
+            className={css.seatsSelect}
+            placeholder={seats}
+            defaultValue={seats == 0 ? 0 : 1}
+            type="number"
+            min={seats == 0 ? 0 : 1}
+            max={seats ? seats <= 1 ? 1 : seats : 1}
+            disabled={endTimeDisabled}
+            step="1"
+            isUncontrolled={isUncontrolled}
+          />
         </div>
       </div>
     );

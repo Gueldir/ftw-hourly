@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import { calculateQuantityFromHours, timestampToDate } from '../../util/dates';
 import { propTypes } from '../../util/types';
 import config from '../../config';
-import { Form, PrimaryButton } from '../../components';
+import { Form, PrimaryButton, FieldTextInput } from '../../components';
 import EstimatedBreakdownMaybe from './EstimatedBreakdownMaybe';
 import FieldDateAndTimeInput from './FieldDateAndTimeInput';
 
@@ -18,10 +18,15 @@ export class BookingTimeFormComponent extends Component {
     super(props);
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    this.onSeatsChange = this.onSeatsChange.bind(this);
   }
 
   handleFormSubmit(e) {
     this.props.onSubmit(e);
+  }
+
+  onSeatsChange(e) {
+    console.log(e);
   }
 
   render() {
@@ -70,10 +75,11 @@ export class BookingTimeFormComponent extends Component {
             onFetchTimeSlots,
             timeZone,
           } = fieldRenderProps;
-
+          
           const startTime = values && values.bookingStartTime ? values.bookingStartTime : null;
           const endTime = values && values.bookingEndTime ? values.bookingEndTime : null;
-
+          const seats = values && values.seats ? values.seats : 0;
+          
           const bookingStartLabel = intl.formatMessage({
             id: 'BookingTimeForm.bookingStartTitle',
           });
@@ -92,6 +98,7 @@ export class BookingTimeFormComponent extends Component {
                   unitPrice,
                   startDate,
                   endDate,
+                  seats,
 
                   // Calculate the quantity as hours between the booking start and booking end
                   quantity: calculateQuantityFromHours(startDate, endDate),
@@ -124,23 +131,29 @@ export class BookingTimeFormComponent extends Component {
             startDateInputProps,
             endDateInputProps,
           };
-
+          /*const searchOnChange = value => {
+                    onChange(value);
+                    this.onChange(value);
+                  };
+          const searchInput = { ...restInput, onChange: searchOnChange };*/
           return (
             <Form onSubmit={handleSubmit} className={classes}>
               {monthlyTimeSlots && timeZone ? (
-                <FieldDateAndTimeInput
-                  {...dateInputProps}
-                  className={css.bookingDates}
-                  listingId={listingId}
-                  bookingStartLabel={bookingStartLabel}
-                  onFetchTimeSlots={onFetchTimeSlots}
-                  monthlyTimeSlots={monthlyTimeSlots}
-                  values={values}
-                  intl={intl}
-                  form={form}
-                  pristine={pristine}
-                  timeZone={timeZone}
-                />
+                <div>
+                  <FieldDateAndTimeInput
+                    {...dateInputProps}
+                    className={css.bookingDates}
+                    listingId={listingId}
+                    bookingStartLabel={bookingStartLabel}
+                    onFetchTimeSlots={onFetchTimeSlots}
+                    monthlyTimeSlots={monthlyTimeSlots}
+                    values={values}
+                    intl={intl}
+                    form={form}
+                    pristine={pristine}
+                    timeZone={timeZone}
+                  />  
+                </div>
               ) : null}
               {bookingInfo}
               <p className={css.smallPrint}>

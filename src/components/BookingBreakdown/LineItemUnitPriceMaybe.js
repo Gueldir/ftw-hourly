@@ -6,7 +6,7 @@ import { LINE_ITEM_NIGHT, LINE_ITEM_DAY, propTypes } from '../../util/types';
 import css from './BookingBreakdown.css';
 
 const LineItemUnitPriceMaybe = props => {
-  const { transaction, unitType, intl } = props;
+  const { transaction, unitType, intl, seats } = props;
   const isNightly = unitType === LINE_ITEM_NIGHT;
   const isDaily = unitType === LINE_ITEM_DAY;
   const translationKey = isNightly
@@ -24,9 +24,11 @@ const LineItemUnitPriceMaybe = props => {
   return formattedUnitPrice ? (
     <div className={css.lineItem}>
       <span className={css.itemLabel}>
-        <FormattedMessage id={translationKey} />
+        <FormattedMessage id="BookingBreakdown.seatsUnit" />
       </span>
-      <span className={css.itemValue}>{formattedUnitPrice}</span>
+      <span className={css.itemValue}>
+        <FormattedMessage id="BookingBreakdown.seats" values={{ seats }} />
+      </span>
     </div>
   ) : null;
 };

@@ -6,7 +6,7 @@ import { LINE_ITEM_NIGHT, LINE_ITEM_DAY, propTypes } from '../../util/types';
 import css from './BookingBreakdown.css';
 
 const LineItemBasePriceMaybe = props => {
-  const { transaction, unitType, intl } = props;
+  const { transaction, unitType, intl, seats } = props;
   const isNightly = unitType === LINE_ITEM_NIGHT;
   const isDaily = unitType === LINE_ITEM_DAY;
   const translationKey = isNightly
@@ -25,11 +25,11 @@ const LineItemBasePriceMaybe = props => {
   const quantity = unitPurchase ? unitPurchase.quantity.toString() : null;
   const unitPrice = unitPurchase ? formatMoney(intl, unitPurchase.unitPrice) : null;
   const total = unitPurchase ? formatMoney(intl, unitPurchase.lineTotal) : null;
-
-  return quantity && total ? (
+  
+  return quantity && seats && total ? (
     <div className={css.lineItem}>
       <span className={css.itemLabel}>
-        <FormattedMessage id={translationKey} values={{ unitPrice, quantity }} />
+        <FormattedMessage id={translationKey} values={{ unitPrice, quantity, seats }} />
       </span>
       <span className={css.itemValue}>{total}</span>
     </div>

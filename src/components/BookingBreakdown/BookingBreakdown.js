@@ -15,6 +15,7 @@ import {
 import LineItemBookingPeriod from './LineItemBookingPeriod';
 import LineItemBasePriceMaybe from './LineItemBasePriceMaybe';
 import LineItemUnitPriceMaybe from './LineItemUnitPriceMaybe';
+import LineItemUnitsMaybe from './LineItemUnitsMaybe';
 import LineItemSubTotalMaybe from './LineItemSubTotalMaybe';
 import LineItemCustomerCommissionMaybe from './LineItemCustomerCommissionMaybe';
 import LineItemCustomerCommissionRefundMaybe from './LineItemCustomerCommissionRefundMaybe';
@@ -35,6 +36,7 @@ export const BookingBreakdownComponent = props => {
     transaction,
     booking,
     intl,
+    seats,
     dateType,
     timeZone,
   } = props;
@@ -96,9 +98,10 @@ export const BookingBreakdownComponent = props => {
         dateType={dateType}
         timeZone={timeZone}
       />
-      <LineItemUnitPriceMaybe transaction={transaction} unitType={unitType} intl={intl} />
+      <LineItemUnitsMaybe transaction={transaction} unitType={unitType} seats={seats} />
+      <LineItemUnitPriceMaybe transaction={transaction} unitType={unitType} seats={seats} intl={intl} />
 
-      <LineItemBasePriceMaybe transaction={transaction} unitType={unitType} intl={intl} />
+      <LineItemBasePriceMaybe transaction={transaction} unitType={unitType} seats={seats} intl={intl} />
       <LineItemUnknownItemsMaybe transaction={transaction} intl={intl} />
 
       <LineItemSubTotalMaybe

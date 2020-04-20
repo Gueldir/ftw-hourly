@@ -97,12 +97,13 @@ export class ListingPageComponent extends Component {
     const listingId = new UUID(params.id);
     const listing = getListing(listingId);
 
-    const { bookingStartTime, bookingEndTime, ...restOfValues } = values;
+    const { bookingStartTime, bookingEndTime, seats, ...restOfValues } = values;
     const bookingStart = timestampToDate(bookingStartTime);
     const bookingEnd = timestampToDate(bookingEndTime);
 
     const bookingData = {
       quantity: calculateQuantityFromHours(bookingStart, bookingEnd),
+      seats,
       ...restOfValues,
     };
 
@@ -579,8 +580,8 @@ const mapDispatchToProps = dispatch => ({
   callSetInitialValues: (setInitialValues, values) => dispatch(setInitialValues(values)),
   onSendEnquiry: (listingId, message) => dispatch(sendEnquiry(listingId, message)),
   onInitializeCardPaymentData: () => dispatch(initializeCardPaymentData()),
-  onFetchTimeSlots: (listingId, start, end, timeZone) =>
-    dispatch(fetchTimeSlots(listingId, start, end, timeZone)),
+  onFetchTimeSlots: (listingId, start, end, timeZone, seats) =>
+    dispatch(fetchTimeSlots(listingId, start, end, timeZone, seats)),
 });
 
 // Note: it is important that the withRouter HOC is **outside** the

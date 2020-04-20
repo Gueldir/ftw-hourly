@@ -13,15 +13,26 @@ import {
   PrimaryButton,
   FieldSelect,
   FieldTimeZoneSelect,
+  FieldTextInput
 } from '../../components';
 
 import css from './EditListingAvailabilityPlanForm.css';
 
 const printHourStrings = h => (h > 9 ? `${h}:00` : `0${h}:00`);
+//const printMinutesStrings = h => (h > 9 ? `${h}:30` : `0${h}:30`);
 
 const HOURS = Array(24).fill();
 const ALL_START_HOURS = [...HOURS].map((v, i) => printHourStrings(i));
 const ALL_END_HOURS = [...HOURS].map((v, i) => printHourStrings(i + 1));
+
+// Use to create 30 minutes times slots with above printMinutesStrings() also
+/*const HOURS = Array(48).fill();
+const ALL_START_HOURS = [...HOURS].map((v, i) => 
+  i%2 == 0 ? printHourStrings(i/2) : printMinutesStrings(Math.trunc(i/2))
+);
+const ALL_END_HOURS = [...HOURS].map((v, i) => 
+  (i+1)%2 == 0 ? printHourStrings((i+1)/2) : printMinutesStrings(Math.trunc((i+1)/2))
+);*/
 
 const sortEntries = (defaultCompareReturn = 0) => (a, b) => {
   if (a.startTime && b.startTime) {
@@ -36,6 +47,7 @@ const findEntryFn = entry => e => e.startTime === entry.startTime && e.endTime =
 
 const filterStartHours = (availableStartHours, values, dayOfWeek, index) => {
   const entries = values[dayOfWeek];
+
   const currentEntry = entries[index];
 
   // If there is no end time selected, return all the available start times
@@ -147,6 +159,7 @@ const DailyPlan = props => {
                 return (
                   <div className={css.fieldWrapper} key={name}>
                     <div className={css.formRow}>
+                      <span className={css.dashBetweenTimes}>Slot(s):</span>
                       <div className={css.field}>
                         <FieldSelect
                           id={`${name}.startTime`}
@@ -181,6 +194,20 @@ const DailyPlan = props => {
                             </option>
                           ))}
                         </FieldSelect>
+                      </div>
+                      <span className={css.dashBetweenTimes}>Seat(s):</span>
+                      <div className={css.field}>
+                        <FieldTextInput
+                          id={`${name}.seats`}
+                          name={`${name}.seats`}
+                          className={css.seatsSelect}
+                          placeholder={4}
+                          defaultValue={1}
+                          type="number"
+                          min={1}
+                          max={10}
+                          step="1"
+                        />
                       </div>
                     </div>
                     <div

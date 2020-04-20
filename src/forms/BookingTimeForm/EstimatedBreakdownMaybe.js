@@ -37,9 +37,9 @@ import css from './BookingTimeForm.css';
 
 const { Money, UUID } = sdkTypes;
 
-const estimatedTotalPrice = (unitPrice, unitCount) => {
+const estimatedTotalPrice = (unitPrice, unitCount, seats) => {
   const numericPrice = convertMoneyToNumber(unitPrice);
-  const numericTotalPrice = new Decimal(numericPrice).times(unitCount).toNumber();
+  const numericTotalPrice = new Decimal(numericPrice).times(unitCount).times(seats).toNumber();
   return new Money(
     convertUnitToSubUnit(numericTotalPrice, unitDivisor(unitPrice.currency)),
     unitPrice.currency
@@ -49,9 +49,9 @@ const estimatedTotalPrice = (unitPrice, unitCount) => {
 // When we cannot speculatively initiate a transaction (i.e. logged
 // out), we must estimate the booking breakdown. This function creates
 // an estimated transaction object for that use case.
-const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, quantity) => {
+const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, quantity, seats) => {
   const now = new Date();
-  const totalPrice = estimatedTotalPrice(unitPrice, quantity);
+  const totalPrice = estimatedTotalPrice(unitPrice, quantity, seats);
 
   return {
     id: new UUID('estimated-transaction'),
@@ -68,6 +68,7 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
           includeFor: ['customer', 'provider'],
           unitPrice: unitPrice,
           quantity: new Decimal(quantity),
+          seats: seats,
           lineTotal: totalPrice,
           reversal: false,
         },
@@ -92,16 +93,16 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
 };
 
 const EstimatedBreakdownMaybe = props => {
-  const { unitType, unitPrice, startDate, endDate, quantity, timeZone } = props.bookingData;
+  const { unitType, unitPrice, startDate, endDate, quantity, timeZone, seats } = props.bookingData;
 
   const isUnits = unitType === LINE_ITEM_UNITS;
   const quantityIfUsingUnits = !isUnits || Number.isInteger(quantity);
-  const canEstimatePrice = startDate && endDate && unitPrice && quantityIfUsingUnits;
+  const canEstimatePrice = startDate && endDate && unitPrice && quantityIfUsingUnits && seats;
   if (!canEstimatePrice) {
     return null;
   }
 
-  const tx = estimatedTransaction(unitType, startDate, endDate, unitPrice, quantity);
+  const tx = estimatedTransaction(unitType, startDate, endDate, unitPrice, quantity, seats);
 
   return (
     <BookingBreakdown
@@ -111,6 +112,7 @@ const EstimatedBreakdownMaybe = props => {
       transaction={tx}
       booking={tx.booking}
       timeZone={timeZone}
+      seats={seats}
     />
   );
 };

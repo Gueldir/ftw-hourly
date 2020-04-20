@@ -339,8 +339,17 @@ const SearchFiltersComponent = props => {
   // Can add {toggleSearchFiltersPanelButton} to filters to enable More Filters button
   return (
     <div className={classes}>
-      <div className={css.searchOptions}>
-        {listingsAreLoaded ? (
+      <div className={css.filterWrapper}>
+        <div className={css.filters}>
+          {categoryFilterElement}
+          {musicFilterElement}
+          {sportFilterElement}
+          {certificateFilterElement}
+          {dateRangeLengthFilterElement}
+          {priceFilterElement}
+          {keywordFilterElement}
+        </div>
+        {listingsAreLoaded && resultsCount > 0 ? (
           <div className={css.searchResultSummary}>
             <span className={css.resultsFound}>
               <FormattedMessage id="SearchFilters.foundResults" values={{ count: resultsCount }} />
@@ -349,16 +358,7 @@ const SearchFiltersComponent = props => {
         ) : null}
         {sortBy}
       </div>
-
       <div className={css.filters}>
-        {categoryFilterElement}
-        {musicFilterElement}
-        {sportFilterElement}
-        {certificateFilterElement}
-        {dateRangeLengthFilterElement}
-        {priceFilterElement}
-        {keywordFilterElement}
-
         {hasNoResult ? (
           <div className={css.noSearchResults}>
             <FormattedMessage id="SearchFilters.noResults" />
@@ -370,7 +370,6 @@ const SearchFiltersComponent = props => {
             <FormattedMessage id="SearchFilters.loadingResults" />
           </div>
         ) : null}
-
       </div>
     </div>
   );
