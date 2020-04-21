@@ -6,7 +6,7 @@ import { LINE_ITEM_NIGHT, LINE_ITEM_DAY, propTypes } from '../../util/types';
 import css from './BookingBreakdown.css';
 
 const LineItemUnitPriceMaybe = props => {
-  const { transaction, unitType, intl, seats } = props;
+  const { transaction, unitType, intl } = props;
   const isNightly = unitType === LINE_ITEM_NIGHT;
   const isDaily = unitType === LINE_ITEM_DAY;
   const translationKey = isNightly
@@ -18,8 +18,9 @@ const LineItemUnitPriceMaybe = props => {
   const unitPurchase = transaction.attributes.lineItems.find(
     item => item.code === unitType && !item.reversal
   );
-
+  
   const formattedUnitPrice = unitPurchase ? formatMoney(intl, unitPurchase.unitPrice) : null;
+  const seats = unitPurchase.lineTotal.amount / unitPurchase.unitPrice.amount / unitPurchase.quantity;
 
   return formattedUnitPrice ? (
     <div className={css.lineItem}>

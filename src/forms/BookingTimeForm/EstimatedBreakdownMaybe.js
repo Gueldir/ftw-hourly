@@ -38,6 +38,7 @@ import css from './BookingTimeForm.css';
 const { Money, UUID } = sdkTypes;
 
 const estimatedTotalPrice = (unitPrice, unitCount, seats) => {
+  console.log(seats)
   const numericPrice = convertMoneyToNumber(unitPrice);
   const numericTotalPrice = new Decimal(numericPrice).times(unitCount).times(seats).toNumber();
   return new Money(
@@ -112,7 +113,6 @@ const EstimatedBreakdownMaybe = props => {
       transaction={tx}
       booking={tx.booking}
       timeZone={timeZone}
-      seats={seats}
     />
   );
 };

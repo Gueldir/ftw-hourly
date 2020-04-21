@@ -40,7 +40,7 @@ const getEntries = (availabilityPlan, dayOfWeek) =>
 const Weekday = props => {
   const { availabilityPlan, dayOfWeek, openEditModal } = props;
   const hasEntry = findEntry(availabilityPlan, dayOfWeek);
-
+  console.log(availabilityPlan)
   return (
     <div
       className={classNames(css.weekDay, { [css.blockedWeekDay]: !hasEntry })}
@@ -168,7 +168,7 @@ const EditListingAvailabilityPanel = props => {
     type: 'availability-plan/time',
     timezone: defaultTimeZone(),
     entries: [
-      //{ dayOfWeek: 'mon', startTime: '09:00', endTime: '17:00', seats: 1 },
+      { dayOfWeek: 'mon', startTime: '09:00', endTime: '17:00', seats: 1 },
       //{ dayOfWeek: 'tue', startTime: '09:00', endTime: '17:00', seats: 1 },
       //{ dayOfWeek: 'wed', startTime: '09:00', endTime: '17:00', seats: 1 },
       //{ dayOfWeek: 'thu', startTime: '09:00', endTime: '17:00', seats: 1 },
@@ -375,7 +375,7 @@ const EditListingAvailabilityPanel = props => {
           />
         </Modal>
       ) : null}
-      {onManageDisableScrolling ? (
+      {/*onManageDisableScrolling ? (
         <Modal
           id="EditAvailabilityExceptions"
           isOpen={isEditExceptionsModalOpen}
@@ -393,7 +393,7 @@ const EditListingAvailabilityPanel = props => {
             fetchErrors={errors}
           />
         </Modal>
-      ) : null}
+      ) : null*/}
     </main>
   );
 };

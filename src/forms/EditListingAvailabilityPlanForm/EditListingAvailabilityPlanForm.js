@@ -159,7 +159,7 @@ const DailyPlan = props => {
                 return (
                   <div className={css.fieldWrapper} key={name}>
                     <div className={css.formRow}>
-                      <span className={css.dashBetweenTimes}>Slot(s):</span>
+                      <span className={css.dashBetweenTimes}>Hour:</span>
                       <div className={css.field}>
                         <FieldSelect
                           id={`${name}.startTime`}
@@ -188,14 +188,19 @@ const DailyPlan = props => {
                           <option disabled value="">
                             {endTimePlaceholder}
                           </option>
-                          {filterEndHours(availableEndHours, values, dayOfWeek, index).map(s => (
-                            <option value={s} key={s}>
-                              {s}
-                            </option>
-                          ))}
+                          {/*filterEndHours(availableEndHours, values, dayOfWeek, index)[0].map(
+                            s => (
+                              <option value={s} key={s}>
+                                {s}
+                              </option>
+                            )
+                          )*/}
+                          <option value={filterEndHours(availableEndHours, values, dayOfWeek, index)[0]} key={filterEndHours(availableEndHours, values, dayOfWeek, index)[0]}>
+                            {filterEndHours(availableEndHours, values, dayOfWeek, index)[0]}
+                          </option>
                         </FieldSelect>
                       </div>
-                      <span className={css.dashBetweenTimes}>Seat(s):</span>
+                      <span className={css.dashBetweenTimes}>Seat/h:</span>
                       <div className={css.field}>
                         <FieldTextInput
                           id={`${name}.seats`}

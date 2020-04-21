@@ -36,7 +36,6 @@ export const BookingBreakdownComponent = props => {
     transaction,
     booking,
     intl,
-    seats,
     dateType,
     timeZone,
   } = props;
@@ -98,10 +97,10 @@ export const BookingBreakdownComponent = props => {
         dateType={dateType}
         timeZone={timeZone}
       />
-      <LineItemUnitsMaybe transaction={transaction} unitType={unitType} seats={seats} />
-      <LineItemUnitPriceMaybe transaction={transaction} unitType={unitType} seats={seats} intl={intl} />
+      <LineItemUnitsMaybe transaction={transaction} unitType={unitType} />
+      <LineItemUnitPriceMaybe transaction={transaction} unitType={unitType} intl={intl} />
 
-      <LineItemBasePriceMaybe transaction={transaction} unitType={unitType} seats={seats} intl={intl} />
+      <LineItemBasePriceMaybe transaction={transaction} unitType={unitType} intl={intl} />
       <LineItemUnknownItemsMaybe transaction={transaction} intl={intl} />
 
       <LineItemSubTotalMaybe

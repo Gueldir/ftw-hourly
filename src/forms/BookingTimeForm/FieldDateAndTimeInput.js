@@ -435,7 +435,7 @@ class FieldDateAndTimeInput extends Component {
     const seats = timeSlotsOnSelectedDate && timeSlotsOnSelectedDate[0] && timeSlotsOnSelectedDate[0].attributes.seats;
     const startTimeLabel = intl.formatMessage({ id: 'FieldDateTimeInput.startTime' });
     const endTimeLabel = intl.formatMessage({ id: 'FieldDateTimeInput.endTime' });
-    const isUncontrolled = seats > 1 ? true : false;
+    timeSlotsOnSelectedDate && timeSlotsOnSelectedDate[0] && console.log(timeSlotsOnSelectedDate[0].attributes)
     /**
      * NOTE: In this template the field for the end date is hidden by default.
      * If you want to enable longer booking periods, showing the end date in the form requires some code changes:
@@ -567,7 +567,7 @@ class FieldDateAndTimeInput extends Component {
             max={seats ? seats <= 1 ? 1 : seats : 1}
             disabled={endTimeDisabled}
             step="1"
-            isUncontrolled={isUncontrolled}
+            isUncontrolled
           />
         </div>
       </div>
