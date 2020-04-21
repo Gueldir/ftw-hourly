@@ -20,7 +20,7 @@ const LineItemUnitPriceMaybe = props => {
   );
   
   const formattedUnitPrice = unitPurchase ? formatMoney(intl, unitPurchase.unitPrice) : null;
-  const seats = unitPurchase.lineTotal.amount / unitPurchase.unitPrice.amount / unitPurchase.quantity;
+  const seats = unitPurchase ? (unitPurchase.lineTotal.amount / unitPurchase.unitPrice.amount) : null;
 
   return formattedUnitPrice ? (
     <div className={css.lineItem}>

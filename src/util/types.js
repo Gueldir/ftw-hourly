@@ -332,6 +332,7 @@ export const LINE_ITEM_DAY = 'line-item/day';
 export const LINE_ITEM_UNITS = 'line-item/units';
 export const LINE_ITEM_CUSTOMER_COMMISSION = 'line-item/customer-commission';
 export const LINE_ITEM_PROVIDER_COMMISSION = 'line-item/provider-commission';
+export const LINE_ITEM_SEATS = 'line-item/seats';
 
 export const LINE_ITEMS = [
   LINE_ITEM_NIGHT,
@@ -339,9 +340,10 @@ export const LINE_ITEMS = [
   LINE_ITEM_UNITS,
   LINE_ITEM_CUSTOMER_COMMISSION,
   LINE_ITEM_PROVIDER_COMMISSION,
+  LINE_ITEM_SEATS,
 ];
-
-propTypes.bookingUnitType = oneOf([LINE_ITEM_NIGHT, LINE_ITEM_DAY, LINE_ITEM_UNITS]);
+// Add LINE_ITEM_SEATS to oneOf() or not?
+propTypes.bookingUnitType = oneOf([LINE_ITEM_NIGHT, LINE_ITEM_DAY, LINE_ITEM_UNITS, LINE_ITEM_SEATS]);
 
 const requiredLineItemPropType = (props, propName, componentName) => {
   const prop = props[propName];
@@ -373,6 +375,7 @@ propTypes.transaction = shape({
         code: requiredLineItemPropType,
         includeFor: arrayOf(oneOf(['customer', 'provider'])).isRequired,
         quantity: instanceOf(Decimal),
+        seats: number.isRequired,
         unitPrice: propTypes.money.isRequired,
         lineTotal: propTypes.money.isRequired,
         reversal: bool.isRequired,

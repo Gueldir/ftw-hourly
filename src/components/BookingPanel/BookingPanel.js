@@ -71,29 +71,6 @@ const BookingPanel = props => {
     intl,
   } = props;
 
-  const seatsData = listing.attributes.publicData
-    ? listing.attributes.publicData.cleaningFee
-    : null;
-  const { amount: cleaningAmount, currency: cleaningCurrency } =
-    seatsData || {};
-  const seats =
-    cleaningAmount && cleaningCurrency
-      ? new Money(cleaningAmount, cleaningCurrency)
-      : null;
-
-  const handleSubmit = values => {
-    const selectedSeats =
-      values &&
-      values.seats &&
-      values.seats[0] === 'seats'
-        ? seats
-        : null;
-    onSubmit({
-      ...values,
-      seats: selectedSeats,
-    });
-  };
-
   const price = listing.attributes.price;
   const timeZone =
     listing.attributes.availabilityPlan && listing.attributes.availabilityPlan.timezone;
@@ -147,8 +124,7 @@ const BookingPanel = props => {
             formId="BookingPanel"
             submitButtonWrapperClassName={css.submitButtonWrapper}
             unitType={unitType}
-            //onSubmit={onSubmit}
-            onSubmit={handleSubmit}
+            onSubmit={onSubmit}
             price={price}
             isOwnListing={isOwnListing}
             listingId={listing.id}
@@ -157,7 +133,6 @@ const BookingPanel = props => {
             startDatePlaceholder={intl.formatDate(TODAY, dateFormattingOptions)}
             endDatePlaceholder={intl.formatDate(TODAY, dateFormattingOptions)}
             timeZone={timeZone}
-            seats={seats}
           />
         ) : null}
       </ModalInMobile>

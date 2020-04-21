@@ -29,7 +29,7 @@ import React from 'react';
 import Decimal from 'decimal.js';
 import { types as sdkTypes } from '../../util/sdkLoader';
 import { TRANSITION_REQUEST_PAYMENT, TX_TRANSITION_ACTOR_CUSTOMER } from '../../util/transaction';
-import { LINE_ITEM_UNITS, LINE_ITEM_SEATS } from '../../util/types';
+import { LINE_ITEM_UNITS } from '../../util/types';
 import { unitDivisor, convertMoneyToNumber, convertUnitToSubUnit } from '../../util/currency';
 import { BookingBreakdown } from '../../components';
 
@@ -37,10 +37,10 @@ import css from './BookingTimeForm.css';
 
 const { Money, UUID } = sdkTypes;
 
-const estimatedTotalPrice = (unitPrice, unitCount, seats) => {
-  
+const estimatedTotalPrice = (unitPrice, unitCount ) => {
+
   const numericPrice = convertMoneyToNumber(unitPrice);
-  const numericTotalPrice = new Decimal(numericPrice).times(unitCount).times(seats).toNumber();
+  const numericTotalPrice = new Decimal(numericPrice).times(unitCount).toNumber();
   return new Money(
     convertUnitToSubUnit(numericTotalPrice, unitDivisor(unitPrice.currency)),
     unitPrice.currency
@@ -51,8 +51,9 @@ const estimatedTotalPrice = (unitPrice, unitCount, seats) => {
 // out), we must estimate the booking breakdown. This function creates
 // an estimated transaction object for that use case.
 const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, quantity, seats) => {
+  console.log(seats)
   const now = new Date();
-  const totalPrice = estimatedTotalPrice(unitPrice, quantity, seats);
+  const totalPrice = estimatedTotalPrice(unitPrice, quantity);
 
   return {
     id: new UUID('estimated-transaction'),
@@ -94,11 +95,11 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
 };
 
 const EstimatedBreakdownMaybe = props => {
-  const { unitType, unitPrice, startDate, endDate, quantity, timeZone, seats } = props.bookingData;
+  const { unitType, unitPrice, startDate, endDate, quantity, timeZone, seats} = props.bookingData;
 
   const isUnits = unitType === LINE_ITEM_UNITS;
   const quantityIfUsingUnits = !isUnits || Number.isInteger(quantity);
-  const canEstimatePrice = startDate && endDate && unitPrice && quantityIfUsingUnits && seats;
+  const canEstimatePrice = startDate && endDate && unitPrice && quantityIfUsingUnits;
   if (!canEstimatePrice) {
     return null;
   }

@@ -90,7 +90,7 @@
   "BookingPanel.perNight": "per night",
   "BookingPanel.perUnit": "per hour",
   "BookingPanel.subTitleClosedListing": "Sorry, this teacher profile is not active anymore.",
-  "BookingTimeForm.seatsBookedLabel": "{seats, plural, =0 {Seat} one {Seat} other {Seats}} (max: {seats})",
+  "BookingTimeForm.seatsBookedLabel": "{seats, plural, =0 {Seat} one {Seat} other {Seats}}/h (max: {seats})",
   "BookingTimeForm.bookingEndTitle": "End date",
   "BookingTimeForm.bookingStartTitle": "Pick a date",
   "BookingTimeForm.listingCurrencyInvalid": "Oops, the currency on the teacher profile doesn't match the currency of the marketplace.",

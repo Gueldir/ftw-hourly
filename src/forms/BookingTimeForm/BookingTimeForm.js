@@ -70,9 +70,8 @@ export class BookingTimeFormComponent extends Component {
             onFetchTimeSlots,
             timeZone,
             formId,
-            seats,
           } = fieldRenderProps;
-          
+
           const startTime = values && values.bookingStartTime ? values.bookingStartTime : null;
           const endTime = values && values.bookingEndTime ? values.bookingEndTime : null;
           
@@ -84,7 +83,7 @@ export class BookingTimeFormComponent extends Component {
           const startDate = startTime ? timestampToDate(startTime) : null;
           const endDate = endTime ? timestampToDate(endTime) : null;
 
-          const selectedSeats = values ? values.seats : null;
+          const selectedSeats = values ? parseInt(values.seats) : null;
 
           // This is the place to collect breakdown estimation data. See the
           // EstimatedBreakdownMaybe component to change the calculations
@@ -98,7 +97,7 @@ export class BookingTimeFormComponent extends Component {
                   endDate,
 
                   // Calculate the quantity as hours between the booking start and booking end
-                  quantity: calculateQuantityFromHours(startDate, endDate),
+                  quantity: calculateQuantityFromHours(startDate, endDate, selectedSeats),
                   seats: selectedSeats,
                   timeZone,
                 }
@@ -111,7 +110,7 @@ export class BookingTimeFormComponent extends Component {
               <EstimatedBreakdownMaybe bookingData={bookingData} />
             </div>
           ) : null;
-
+          console.log(bookingData)
           const submitButtonClasses = classNames(
             submitButtonWrapperClassName || css.submitButtonWrapper
           );
