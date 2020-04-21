@@ -18,7 +18,7 @@ const LineItemUnitsMaybe = props => {
   if (!unitPurchase) {
     throw new Error(`LineItemUnitsMaybe: lineItem (${unitType}) missing`);
   }
-  console.log(unitPurchase)
+  
   const quantity = unitPurchase ? (unitPurchase.quantity / unitPurchase.seats) : null;
 
   return (

@@ -434,6 +434,8 @@ class FieldDateAndTimeInput extends Component {
     );
 
     const maxSeats = timeSlotsOnSelectedDate && timeSlotsOnSelectedDate[0] && timeSlotsOnSelectedDate[0].attributes.seats;
+    timeSlotsOnSelectedDate && timeSlotsOnSelectedDate[0] && console.log(timeSlotsOnSelectedDate[0])
+    
     const startTimeLabel = intl.formatMessage({ id: 'FieldDateTimeInput.startTime' });
     const endTimeLabel = intl.formatMessage({ id: 'FieldDateTimeInput.endTime' });
     const seatsLabel = intl.formatMessage(

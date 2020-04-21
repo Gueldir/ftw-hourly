@@ -51,7 +51,7 @@ const estimatedTotalPrice = (unitPrice, unitCount ) => {
 // out), we must estimate the booking breakdown. This function creates
 // an estimated transaction object for that use case.
 const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, quantity, seats) => {
-  console.log(seats)
+  
   const now = new Date();
   const totalPrice = estimatedTotalPrice(unitPrice, quantity);
 

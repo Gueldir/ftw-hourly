@@ -110,7 +110,7 @@ export class BookingTimeFormComponent extends Component {
               <EstimatedBreakdownMaybe bookingData={bookingData} />
             </div>
           ) : null;
-          console.log(bookingData)
+          
           const submitButtonClasses = classNames(
             submitButtonWrapperClassName || css.submitButtonWrapper
           );
