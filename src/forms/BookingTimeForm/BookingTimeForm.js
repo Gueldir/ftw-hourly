@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import { calculateQuantityFromHours, timestampToDate } from '../../util/dates';
 import { propTypes } from '../../util/types';
 import config from '../../config';
-import { Form, PrimaryButton, FieldTextInput } from '../../components';
+import { Form, PrimaryButton } from '../../components';
 import EstimatedBreakdownMaybe from './EstimatedBreakdownMaybe';
 import FieldDateAndTimeInput from './FieldDateAndTimeInput';
 
@@ -18,15 +18,10 @@ export class BookingTimeFormComponent extends Component {
     super(props);
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
-    this.onSeatsChange = this.onSeatsChange.bind(this);
   }
 
   handleFormSubmit(e) {
     this.props.onSubmit(e);
-  }
-
-  onSeatsChange(e) {
-    console.log(e);
   }
 
   render() {
@@ -74,11 +69,12 @@ export class BookingTimeFormComponent extends Component {
             monthlyTimeSlots,
             onFetchTimeSlots,
             timeZone,
+            formId,
+            seats,
           } = fieldRenderProps;
           
           const startTime = values && values.bookingStartTime ? values.bookingStartTime : null;
           const endTime = values && values.bookingEndTime ? values.bookingEndTime : null;
-          const seats = values && values.seats ? values.seats : 0;
           
           const bookingStartLabel = intl.formatMessage({
             id: 'BookingTimeForm.bookingStartTitle',
@@ -87,6 +83,8 @@ export class BookingTimeFormComponent extends Component {
 
           const startDate = startTime ? timestampToDate(startTime) : null;
           const endDate = endTime ? timestampToDate(endTime) : null;
+
+          const selectedSeats = values ? values.seats : null;
 
           // This is the place to collect breakdown estimation data. See the
           // EstimatedBreakdownMaybe component to change the calculations
@@ -98,10 +96,10 @@ export class BookingTimeFormComponent extends Component {
                   unitPrice,
                   startDate,
                   endDate,
-                  seats,
 
                   // Calculate the quantity as hours between the booking start and booking end
                   quantity: calculateQuantityFromHours(startDate, endDate),
+                  seats: selectedSeats,
                   timeZone,
                 }
               : null;
@@ -126,16 +124,11 @@ export class BookingTimeFormComponent extends Component {
             label: bookingEndLabel,
             placeholderText: endDatePlaceholder,
           };
-
           const dateInputProps = {
             startDateInputProps,
             endDateInputProps,
           };
-          /*const searchOnChange = value => {
-                    onChange(value);
-                    this.onChange(value);
-                  };
-          const searchInput = { ...restInput, onChange: searchOnChange };*/
+
           return (
             <Form onSubmit={handleSubmit} className={classes}>
               {monthlyTimeSlots && timeZone ? (
@@ -152,7 +145,8 @@ export class BookingTimeFormComponent extends Component {
                     form={form}
                     pristine={pristine}
                     timeZone={timeZone}
-                  />  
+                    selectedSeats={selectedSeats}
+                  />
                 </div>
               ) : null}
               {bookingInfo}

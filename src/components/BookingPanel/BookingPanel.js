@@ -11,12 +11,14 @@ import { parse, stringify } from '../../util/urlHelpers';
 import config from '../../config';
 import { ModalInMobile, Button } from '../../components';
 import { BookingTimeForm } from '../../forms';
+import { types as sdkTypes } from '../../util/sdkLoader';
 
 import css from './BookingPanel.css';
 
 // This defines when ModalInMobile shows content as Modal
 const MODAL_BREAKPOINT = 1023;
 const TODAY = new Date();
+const { Money } = sdkTypes;
 
 const priceData = (price, intl) => {
   if (price && price.currency === config.currency) {
@@ -68,6 +70,29 @@ const BookingPanel = props => {
     location,
     intl,
   } = props;
+
+  const seatsData = listing.attributes.publicData
+    ? listing.attributes.publicData.cleaningFee
+    : null;
+  const { amount: cleaningAmount, currency: cleaningCurrency } =
+    seatsData || {};
+  const seats =
+    cleaningAmount && cleaningCurrency
+      ? new Money(cleaningAmount, cleaningCurrency)
+      : null;
+
+  const handleSubmit = values => {
+    const selectedSeats =
+      values &&
+      values.seats &&
+      values.seats[0] === 'seats'
+        ? seats
+        : null;
+    onSubmit({
+      ...values,
+      seats: selectedSeats,
+    });
+  };
 
   const price = listing.attributes.price;
   const timeZone =
@@ -122,7 +147,8 @@ const BookingPanel = props => {
             formId="BookingPanel"
             submitButtonWrapperClassName={css.submitButtonWrapper}
             unitType={unitType}
-            onSubmit={onSubmit}
+            //onSubmit={onSubmit}
+            onSubmit={handleSubmit}
             price={price}
             isOwnListing={isOwnListing}
             listingId={listing.id}
@@ -131,6 +157,7 @@ const BookingPanel = props => {
             startDatePlaceholder={intl.formatDate(TODAY, dateFormattingOptions)}
             endDatePlaceholder={intl.formatDate(TODAY, dateFormattingOptions)}
             timeZone={timeZone}
+            seats={seats}
           />
         ) : null}
       </ModalInMobile>
