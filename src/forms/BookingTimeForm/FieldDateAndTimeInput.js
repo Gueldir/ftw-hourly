@@ -433,12 +433,12 @@ class FieldDateAndTimeInput extends Component {
       findNextBoundary(timeZone, TODAY)
     );
 
-    const seats = timeSlotsOnSelectedDate && timeSlotsOnSelectedDate[0] && timeSlotsOnSelectedDate[0].attributes.seats;
+    const maxSeats = timeSlotsOnSelectedDate && timeSlotsOnSelectedDate[0] && timeSlotsOnSelectedDate[0].attributes.seats;
     const startTimeLabel = intl.formatMessage({ id: 'FieldDateTimeInput.startTime' });
     const endTimeLabel = intl.formatMessage({ id: 'FieldDateTimeInput.endTime' });
     const seatsLabel = intl.formatMessage(
       { id: 'BookingTimeForm.seatsBookedLabel' },
-      { seats: (seats ? seats <= 1 ? 1 : seats : 0) }
+      { seats: (maxSeats ? maxSeats <= 1 ? 1 : maxSeats : 0) }
     );
 
     /**
@@ -562,14 +562,14 @@ class FieldDateAndTimeInput extends Component {
             name="seats"
             label={seatsLabel}
             className={css.seatsSelect}
-            placeholder={seats}
+            placeholder={maxSeats}
             value={"seats"}
-            defaultValue={seats == 0 ? 0 : 1}
+            defaultValue={maxSeats == 0 ? 0 : 1}
             type="number"
-            min={seats == 0 ? 0 : 1}
-            max={seats ? seats <= 1 ? 1 : seats : 0}
-            //disabled={true}
-            disabled={endTimeDisabled}
+            min={maxSeats == 0 ? 0 : 1}
+            max={1}
+            disabled={true}
+            //disabled={endTimeDisabled}
             step="1"
           />
         </div>
