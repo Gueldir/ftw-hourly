@@ -72,6 +72,7 @@ const UserCard = props => {
   const isCurrentUser =
     ensuredUser.id && ensuredCurrentUser.id && ensuredUser.id.uuid === ensuredCurrentUser.id.uuid;
   const { displayName, bio } = ensuredUser.attributes.profile;
+  const showContact = false;
 
   const handleContactUserClick = () => {
     onContactUser(user);
@@ -111,8 +112,8 @@ const UserCard = props => {
       <NamedLink className={css.link} name="ProfilePage" params={{ id: ensuredUser.id.uuid }}>
         <FormattedMessage id="UserCard.viewProfileLink" />
       </NamedLink>
-      {separator}
-      {isCurrentUser ? editProfileMobile : contact}
+      {isCurrentUser ? editProfileMobile : showContact ? separator : null}
+      {isCurrentUser ? editProfileMobile : showContact ? contact : null}
     </p>
   ) : null;
 

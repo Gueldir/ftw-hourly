@@ -183,7 +183,7 @@ const availabilityPlan = shape({
   entries: arrayOf(
     shape({
       dayOfWeek: oneOf(DAYS_OF_WEEK).isRequired,
-      seats: number.isRequired,
+      seats: number,
       start: string,
       end: string,
     })
@@ -270,7 +270,7 @@ propTypes.availabilityException = shape({
   type: propTypes.value('availabilityException').isRequired,
   attributes: shape({
     end: instanceOf(Date).isRequired,
-    seats: number.isRequired,
+    seats: number,
     start: instanceOf(Date).isRequired,
   }),
 });
@@ -375,7 +375,7 @@ propTypes.transaction = shape({
         code: requiredLineItemPropType,
         includeFor: arrayOf(oneOf(['customer', 'provider'])).isRequired,
         quantity: instanceOf(Decimal),
-        seats: number.isRequired,
+        seats: number,
         unitPrice: propTypes.money.isRequired,
         lineTotal: propTypes.money.isRequired,
         reversal: bool.isRequired,

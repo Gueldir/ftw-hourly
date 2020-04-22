@@ -179,7 +179,7 @@ export class CheckoutPageComponent extends Component {
       pageData.bookingDates.bookingEnd &&
       pageData.bookingData.quantity &&
       !isBookingCreated;
-
+      
     if (shouldFetchSpeculatedTransaction) {
       const listingId = pageData.listing.id;
       const { bookingStart, bookingEnd } = pageData.bookingDates;

@@ -81,7 +81,7 @@ const createEntryDayGroups = (entries = {}) =>
         {
           startTime,
           endTime: endHour === '00:00' ? '24:00' : endHour,
-          seats
+          seats,
         },
       ],
     };
@@ -107,9 +107,9 @@ const createEntriesFromSubmitValues = values =>
       return startTime && endTime
         ? {
             dayOfWeek,
-            seats: seats,
             startTime,
             endTime: endTime === '24:00' ? '00:00' : endTime,
+            seats,
           }
         : null;
     });
@@ -168,7 +168,7 @@ const EditListingAvailabilityPanel = props => {
     type: 'availability-plan/time',
     timezone: defaultTimeZone(),
     entries: [
-      { dayOfWeek: 'mon', startTime: '09:00', endTime: '17:00', seats: 1 },
+      { dayOfWeek: 'mon', startTime: '09:00', endTime: '17:00', seats: 2 },
       //{ dayOfWeek: 'tue', startTime: '09:00', endTime: '17:00', seats: 1 },
       //{ dayOfWeek: 'wed', startTime: '09:00', endTime: '17:00', seats: 1 },
       //{ dayOfWeek: 'thu', startTime: '09:00', endTime: '17:00', seats: 1 },
