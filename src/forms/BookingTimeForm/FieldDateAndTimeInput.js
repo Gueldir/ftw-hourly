@@ -567,9 +567,9 @@ class FieldDateAndTimeInput extends Component {
             defaultValue={maxSeats == 0 ? 0 : 1}
             type="number"
             min={maxSeats == 0 ? 0 : 1}
-            max={1}
-            disabled={true}
-            //disabled={endTimeDisabled}
+            max={maxSeats ? maxSeats <= 1 ? 1 : maxSeats : 0}
+            //disabled={true}
+            disabled={endTimeDisabled}
             step="1"
           />
         </div>
