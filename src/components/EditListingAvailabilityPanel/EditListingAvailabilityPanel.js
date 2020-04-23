@@ -375,7 +375,7 @@ const EditListingAvailabilityPanel = props => {
           />
         </Modal>
       ) : null}
-      {/*onManageDisableScrolling ? (
+      {onManageDisableScrolling ? (
         <Modal
           id="EditAvailabilityExceptions"
           isOpen={isEditExceptionsModalOpen}
@@ -393,7 +393,7 @@ const EditListingAvailabilityPanel = props => {
             fetchErrors={errors}
           />
         </Modal>
-      ) : null*/}
+      ) : null}
     </main>
   );
 };

@@ -188,6 +188,7 @@ class FieldDateAndTimeInput extends Component {
 
     this.state = {
       currentMonth: getMonthStartInTimeZone(TODAY, props.timeZone),
+      maxSeats: 1,
     };
 
     this.fetchMonthData = this.fetchMonthData.bind(this);
@@ -245,7 +246,7 @@ class FieldDateAndTimeInput extends Component {
   }
 
   onBookingStartDateChange = value => {
-    const { monthlyTimeSlots, timeZone, intl, form } = this.props;
+    const { monthlyTimeSlots, timeZone, intl, form, values } = this.props;
     if (!value || !value.date) {
       form.batch(() => {
         form.change('bookingStartTime', null);
@@ -264,20 +265,20 @@ class FieldDateAndTimeInput extends Component {
     const startDate = timeOfDayFromLocalToTimeZone(value.date, timeZone);
     const timeSlots = getMonthlyTimeSlots(monthlyTimeSlots, this.state.currentMonth, timeZone);
     const timeSlotsOnSelectedDate = getTimeSlots(timeSlots, startDate, timeZone);
-    const seats = 1;
 
-    const { startTime, endDate, endTime } = getAllTimeValues(
+    const { startTime, endDate, endTime, selectedTimeSlot } = getAllTimeValues(
       intl,
       timeZone,
       timeSlotsOnSelectedDate,
       startDate
     );
 
+    //this.setState({maxSeats: selectedTimeSlot.attributes.seats});
+
     form.batch(() => {
       form.change('bookingStartTime', startTime);
       form.change('bookingEndDate', { date: endDate });
       form.change('bookingEndTime', endTime);
-      form.change('seats', seats);
     });
   };
 
@@ -285,16 +286,17 @@ class FieldDateAndTimeInput extends Component {
     const { monthlyTimeSlots, timeZone, intl, form, values } = this.props;
     const timeSlots = getMonthlyTimeSlots(monthlyTimeSlots, this.state.currentMonth, timeZone);
     const startDate = values.bookingStartDate.date;
-    const timeSlotsOnSelectedDate = getTimeSlots(timeSlots, startDate, timeZone);    
-    const seats = 1;
+    const timeSlotsOnSelectedDate = getTimeSlots(timeSlots, startDate, timeZone);  
 
-    const { endDate, endTime } = getAllTimeValues(
+    const { endDate, endTime, selectedTimeSlot } = getAllTimeValues(
       intl,
       timeZone,
       timeSlotsOnSelectedDate,
       startDate,
       value
     );
+
+    const seats = selectedTimeSlot.attributes.seats;
 
     form.batch(() => {
       form.change('bookingEndDate', { date: endDate });
@@ -316,10 +318,9 @@ class FieldDateAndTimeInput extends Component {
     const { bookingStartDate, bookingStartTime } = values;
     const startDate = bookingStartDate.date;
     const timeSlots = getMonthlyTimeSlots(monthlyTimeSlots, this.state.currentMonth, timeZone);
-    const timeSlotsOnSelectedDate = getTimeSlots(timeSlots, startDate, timeZone);    
-    const seats = 1;
+    const timeSlotsOnSelectedDate = getTimeSlots(timeSlots, startDate, timeZone);   
 
-    const { endTime } = getAllTimeValues(
+    const { endTime, selectedTimeSlot } = getAllTimeValues(
       intl,
       timeZone,
       timeSlotsOnSelectedDate,
@@ -327,6 +328,8 @@ class FieldDateAndTimeInput extends Component {
       bookingStartTime,
       endDate
     );
+
+    const seats = selectedTimeSlot.attributes.seats;  
 
     form.change('bookingEndTime', endTime);
   };
@@ -360,7 +363,6 @@ class FieldDateAndTimeInput extends Component {
       monthlyTimeSlots,
       timeZone,
       intl,
-      selectedSeats,
     } = this.props;
 
     const classes = classNames(rootClassName || css.root, className);
@@ -433,12 +435,12 @@ class FieldDateAndTimeInput extends Component {
       findNextBoundary(timeZone, TODAY)
     );
 
-    const maxSeats = timeSlotsOnSelectedDate && timeSlotsOnSelectedDate[0] && timeSlotsOnSelectedDate[0].attributes.seats;
+    const seats = values.seats;
     const startTimeLabel = intl.formatMessage({ id: 'FieldDateTimeInput.startTime' });
     const endTimeLabel = intl.formatMessage({ id: 'FieldDateTimeInput.endTime' });
     const seatsLabel = intl.formatMessage(
       { id: 'BookingTimeForm.seatsBookedLabel' },
-      { seats: (maxSeats ? maxSeats <= 1 ? 1 : maxSeats : 0) }
+      { seats: (seats ? seats <= 1 ? 1 : seats : 0) }
     );
 
     /**
@@ -562,15 +564,16 @@ class FieldDateAndTimeInput extends Component {
             name="seats"
             label={seatsLabel}
             className={css.seatsSelect}
-            placeholder={maxSeats}
+            placeholder={seats}
             value={"seats"}
-            defaultValue={maxSeats == 0 ? 0 : 1}
+            defaultValue={seats == 0 ? 0 : 1}
             type="number"
-            min={maxSeats == 0 ? 0 : 1}
-            max={maxSeats ? maxSeats <= 1 ? 1 : maxSeats : 0}
+            min={seats == 0 ? 0 : 1}
+            max={seats ? seats <= 1 ? 1 : seats : 0}
             //disabled={true}
             disabled={endTimeDisabled}
             step="1"
+            isUncontrolled
           />
         </div>
       </div>
