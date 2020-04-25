@@ -569,7 +569,7 @@ const EditListingAvailabilityExceptionForm = props => {
                 label={intl.formatMessage({
                   id: 'EditListingAvailabilityExceptionForm.exceptionSeatsLabel',
                 })}
-                value="seatsNumber"
+                //value="seatsNumber"
                 placeholder={4}
                 defaultValue={1}
                 type="number"

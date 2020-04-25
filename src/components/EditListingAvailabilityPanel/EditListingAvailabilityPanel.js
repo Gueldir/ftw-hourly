@@ -298,9 +298,9 @@ const EditListingAvailabilityPanel = props => {
                       />
                       <div className={css.exceptionAvailabilityStatus}>
                         {seats > 0 ? (
-                          <FormattedMessage id="EditListingAvailabilityPanel.exceptionAvailable" />
+                          <FormattedMessage id="EditListingAvailabilityPanel.exceptionAvailable" values={{ seats }} />
                         ) : (
-                          <FormattedMessage id="EditListingAvailabilityPanel.exceptionNotAvailable" />
+                          <FormattedMessage id="EditListingAvailabilityPanel.exceptionNotAvailable" values={{ seats }}  />
                         )}
                       </div>
                     </div>
