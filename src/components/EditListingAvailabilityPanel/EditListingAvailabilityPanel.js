@@ -40,7 +40,7 @@ const getEntries = (availabilityPlan, dayOfWeek) =>
 const Weekday = props => {
   const { availabilityPlan, dayOfWeek, openEditModal } = props;
   const hasEntry = findEntry(availabilityPlan, dayOfWeek);
-  console.log(availabilityPlan)
+
   return (
     <div
       className={classNames(css.weekDay, { [css.blockedWeekDay]: !hasEntry })}
@@ -200,16 +200,14 @@ const EditListingAvailabilityPanel = props => {
 
   // Save exception click handler
   const saveException = values => {
-    const { availability, exceptionStartTime, exceptionEndTime, /*seats*/ } = values;
+    const { availability, exceptionStartTime, exceptionEndTime, seats } = values;
 
     // TODO: add proper seat handling    
-    //const availability = availability === 'available' ? 1 : 0;
-    const seats = availability === 'available' ? 1 : 0;
+    // const seats = availability === 'available' ? 1 : 0;
 
     return onAddAvailabilityException({
       listingId: listing.id,
       seats,
-      //availabitity,
       start: timestampToDate(exceptionStartTime),
       end: timestampToDate(exceptionEndTime),
     })

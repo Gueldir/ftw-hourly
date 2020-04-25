@@ -34,6 +34,7 @@ import {
   Form,
   IconArrowHead,
   PrimaryButton,
+  FieldTextInput,
 } from '../../components';
 
 import css from './EditListingAvailabilityExceptionForm.css';
@@ -371,6 +372,19 @@ const onExceptionEndDateChange = (value, timeRangesOnSelectedDate, props) => {
   form.change('exceptionEndTime', endTime);
 };
 
+const onAvailabilityChange = (value, props, setIsDisabled) => {
+  const { form, values } = props;
+
+  if (value.target.value == 'available') {
+    setIsDisabled(false);
+    form.change('seats', 1);
+    return;
+  } else {    
+    setIsDisabled(true);
+    form.change('seats', 0);
+  }
+}
+
 /////////////////
 // Next & Prev //
 /////////////////
@@ -399,6 +413,7 @@ const Prev = props => {
 //////////////////////////////////////////
 const EditListingAvailabilityExceptionForm = props => {
   const [currentMonth, setCurrentMonth] = useState(getMonthStartInTimeZone(TODAY, props.timeZone));
+  const [isDisabled, setIsDisabled] = useState(false);
   return (
     <FinalForm
       {...props}
@@ -511,6 +526,7 @@ const EditListingAvailabilityExceptionForm = props => {
                   exceptionStartTime: null,
                   exceptionEndDate: null,
                   exceptionEndTime: null,
+                  seats: null,
                 });
               });
             }}
@@ -527,6 +543,9 @@ const EditListingAvailabilityExceptionForm = props => {
                 value="available"
                 checkedClassName={css.checkedAvailable}
                 showAsRequired={pristine}
+                onClick={value =>
+                  onAvailabilityChange(value, formRenderProps, setIsDisabled)
+                }
               />
               <FieldRadioButton
                 id={`${idPrefix}.not-available`}
@@ -537,6 +556,27 @@ const EditListingAvailabilityExceptionForm = props => {
                 value="not-available"
                 checkedClassName={css.checkedNotAvailable}
                 showAsRequired={pristine}
+                onClick={value =>
+                  onAvailabilityChange(value, formRenderProps, setIsDisabled)
+                }
+              />
+            </div>            
+            <div className={css.radioButtons}>
+              <FieldTextInput
+                id="seats"
+                name="seats"
+                className={css.seatsSelect}
+                label={intl.formatMessage({
+                  id: 'EditListingAvailabilityExceptionForm.exceptionSeatsLabel',
+                })}
+                value="seatsNumber"
+                placeholder={4}
+                defaultValue={1}
+                type="number"
+                min={1}
+                max={10}
+                step="1"
+                disabled={isDisabled}
               />
             </div>
             <div className={css.section}>

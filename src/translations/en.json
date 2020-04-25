@@ -161,6 +161,7 @@
   "EditListingAvailabilityExceptionForm.exceptionStartDateLabel": "Starts",
   "EditListingAvailabilityExceptionForm.notAvailable": "Not available",
   "EditListingAvailabilityExceptionForm.title": "Add an availability exception",
+  "EditListingAvailabilityExceptionForm.exceptionSeatsLabel": "Seats",
   "EditListingAvailabilityPanel.addException": "+ Add an exception",
   "EditListingAvailabilityPanel.availabilityExceptionsTitle": "Exceptions ({count})",
   "EditListingAvailabilityPanel.availabilityExceptionsTitleNoCount": "Exceptions",

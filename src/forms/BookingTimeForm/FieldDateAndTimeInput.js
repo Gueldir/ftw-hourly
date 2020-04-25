@@ -273,12 +273,13 @@ class FieldDateAndTimeInput extends Component {
       startDate
     );
 
-    //this.setState({maxSeats: selectedTimeSlot.attributes.seats});
+    this.setState({  maxSeats: selectedTimeSlot.attributes.seats });
 
     form.batch(() => {
       form.change('bookingStartTime', startTime);
       form.change('bookingEndDate', { date: endDate });
       form.change('bookingEndTime', endTime);
+      form.change('seats', 1);
     });
   };
 
@@ -296,12 +297,12 @@ class FieldDateAndTimeInput extends Component {
       value
     );
 
-    const seats = selectedTimeSlot.attributes.seats;
+    this.setState({  maxSeats: selectedTimeSlot.attributes.seats });
 
     form.batch(() => {
       form.change('bookingEndDate', { date: endDate });
       form.change('bookingEndTime', endTime);
-      form.change('seats', seats);
+      form.change('seats', 1);
     });
   };
 
@@ -329,7 +330,7 @@ class FieldDateAndTimeInput extends Component {
       endDate
     );
 
-    const seats = selectedTimeSlot.attributes.seats;  
+    this.setState({  maxSeats: selectedTimeSlot.attributes.seats });
 
     form.change('bookingEndTime', endTime);
   };
@@ -435,12 +436,12 @@ class FieldDateAndTimeInput extends Component {
       findNextBoundary(timeZone, TODAY)
     );
 
-    const seats = values.seats;
+    const maxSeats = this.state.maxSeats;
     const startTimeLabel = intl.formatMessage({ id: 'FieldDateTimeInput.startTime' });
     const endTimeLabel = intl.formatMessage({ id: 'FieldDateTimeInput.endTime' });
     const seatsLabel = intl.formatMessage(
       { id: 'BookingTimeForm.seatsBookedLabel' },
-      { seats: (seats ? seats <= 1 ? 1 : seats : 0) }
+      { seats: (maxSeats ? maxSeats <= 1 ? 1 : maxSeats : 0) }
     );
 
     /**
@@ -564,16 +565,15 @@ class FieldDateAndTimeInput extends Component {
             name="seats"
             label={seatsLabel}
             className={css.seatsSelect}
-            placeholder={seats}
+            placeholder={maxSeats}
             value={"seats"}
-            defaultValue={seats == 0 ? 0 : 1}
+            defaultValue={maxSeats == 0 ? 0 : 1}
             type="number"
-            min={seats == 0 ? 0 : 1}
-            max={seats ? seats <= 1 ? 1 : seats : 0}
+            min={maxSeats == 0 ? 0 : 1}
+            max={maxSeats ? maxSeats <= 1 ? 1 : maxSeats : 0}
             //disabled={true}
             disabled={endTimeDisabled}
             step="1"
-            isUncontrolled
           />
         </div>
       </div>
