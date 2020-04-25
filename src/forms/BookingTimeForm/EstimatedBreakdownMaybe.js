@@ -70,7 +70,7 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
           includeFor: ['customer', 'provider'],
           unitPrice: unitPrice,
           quantity: new Decimal(quantity),
-          seats: seats,
+          seats: parseInt(seats),
           lineTotal: totalPrice,
           reversal: false,
         },

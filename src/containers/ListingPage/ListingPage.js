@@ -103,7 +103,7 @@ export class ListingPageComponent extends Component {
 
     const bookingData = {
       quantity: calculateQuantityFromHours(bookingStart, bookingEnd, seats),
-      seats,
+      seats: parseInt(seats),
       ...restOfValues,
     };
 

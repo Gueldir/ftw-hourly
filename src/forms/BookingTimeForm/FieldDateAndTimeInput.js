@@ -566,9 +566,10 @@ class FieldDateAndTimeInput extends Component {
             label={seatsLabel}
             className={css.seatsSelect}
             placeholder={maxSeats}
-            value={"seats"}
             defaultValue={maxSeats == 0 ? 0 : 1}
             type="number"
+            pattern="[0-9]*"
+            inputMode="numeric"
             min={maxSeats == 0 ? 0 : 1}
             max={maxSeats ? maxSeats <= 1 ? 1 : maxSeats : 0}
             //disabled={true}

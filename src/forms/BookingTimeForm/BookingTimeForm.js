@@ -84,7 +84,7 @@ export class BookingTimeFormComponent extends Component {
           const endDate = endTime ? timestampToDate(endTime) : null;
 
           const selectedSeats = values ? parseInt(values.seats) : null;
-
+          
           // This is the place to collect breakdown estimation data. See the
           // EstimatedBreakdownMaybe component to change the calculations
           // for customized payment processes.
@@ -144,7 +144,6 @@ export class BookingTimeFormComponent extends Component {
                     form={form}
                     pristine={pristine}
                     timeZone={timeZone}
-                    selectedSeats={selectedSeats}
                   />
                 </div>
               ) : null}
