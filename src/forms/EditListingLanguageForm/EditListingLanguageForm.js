@@ -28,11 +28,9 @@ export const EditListingLanguageFormComponent = props => (
         updateError,
         updateInProgress,
         languageOptions,
+        audienceOptions,
+        levelOptions,
       } = fieldRenderProps;
-
-      const languagePlaceholder = intl.formatMessage({
-        id: 'EditListingLanguageForm.languagePlaceholder',
-      });
 
       const errorMessage = updateError ? (
         <p className={css.error}>
@@ -40,11 +38,47 @@ export const EditListingLanguageFormComponent = props => (
         </p>
       ) : null;
 
+      const languagePlaceholder = intl.formatMessage({
+        id: 'EditListingLanguageForm.languagePlaceholder',
+      });
+
       const languageRequired = required(
         intl.formatMessage({
           id: 'EditListingLanguageForm.languageRequired',
         })
       );
+
+      const languageLabel = intl.formatMessage({
+        id: 'EditListingLanguageForm.languageLabel',
+      });
+
+      const audiencePlaceholder = intl.formatMessage({
+        id: 'EditListingLanguageForm.languagePlaceholder',
+      });
+
+      const audienceRequired = required(
+        intl.formatMessage({
+          id: 'EditListingLanguageForm.audienceRequired',
+        })
+      );
+
+      const audienceLabel = intl.formatMessage({
+        id: 'EditListingLanguageForm.audienceLabel',
+      });
+
+      const levelPlaceholder = intl.formatMessage({
+        id: 'EditListingLanguageForm.languagePlaceholder',
+      });
+
+      const levelRequired = required(
+        intl.formatMessage({
+          id: 'EditListingLanguageForm.levelRequired',
+        })
+      );
+
+      const levelLabel = intl.formatMessage({
+        id: 'EditListingLanguageForm.levelLabel',
+      });
 
       const classes = classNames(css.root, className);
       const submitReady = updated && pristine;
@@ -59,9 +93,33 @@ export const EditListingLanguageFormComponent = props => (
             className={css.language}
             name="language"
             id="language"
+            label={languageLabel} 
             placeholder={languagePlaceholder}
             validate={languageRequired}
             options={languageOptions}
+            twoColumns={languageOptions.length > 1}
+          />
+
+          <FieldCheckboxGroup
+            className={css.audience}
+            name="audience"
+            id="audience"
+            label={audienceLabel} 
+            placeholder={audiencePlaceholder}
+            validate={audienceRequired}
+            options={audienceOptions}
+            twoColumns={audienceOptions.length > 1}
+          />
+
+          <FieldCheckboxGroup
+            className={css.level}
+            name="level"
+            id="level"
+            label={levelLabel} 
+            placeholder={levelPlaceholder}
+            validate={levelRequired}
+            options={levelOptions}
+            twoColumns={levelOptions.length > 1}
           />
 
           <Button
@@ -92,6 +150,18 @@ EditListingLanguageFormComponent.propTypes = {
   updateError: propTypes.error,
   updateInProgress: bool.isRequired,
   languageOptions: arrayOf(
+    shape({
+      key: string.isRequired,
+      label: string.isRequired,
+    })
+  ).isRequired,
+  audienceOptions: arrayOf(
+    shape({
+      key: string.isRequired,
+      label: string.isRequired,
+    })
+  ).isRequired,
+  levelOptions: arrayOf(
     shape({
       key: string.isRequired,
       label: string.isRequired,

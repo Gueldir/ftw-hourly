@@ -189,8 +189,8 @@ const EditListingWizardTab = props => {
     }
     case CATEGORY: {
       const submitButtonTranslationKey = isNewListingFlow
-        ? 'EditListingWizard.saveNewLanguage'
-        : 'EditListingWizard.saveEditLanguage';
+        ? 'EditListingWizard.saveNewCategories'
+        : 'EditListingWizard.saveEditCategories';
       return (
         <EditListingCategoryPanel
           {...panelProps(CATEGORY)}

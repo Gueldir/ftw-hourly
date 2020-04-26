@@ -46,12 +46,14 @@ const EditListingLanguagePanel = props => {
       <h1 className={css.title}>{panelTitle}</h1>
       <EditListingLanguageForm
         className={css.form}
-        initialValues={{ language: publicData.language }}
+        initialValues={{ language: publicData.language, audience: publicData.audience, level: publicData.level }}
         onSubmit={values => {
-          const { language } = values;
+          const { language, audience, level } = values;
           const updateValues = {
             publicData: {
               language,
+              audience,
+              level,
             },
           };
           onSubmit(updateValues);
@@ -62,6 +64,8 @@ const EditListingLanguagePanel = props => {
         updateError={errors.updateListingError}
         updateInProgress={updateInProgress}
         languageOptions={config.custom.languageOptions}
+        audienceOptions={config.custom.audienceOptions}
+        levelOptions={config.custom.levelOptions}
       />
     </div>
   );

@@ -38,7 +38,7 @@
 
     * flex-basis: calc((100%/columnCount) - (guttersBetweenColumns / columnCount))
     */
-    flex-basis: calc(50% - 12px);
+    flex-basis: calc(25% - 18px);
     margin-right: 24px;
   }
 
@@ -58,7 +58,7 @@
      * flex-basis: calc((100%/columnCount) - (guttersBetweenColumns / columnCount))
      */
 
-    flex-basis: calc(33.33% - 16px);
+    flex-basis: calc(20% - 24px);
     margin-right: 24px;
   }
 }
@@ -69,13 +69,13 @@
  * Here we take margin-right away, but we don't want it affect the next column breakpoint.
  */
 
-.listingCard:nth-of-type(2n) {
+.listingCard:nth-of-type(4n) {
   @media screen and (min-width: 1024px) and (max-width: 1920px) {
     margin-right: 0;
   }
 }
 
-.listingCard:nth-of-type(3n) {
+.listingCard:nth-of-type(5n) {
   @media (--viewportXLarge) {
     margin-right: 0;
   }

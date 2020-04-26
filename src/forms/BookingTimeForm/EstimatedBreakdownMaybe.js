@@ -19,7 +19,7 @@
  * calculates the breakdown information correctly according to the
  * process.
  *
- * In the future, the optimal scenario would be to use the same
+ * In the future, the optimaltransactions.initiateSpeculative scenario would be to use the same
  * transactions.initiateSpeculative API endpoint as the CheckoutPage
  * is using to get the breakdown information from the API, but
  * currently the API doesn't support that for logged out users, and we
@@ -51,7 +51,7 @@ const estimatedTotalPrice = (unitPrice, unitCount ) => {
 // out), we must estimate the booking breakdown. This function creates
 // an estimated transaction object for that use case.
 const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, quantity, seats) => {
-  console.log(seats)
+  
   const now = new Date();
   const totalPrice = estimatedTotalPrice(unitPrice, quantity);
 

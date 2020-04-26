@@ -195,7 +195,8 @@ export class ListingPageComponent extends Component {
       sendEnquiryError,
       monthlyTimeSlots,
       certificateConfig,
-      //languageOptions,
+      musicConfig,
+      sportConfig,
       //yogaStylesConfig,
     } = this.props;
     
@@ -482,8 +483,8 @@ ListingPageComponent.defaultProps = {
   monthlyTimeSlots: null,
   sendEnquiryError: null,
   certificateConfig: config.custom.certificate,
-  yogaStylesConfig: config.custom.yogaStyles,
-  capacityOptions: config.custom.capacityOptions,
+  musicConfig: config.custom.music,
+  sportConfig: config.custom.sport,
 };
 
 ListingPageComponent.propTypes = {
@@ -531,8 +532,8 @@ ListingPageComponent.propTypes = {
   onInitializeCardPaymentData: func.isRequired,
 
   certificateConfig: array,
-  yogaStylesConfig: array,
-  capacityOptions: array,
+  musicConfig: array,
+  sportConfig: array,
 };
 
 const mapStateToProps = state => {

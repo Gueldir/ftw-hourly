@@ -8,6 +8,19 @@ export const languageOptions = [
   { key: 'spanish', label: 'Spanish' },
 ];
 
+export const audienceOptions = [
+  { key: 'kids', label: 'Kids' },
+  { key: 'teenagers', label: 'Teenagers' },
+  { key: 'adults', label: 'Adults'  },
+  { key: 'seniors', label: 'Seniors' },
+];
+
+export const levelOptions = [
+  { key: 'beginner', label: 'Beginner' },
+  { key: 'intermediate', label: 'Intermediate' },
+  { key: 'advanced', label: 'Advanced' },
+];
+
 export const category = [
   //{ key: 'none', label: 'None', hideFromFilters: true, hideFromListingInfo: true },
   { key: 'sport', label: 'Sport' },

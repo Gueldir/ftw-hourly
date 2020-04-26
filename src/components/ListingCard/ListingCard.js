@@ -53,16 +53,20 @@ export const ListingCardComponent = props => {
     listing,
     renderSizes,
     certificateConfig,
+    musicConfig,
+    sportConfig,
     setActiveListing,
   } = props;
+
   const classes = classNames(rootClassName || css.root, className);
   const currentListing = ensureListing(listing);
   const id = currentListing.id.uuid;
   const { title = '', price, publicData } = currentListing.attributes;
+  const author = currentListing.author.attributes.profile.displayName;
   const slug = createSlug(title);
   const firstImage =
     currentListing.images && currentListing.images.length > 0 ? currentListing.images[0] : null;
-
+    console.log(author)
   const certificate = publicData
     ? getCertificateInfo(certificateConfig, publicData.certificate)
     : null;
@@ -71,6 +75,10 @@ export const ListingCardComponent = props => {
   const unitType = config.bookingUnitType;
   const isNightly = unitType === LINE_ITEM_NIGHT;
   const isDaily = unitType === LINE_ITEM_DAY;
+
+  const maxElements = 3;
+  const sport = publicData.sport.map(s => ( sportConfig.find(c => c.key === s)));
+  const music = publicData.music.map(m => ( musicConfig.find(c => c.key === m)));
 
   const unitTranslationKey = isNightly
     ? 'ListingCard.perNight'
@@ -112,9 +120,23 @@ export const ListingCardComponent = props => {
             })}
           </div>
           <div className={css.certificateInfo}>
+            <FormattedMessage id="ListingCard.hostedBy" values={{ authorName: author }} />
+            {/*sport.map((s, index) => (
+              <span key={s.key} >
+                {index < maxElements ? index < (sport.length - 1) && index < (maxElements - 1) ? (s.label + ", ") : s.label : ("…")}
+              </span>
+            ))}
+            {music.map((m, index) => (
+              <span key={m.key} >
+                {index < maxElements ? index < (music.length - 1) && index < (maxElements - 1) ? (m.label + ", ") : m.label : ("…")}
+              </span>
+            ))}
             {certificate && !certificate.hideFromListingInfo ? (
-              <span>{certificate.label}</span>
-            ) : null}
+              <span>
+                <span className={css.separator}> • </span>
+                <span>{certificate.label}</span>
+              </span>
+            ) : null*/}
           </div>
         </div>
       </div>
@@ -127,6 +149,8 @@ ListingCardComponent.defaultProps = {
   rootClassName: null,
   renderSizes: null,
   certificateConfig: config.custom.certificate,
+  musicConfig: config.custom.music,
+  sportConfig: config.custom.sport,
   setActiveListing: () => null,
 };
 
@@ -134,6 +158,8 @@ ListingCardComponent.propTypes = {
   className: string,
   rootClassName: string,
   certificateConfig: array,
+  musicConfig: array,
+  sportConfig: array,
   intl: intlShape.isRequired,
   listing: propTypes.listing.isRequired,
 

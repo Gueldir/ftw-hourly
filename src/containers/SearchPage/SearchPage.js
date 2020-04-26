@@ -55,6 +55,9 @@ export class SearchPageComponent extends Component {
     const {
       categoryConfig,
       certificateConfig,
+      languageConfig,
+      audienceConfig,
+      levelConfig,
       musicConfig,
       sportConfig,
       priceFilterConfig,
@@ -83,6 +86,18 @@ export class SearchPageComponent extends Component {
       sportFilter: {
         paramName: 'pub_sport',
         options: sportConfig,
+      },
+      languageFilter: {
+        paramName: 'pub_language',
+        options: languageConfig,
+      },
+      audienceFilter: {
+        paramName: 'pub_audience',
+        options: audienceConfig,
+      },
+      levelFilter: {
+        paramName: 'pub_level',
+        options: levelConfig,
       },
       priceFilter: {
         paramName: 'price',
@@ -261,6 +276,9 @@ SearchPageComponent.defaultProps = {
   certificateConfig: config.custom.certificate,
   musicConfig: config.custom.music,
   sportConfig: config.custom.sport,
+  languageConfig: config.custom.language,
+  audienceConfig: config.custom.audience,
+  levelConfig: config.custom.level,
   priceFilterConfig: config.custom.priceFilterConfig,
   keywordFilterConfig: config.custom.keywordFilterConfig,
   dateRangeLengthFilterConfig: config.custom.dateRangeLengthFilterConfig,
@@ -282,6 +300,10 @@ SearchPageComponent.propTypes = {
   categoryConfig: array,
   certificateConfig: array,
   musicConfig: array,
+  sportConfig: array,
+  audienceConfig: array,
+  languageConfig: array,
+  levelConfig: array,
   sportConfig: array,
   priceFilterConfig: shape({
     min: number.isRequired,
