@@ -27,33 +27,31 @@ const BookingPeriod = props => {
   const timeZoneMaybe = timeZone ? { timeZone } : null;
 
   return (
-    <>
-      <div className={css.bookingPeriod}>
-        <div className={css.bookingPeriodSection}>
-          <div className={css.dayLabel}>
-            <FormattedMessage id="BookingBreakdown.bookingStart" />
-          </div>
-          <div className={css.dayInfo}>
-            <FormattedDate value={startDate} {...timeFormatOptions} {...timeZoneMaybe} />
-          </div>
-          <div className={css.itemLabel}>
-            <FormattedDate value={startDate} {...dateFormatOptions} {...timeZoneMaybe} />
-          </div>
+    <div className={css.bookingPeriod}>
+      <div className={css.bookingPeriodSection}>
+        <div className={css.dayLabel}>
+          <FormattedMessage id="BookingBreakdown.bookingStart" />
         </div>
-
-        <div className={css.bookingPeriodSectionRigth}>
-          <div className={css.dayLabel}>
-            <FormattedMessage id="BookingBreakdown.bookingEnd" />
-          </div>
-          <div className={css.dayInfo}>
-            <FormattedDate value={endDate} {...timeFormatOptions} {...timeZoneMaybe} />
-          </div>
-          <div className={css.itemLabel}>
-            <FormattedDate value={endDate} {...dateFormatOptions} {...timeZoneMaybe} />
-          </div>
+        <div className={css.dayInfo}>
+          <FormattedDate value={startDate} {...timeFormatOptions} {...timeZoneMaybe} />
+        </div>
+        <div className={css.itemLabel}>
+          <FormattedDate value={startDate} {...dateFormatOptions} {...timeZoneMaybe} />
         </div>
       </div>
-    </>
+
+      <div className={css.bookingPeriodSectionRigth}>
+        <div className={css.dayLabel}>
+          <FormattedMessage id="BookingBreakdown.bookingEnd" />
+        </div>
+        <div className={css.dayInfo}>
+          <FormattedDate value={endDate} {...timeFormatOptions} {...timeZoneMaybe} />
+        </div>
+        <div className={css.itemLabel}>
+          <FormattedDate value={endDate} {...dateFormatOptions} {...timeZoneMaybe} />
+        </div>
+      </div>
+    </div>
   );
 };
 

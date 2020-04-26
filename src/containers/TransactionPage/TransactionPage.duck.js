@@ -376,7 +376,7 @@ export const fetchTransaction = (id, txRole) => (dispatch, getState, sdk) => {
       const denormalised = denormalisedEntities(entities, [listingRef, transactionRef]);
       const listing = denormalised[0];
       const transaction = denormalised[1];
-
+      console.log(transaction)
       // Fetch time slots for transactions that are in enquired state
       const canFetchTimeslots =
         txRole === 'customer' &&

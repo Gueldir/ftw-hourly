@@ -113,7 +113,7 @@ export const TransactionPageComponent = props => {
     currentTransaction.attributes.lineItems
   ) {
     const currentBooking = ensureListing(currentTransaction.booking);
-
+  
     const initialValues = {
       listing: currentListing,
       // Transaction with payment pending should be passed to CheckoutPage
@@ -137,13 +137,13 @@ export const TransactionPageComponent = props => {
     const bookingStart = timestampToDate(bookingStartTime);
     const bookingEnd = timestampToDate(bookingEndTime);
     const seatsQuantity = parseInt(seats);
-
+    
     const bookingData = {
       quantity: calculateQuantityFromHours(bookingStart, bookingEnd, seats),
       seats: seatsQuantity,
       ...restOfValues,
     };
-
+    
     const initialValues = {
       listing: currentListing,
       // enquired transaction should be passed to CheckoutPage

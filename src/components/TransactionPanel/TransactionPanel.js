@@ -328,7 +328,7 @@ export class TransactionPanelComponent extends Component {
     const bookingRange = transaction.booking && transaction.booking.attributes;
     const minutes = bookingRange && bookingRange.start > this.state.date ? minutesBetween(this.state.date, bookingRange.start) : 0;
     const isSessionStarted = minutes <= 5 && this.state.date < bookingRange.end ? false : true;
-
+    
     const loadMeetingRoom = () => {
       const roomId = currentProvider.attributes.profile.abbreviatedName + currentProvider.id.uuid.substring(currentProvider.id.uuid.length - 5, currentProvider.id.uuid.length);
       const roomPwd = currentTransaction.attributes.protectedData.roomPwd;

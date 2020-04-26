@@ -261,6 +261,7 @@ export const sendMessage = params => (dispatch, getState, sdk) => {
  */
 export const speculateTransaction = params => (dispatch, getState, sdk) => {
   dispatch(speculateTransactionRequest());
+  console.log(params)
   const bodyParams = {
     transition: TRANSITION_REQUEST_PAYMENT,
     processAlias: config.bookingProcessAlias,

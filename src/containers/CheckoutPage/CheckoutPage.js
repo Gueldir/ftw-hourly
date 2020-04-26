@@ -147,7 +147,7 @@ export class CheckoutPageComponent extends Component {
     // Note: since there's need for data loading in "componentWillMount" function,
     //       this is added here instead of loadData static function.
     fetchStripeCustomer();
-    console.log(bookingData)
+
     // Browser's back navigation should not rewrite data in session store.
     // Action is 'POP' on both history.back() and page refresh cases.
     // Action is 'PUSH' when user has directed through a link

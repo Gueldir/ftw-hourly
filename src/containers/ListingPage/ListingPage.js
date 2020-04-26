@@ -108,15 +108,17 @@ export class ListingPageComponent extends Component {
     };
 
     const initialValues = {
+      seats,
       listing,
       bookingData,
       bookingDates: {
         bookingStart,
         bookingEnd,
+        seats,
       },
       confirmPaymentError: null,
     };
-
+    
     const routes = routeConfiguration();
     // Customize checkout page state with current listing and selected bookingDates
     const { setInitialValues } = findRouteByRouteName('CheckoutPage', routes);
@@ -196,7 +198,7 @@ export class ListingPageComponent extends Component {
       //languageOptions,
       //yogaStylesConfig,
     } = this.props;
-
+    
     const listingId = new UUID(rawParams.id);
     const isPendingApprovalVariant = rawParams.variant === LISTING_PAGE_PENDING_APPROVAL_VARIANT;
     const isDraftVariant = rawParams.variant === LISTING_PAGE_DRAFT_VARIANT;
