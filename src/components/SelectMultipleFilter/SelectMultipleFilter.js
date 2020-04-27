@@ -77,7 +77,7 @@ class SelectMultipleFilter extends Component {
       showAsPopup,
       ...rest
     } = this.props;
-
+    console.log(this.props)
     const classes = classNames(rootClassName || css.root, className);
 
     const hasInitialValues = initialValues.length > 0;

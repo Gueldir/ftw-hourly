@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormattedMessage } from '../../util/reactIntl';
 import classNames from 'classnames';
-import { PrimaryButton, SecondaryButton } from '../../components';
+import { PrimaryButton } from '../../components';
 
 import css from './TransactionPanel.css';
 
@@ -13,7 +13,6 @@ const MeetingJoinButtonsMaybe = props => {
     rootClassName,
     showButtons,
     acceptInProgress,
-    declineInProgress,
     acceptSaleError,
     declineSaleError,
     onAcceptSale,
@@ -38,13 +37,8 @@ const MeetingJoinButtonsMaybe = props => {
 
   return showButtons ? (
     <div className={classes}>
-      <div className={css.actionErrors}>
-        {acceptErrorMessage}
-        {declineErrorMessage}
-      </div>
       <div className={css.actionButtonWrapper}>
         <PrimaryButton
-          inProgress={acceptInProgress}
           disabled={buttonsDisabled}
           onClick={() => { onOpenMeetingModal(); loadMeetingRoom(); }}
         >

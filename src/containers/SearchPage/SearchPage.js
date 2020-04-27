@@ -255,7 +255,10 @@ export class SearchPageComponent extends Component {
               priceFilter: filters.priceFilter,
               dateRangeLengthFilter: filters.dateRangeLengthFilter,
             }}
-            secondaryFilters={{
+            secondaryFilters={{              
+              languageFilter: filters.languageFilter,
+              audienceFilter: filters.audienceFilter,
+              levelFilter: filters.levelFilter,
             }}
           />
         </div>
@@ -276,9 +279,9 @@ SearchPageComponent.defaultProps = {
   certificateConfig: config.custom.certificate,
   musicConfig: config.custom.music,
   sportConfig: config.custom.sport,
-  languageConfig: config.custom.language,
-  audienceConfig: config.custom.audience,
-  levelConfig: config.custom.level,
+  languageConfig: config.custom.languageOptions,
+  audienceConfig: config.custom.audienceOptions,
+  levelConfig: config.custom.levelOptions,
   priceFilterConfig: config.custom.priceFilterConfig,
   keywordFilterConfig: config.custom.keywordFilterConfig,
   dateRangeLengthFilterConfig: config.custom.dateRangeLengthFilterConfig,

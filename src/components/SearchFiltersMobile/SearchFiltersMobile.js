@@ -224,6 +224,9 @@ class SearchFiltersMobileComponent extends Component {
       selectedFiltersCount,
       categoryFilter,
       certificateFilter,
+      languageFilter,
+      audienceFilter,
+      levelFilter,
       musicFilter,
       sportFilter,
       priceFilter,
@@ -373,6 +376,62 @@ class SearchFiltersMobileComponent extends Component {
         />
       ) : null;
 
+    const initiallanguage = this.initialValues(languageFilter.paramName);
+
+    const languageLabel = intl.formatMessage({
+      id: 'SearchFiltersPanel.languageLabel',
+    });
+
+    const languageFilterElement = languageFilter ? (
+      <SelectMultipleFilter
+        id={'SearchFilters.languageFilter'}
+        name="language"
+        urlParam={languageFilter.paramName}
+        label={languageLabel}
+        onSubmit={this.handleSelectMultiple}
+        options={languageFilter.options}
+        initialValues={initiallanguage}
+        liveEdit
+      />
+    ) : null;
+    const initialaudience = this.initialValues(audienceFilter.paramName);
+
+    const audienceLabel = intl.formatMessage({
+      id: 'SearchFiltersPanel.audienceLabel',
+    });
+
+    const audienceFilterElement = audienceFilter ? (
+      <SelectMultipleFilter
+        id={'SearchFilters.audienceFilter'}
+        name="audience"
+        urlParam={audienceFilter.paramName}
+        label={audienceLabel}
+        onSubmit={this.handleSelectMultiple}
+        options={audienceFilter.options}
+        initialValues={initialaudience}
+        liveEdit
+      />
+    ) : null;
+
+    const initiallevel = this.initialValues(levelFilter.paramName);
+
+    const levelLabel = intl.formatMessage({
+      id: 'SearchFiltersPanel.levelLabel',
+    });
+
+    const levelFilterElement = levelFilter ? (
+      <SelectMultipleFilter
+        id={'SearchFilters.levelFilter'}
+        name="level"
+        urlParam={levelFilter.paramName}
+        label={levelLabel}
+        onSubmit={this.handleSelectMultiple}
+        options={levelFilter.options}
+        initialValues={initiallevel}
+        liveEdit
+      />
+    ) : null;
+
     const sortBy = config.custom.sortConfig.active ? (
       <SortBy
         rootClassName={css.sortBy}
@@ -417,8 +476,10 @@ class SearchFiltersMobileComponent extends Component {
               {categoryFilterElement}
               {musicFilterElement}
               {sportFilterElement}
-              {certificateFilterElement}
               {keywordFilterElement}
+              {languageFilterElement}
+              {audienceFilterElement}
+              {levelFilterElement}
               {priceFilterElement}
               {dateRangeLengthFilterElement}
             </div>

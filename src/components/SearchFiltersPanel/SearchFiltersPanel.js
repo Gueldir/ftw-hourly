@@ -152,19 +152,23 @@ class SearchFiltersPanelComponent extends Component {
   }
 
   render() {
-    const { rootClassName, className, intl, certificateFilter, musicFilter, sportFilter } = this.props;
+    const { rootClassName, className, intl, certificateFilter, languageFilter, audienceFilter, levelFilter } = this.props;
     const classes = classNames(rootClassName || css.root, className);
 
-    //const initialCategory = this.initialValue(musicFilter.paramName);
-    //const initialsport = this.initialValues(sportFilter.paramName);
-    //const initialmusic = this.initialValues(musicFilter.paramName);
+    const initiallanguage = this.initialValues(languageFilter.paramName);
+    const initialaudience = this.initialValues(audienceFilter.paramName);
+    const initiallevel = this.initialValues(levelFilter.paramName);
 
-    const musicLabel = intl.formatMessage({
-      id: 'SearchFiltersPanel.musicLabel',
+    const languageLabel = intl.formatMessage({
+      id: 'SearchFiltersPanel.languageLabel',
     });
 
-    const sportLabel = intl.formatMessage({
-      id: 'SearchFiltersPanel.sportLabel',
+    const audienceLabel = intl.formatMessage({
+      id: 'SearchFiltersPanel.audienceLabel',
+    });
+
+    const levelLabel = intl.formatMessage({
+      id: 'SearchFiltersPanel.levelLabel',
     });
 
     const certificateLabel = intl.formatMessage({
@@ -187,10 +191,52 @@ class SearchFiltersPanelComponent extends Component {
       />
     ) : null;
 
+  const languageFilterElement = languageFilter ? (
+    <SelectMultipleFilter
+      id={'SearchFilters.languageFilter'}
+      name="language"
+      urlParam={languageFilter.paramName}
+      label={languageLabel}
+      onSubmit={this.handleSelectMultiple}
+      options={languageFilter.options}
+      initialValues={initiallanguage}
+      liveEdit
+      isClosed
+    />
+  ) : null;
+
+  const audienceFilterElement = audienceFilter ? (
+    <SelectMultipleFilter
+      id={'SearchFilters.audienceFilter'}
+      name="audience"
+      urlParam={audienceFilter.paramName}
+      label={audienceLabel}
+      onSubmit={this.handleSelectMultiple}
+      options={audienceFilter.options}
+      initialValues={initialaudience}
+      liveEdit
+    />
+  ) : null;
+
+  const levelFilterElement = levelFilter ? (
+    <SelectMultipleFilter
+      id={'SearchFilters.levelFilter'}
+      name="level"
+      urlParam={levelFilter.paramName}
+      label={levelLabel}
+      onSubmit={this.handleSelectMultiple}
+      options={levelFilter.options}
+      initialValues={initiallevel}
+      liveEdit
+    />
+  ) : null;
+
     return (
       <div className={classes}>
         <div className={css.filtersWrapper}>
-          {certificateFilterElement}
+          {languageFilterElement}
+          {audienceFilterElement}
+          {levelFilterElement}
         </div>
         <div className={css.footer}>
           <InlineTextButton rootClassName={css.resetAllButton} onClick={this.resetAll}>

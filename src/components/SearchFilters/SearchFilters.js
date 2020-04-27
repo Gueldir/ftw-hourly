@@ -348,6 +348,7 @@ const SearchFiltersComponent = props => {
           {dateRangeLengthFilterElement}
           {priceFilterElement}
           {keywordFilterElement}
+          {toggleSearchFiltersPanelButton}
         </div>
         {listingsAreLoaded && resultsCount > 0 ? (
           <div className={css.searchResultSummary}>

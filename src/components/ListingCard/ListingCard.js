@@ -67,18 +67,18 @@ export const ListingCardComponent = props => {
   const firstImage =
     currentListing.images && currentListing.images.length > 0 ? currentListing.images[0] : null;
     console.log(author)
-  const certificate = publicData
+  /*const certificate = publicData
     ? getCertificateInfo(certificateConfig, publicData.certificate)
-    : null;
+    : null;*/
   const { formattedPrice, priceTitle } = priceData(price, intl);
 
   const unitType = config.bookingUnitType;
   const isNightly = unitType === LINE_ITEM_NIGHT;
   const isDaily = unitType === LINE_ITEM_DAY;
 
-  const maxElements = 3;
+  /*const maxElements = 3;
   const sport = publicData.sport.map(s => ( sportConfig.find(c => c.key === s)));
-  const music = publicData.music.map(m => ( musicConfig.find(c => c.key === m)));
+  const music = publicData.music.map(m => ( musicConfig.find(c => c.key === m)));*/
 
   const unitTranslationKey = isNightly
     ? 'ListingCard.perNight'
