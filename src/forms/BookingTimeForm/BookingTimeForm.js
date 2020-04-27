@@ -69,7 +69,6 @@ export class BookingTimeFormComponent extends Component {
             monthlyTimeSlots,
             onFetchTimeSlots,
             timeZone,
-            formId,
           } = fieldRenderProps;
 
           const startTime = values && values.bookingStartTime ? values.bookingStartTime : null;

@@ -453,7 +453,6 @@ class FieldDateAndTimeInput extends Component {
      */
 
     return (
-      <div>
       <div className={classes}>
         <div className={css.formRow}>
           <div className={classNames(css.field, css.startDate)}>
@@ -557,9 +556,8 @@ class FieldDateAndTimeInput extends Component {
               )}
             </FieldSelect>
           </div>
-        </div>
-      </div>
-        <div className={classes}>
+        </div>        
+        <div className={css.formRow}>
           <FieldTextInput
             id={formId ? `${formId}.seats` : 'seats'}
             name="seats"
