@@ -358,6 +358,7 @@ class SearchAutocompleteInputImpl extends Component {
       placeholder,
       input,
       meta,
+      onSubmit,
       inputRef,
     } = this.props;
     //const { name, onFocus } = input;
@@ -388,6 +389,7 @@ class SearchAutocompleteInputImpl extends Component {
           autoComplete="off"
           autoFocus={autoFocus}
           placeholder={placeholder}
+          onSubmit={onSubmit}
           /*name={name}
           value={search}
           disabled={this.state.fetchingPlaceDetails}
@@ -395,12 +397,6 @@ class SearchAutocompleteInputImpl extends Component {
           onBlur={this.handleOnBlur}
           onChange={this.onChange}
           onKeyDown={this.onKeyDown}*/
-          ref={node => {
-            this.input = node;
-            if (inputRef) {
-              inputRef(node);
-            }
-          }}
         />
       </div>
     );

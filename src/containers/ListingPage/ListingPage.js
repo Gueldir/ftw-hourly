@@ -530,7 +530,6 @@ ListingPageComponent.propTypes = {
   sendEnquiryError: propTypes.error,
   onSendEnquiry: func.isRequired,
   onInitializeCardPaymentData: func.isRequired,
-
   certificateConfig: array,
   musicConfig: array,
   sportConfig: array,

@@ -400,6 +400,8 @@
   "InboxPage.statePendingPayment": "Pending payment",
   "InboxPage.stateRequested": "Requested",
   "InboxPage.title": "Inbox",
+  "TopbarFilter.filterText": "Welcome",
+  "TopbarFilter.placeholder": "Search for a teachers…",
   "KeywordFilter.filterText": "Filter results by",
   "KeywordFilter.labelSelected": "\"{labelText}\"",
   "KeywordFilter.placeholder": "Enter a keyword…",

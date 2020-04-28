@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { array, bool, func, number, shape, string } from 'prop-types';
+import { array, bool, func, number, shape, string, objectOf } from 'prop-types';
 import { compose } from 'redux';
 import { FormattedMessage, intlShape, injectIntl } from '../../util/reactIntl';
 import pickBy from 'lodash/pickBy';
@@ -158,6 +158,8 @@ class TopbarComponent extends Component {
       location,
       onManageDisableScrolling,
       onResendVerificationEmail,
+      primaryFilters,
+      urlQueryParams,
       sendVerificationEmailInProgress,
       sendVerificationEmailError,
       showGenericError,
@@ -249,6 +251,8 @@ class TopbarComponent extends Component {
             notificationCount={notificationCount}
             onLogout={this.handleLogout}
             onSearchSubmit={this.handleSubmit}
+            urlQueryParams={urlQueryParams}
+            primaryFilters={primaryFilters}
           />
         </div>
         <Modal
@@ -309,6 +313,7 @@ TopbarComponent.defaultProps = {
   currentUserHasOrders: null,
   currentPage: null,
   sendVerificationEmailError: null,
+  primaryFilters: null,
   authScopes: [],
 };
 
@@ -332,6 +337,7 @@ TopbarComponent.propTypes = {
   sendVerificationEmailInProgress: bool.isRequired,
   sendVerificationEmailError: propTypes.error,
   showGenericError: bool.isRequired,
+  primaryFilters: objectOf(propTypes.filterConfig),
 
   // These are passed from Page to keep Topbar rendering aware of location changes
   history: shape({

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes, { objectOf } from 'prop-types';
 import { FormattedMessage, intlShape } from '../../util/reactIntl';
 import classNames from 'classnames';
 import { ACCOUNT_SETTINGS_PAGES } from '../../routeConfiguration';
@@ -26,6 +26,8 @@ const TopbarDesktop = props => {
     rootClassName,
     currentUserHasListings,
     notificationCount,
+    urlQueryParams,
+    primaryFilters,
     intl,
     isAuthenticated,
     onLogout,
@@ -49,6 +51,8 @@ const TopbarDesktop = props => {
       desktopInputRoot={css.topbarSearchWithLeftPadding}
       onSubmit={onSearchSubmit}
       initialValues={initialSearchFormValues}
+      urlQueryParams={urlQueryParams}
+      {...primaryFilters}
     />
   );
 
@@ -201,6 +205,7 @@ TopbarDesktop.defaultProps = {
   className: null,
   currentUser: null,
   currentPage: null,
+  primaryFilters: null,
   notificationCount: 0,
   initialSearchFormValues: {},
 };
@@ -217,6 +222,7 @@ TopbarDesktop.propTypes = {
   onSearchSubmit: func.isRequired,
   initialSearchFormValues: object,
   intl: intlShape.isRequired,
+  primaryFilters: objectOf(propTypes.filterConfig),
 };
 
 export default TopbarDesktop;

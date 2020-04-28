@@ -229,6 +229,10 @@ export class SearchPageComponent extends Component {
           className={topbarClasses}
           currentPage="SearchPage"
           currentSearchParams={urlQueryParams}
+          urlQueryParams={validQueryParams}
+          primaryFilters={{
+            keywordFilter: filters.keywordFilter,
+          }}
         />
         <div className={css.container}>
           <MainPanel
@@ -250,7 +254,7 @@ export class SearchPageComponent extends Component {
               categoryFilter: filters.categoryFilter,
               musicFilter: filters.musicFilter,
               sportFilter: filters.sportFilter,
-              certificateFilter: filters.certificateFilter,
+              //certificateFilter: filters.certificateFilter,
               keywordFilter: filters.keywordFilter,
               priceFilter: filters.priceFilter,
               dateRangeLengthFilter: filters.dateRangeLengthFilter,

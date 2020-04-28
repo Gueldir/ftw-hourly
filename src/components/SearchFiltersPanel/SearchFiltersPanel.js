@@ -259,7 +259,6 @@ SearchFiltersPanelComponent.defaultProps = {
   className: null,
   filterParamNames: [],
   certificateFilter: null,
-  yogaStylesFilter: null,
 };
 
 SearchFiltersPanelComponent.propTypes = {
@@ -269,7 +268,6 @@ SearchFiltersPanelComponent.propTypes = {
   onClosePanel: func.isRequired,
   filterParamNames: array,
   certificateFilter: propTypes.filterConfig,
-  yogaStylesFilter: propTypes.filterConfig,
 
   // from injectIntl
   intl: intlShape.isRequired,

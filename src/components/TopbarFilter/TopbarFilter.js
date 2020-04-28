@@ -3,17 +3,18 @@ import { func, number, string } from 'prop-types';
 import classNames from 'classnames';
 import { injectIntl, intlShape } from '../../util/reactIntl';
 import debounce from 'lodash/debounce';
-import { FieldTextInput } from '../../components';
+import { FieldSearchInput, IconSpinner } from '../../components';
 
-import { FilterPopup, FilterPlain } from '../../components';
-import css from './KeywordFilter.css';
+import IconHourGlass from './IconHourGlass';
+import { FilterPlainTopbar } from '../../components';
+import css from './TopbarFilter.css';
 
 // When user types, we wait for new keystrokes a while before searching new content
 const DEBOUNCE_WAIT_TIME = 600;
 // Short search queries (e.g. 2 letters) have a longer timeout before search is made
 const TIMEOUT_FOR_SHORT_QUERIES = 2000;
 
-class KeywordFilter extends Component {
+class TopbarFilter extends Component {
   constructor(props) {
     super(props);
 
@@ -62,29 +63,35 @@ class KeywordFilter extends Component {
       initialValues,
       contentPlacementOffset,
       onSubmit,
+      iconClassName,
+      inputClassName,
       urlParam,
       intl,
       showAsPopup,
       ...rest
     } = this.props;
-    
+
     const classes = classNames(rootClassName || css.root, className);
+    const rootClass = classNames(rootClassName || css.root, className);
+    const iconClass = classNames(iconClassName || css.icon);
+    const inputClass = classNames(inputClassName || css.input);
+
 
     const hasInitialValues = !!initialValues && initialValues.length > 0;
     const labelForPopup = hasInitialValues
-      ? intl.formatMessage({ id: 'KeywordFilter.labelSelected' }, { labelText: initialValues })
+      ? intl.formatMessage({ id: 'TopbarFilter.labelSelected' }, { labelText: initialValues })
       : label;
 
     const labelForPlain = hasInitialValues
       ? intl.formatMessage(
-          { id: 'KeywordFilterPlainForm.labelSelected' },
+          { id: 'TopbarFilterPlainForm.labelSelected' },
           { labelText: initialValues }
         )
       : label;
 
-    const filterText = intl.formatMessage({ id: 'KeywordFilter.filterText' });
+    const filterText = intl.formatMessage({ id: 'TopbarFilter.filterText' });
 
-    const placeholder = intl.formatMessage({ id: 'KeywordFilter.placeholder' });
+    const placeholder = intl.formatMessage({ id: 'TopbarFilter.placeholder' });
 
     const contentStyle = this.positionStyleForContent();
 
@@ -101,23 +108,24 @@ class KeywordFilter extends Component {
       leading: false,
       trailing: true,
     });
-    // Use timeout for shart queries and debounce for queries with any length
+    // Use timeout for short queries and debounce for queries with any length
     const handleChangeWithDebounce = (urlParam, values) => {
       // handleSubmit gets urlParam and values as params.
       // If this field ("keyword") is short, create timeout
       const hasKeywordValue = values && values[name];
       const keywordValue = hasKeywordValue ? values && values[name] : '';
+      // TBD: set an inputRef to handleSubmit(urlParam, values) so it grabs the last input and we can set back >= 1 below to >= 3
       if (urlParam && (!hasKeywordValue || (hasKeywordValue && keywordValue.length >= 3))) {
         if (this.shortKeywordTimeout) {
           window.clearTimeout(this.shortKeywordTimeout);
         }
         return debouncedSubmit(urlParam, values);
-      } else {
+      } else if (this.mobileInputRef && this.mobileInputRef.current) {
         this.shortKeywordTimeout = window.setTimeout(() => {
           // if mobileInputRef exists, use the most up-to-date value from there
           return this.mobileInputRef && this.mobileInputRef.current
             ? handleSubmit(urlParam, { ...values, [name]: this.mobileInputRef.current.value })
-            : handleSubmit(urlParam, values);
+            : null;
         }, TIMEOUT_FOR_SHORT_QUERIES);
       }
     };
@@ -129,80 +137,53 @@ class KeywordFilter extends Component {
       }
     };
 
-    return showAsPopup ? (
-      <FilterPopup
-        className={classes}
-        rootClassName={rootClassName}
-        popupClassName={css.popupSize}
-        name={name}
-        label={labelForPopup}
-        isSelected={hasInitialValues}
-        id={`${id}.popup`}
-        showAsPopup
-        labelMaxWidth={250}
-        contentPlacementOffset={contentPlacementOffset}
-        onSubmit={handleSubmit}
-        initialValues={namedInitialValues}
-        urlParam={urlParam}
-        keepDirtyOnReinitialize
-        {...rest}
-      >
-        <FieldTextInput
-          className={css.field}
-          name={name}
-          id={`${id}-input`}
-          type="text"
-          label={filterText}
-          placeholder={placeholder}
-          autoComplete="off"
-        />
-      </FilterPopup>
-    ) : (
-      <FilterPlain
-        className={className}
-        rootClassName={rootClassName}
-        label={labelForPlain}
-        isSelected={hasInitialValues}
-        id={`${id}.plain`}
-        liveEdit
-        contentPlacementOffset={contentStyle}
-        onSubmit={handleChangeWithDebounce}
-        onClear={handleClear}
-        initialValues={namedInitialValues}
-        urlParam={urlParam}
-        {...rest}
-      >
-        <fieldset className={css.fieldPlain}>
-          <label>{filterText}</label>
-          <FieldTextInput
-            name={name}
-            id={`${id}-input`}
-            isUncontrolled
-            inputRef={this.mobileInputRef}
-            type="text"
-            placeholder={placeholder}
-            autoComplete="off"
-          />
-        </fieldset>
-      </FilterPlain>
+    return (      
+        <FilterPlainTopbar
+          className={className}
+          //rootClassName={rootClassName}
+          isSelected={hasInitialValues}
+          id={`${id}.plain`}
+          liveEdit
+          contentPlacementOffset={contentStyle}
+          onSubmit={handleChangeWithDebounce}
+          onClear={handleClear}
+          initialValues={namedInitialValues}
+          urlParam={urlParam}
+          {...rest}
+        >
+          <div className={rootClass}>
+            <div className={iconClass}>
+              <IconHourGlass />
+            </div>
+            <FieldSearchInput
+              className={inputClass}
+              name={name}
+              id={`${id}-input`}
+              isUncontrolled
+              inputRef={this.mobileInputRef}
+              type="text"
+              placeholder={placeholder}
+              autoComplete="off"
+            />
+          </div>
+        </FilterPlainTopbar>
     );
   }
 }
 
-KeywordFilter.defaultProps = {
+TopbarFilter.defaultProps = {
   rootClassName: null,
   className: null,
   initialValues: null,
   contentPlacementOffset: 0,
 };
 
-KeywordFilter.propTypes = {
+TopbarFilter.propTypes = {
   rootClassName: string,
   className: string,
   id: string.isRequired,
   name: string.isRequired,
   urlParam: string.isRequired,
-  label: string.isRequired,
   onSubmit: func.isRequired,
   initialValues: string,
   contentPlacementOffset: number,
@@ -211,4 +192,4 @@ KeywordFilter.propTypes = {
   intl: intlShape.isRequired,
 };
 
-export default injectIntl(KeywordFilter);
+export default injectIntl(TopbarFilter);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { array, bool, func, number, object, shape, string } from 'prop-types';
+import { array, bool, func, number, object, shape, objectOf, string } from 'prop-types';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -30,6 +30,7 @@ export const TopbarContainerComponent = props => {
     sendVerificationEmailInProgress,
     sendVerificationEmailError,
     onResendVerificationEmail,
+    urlQueryParams,
     ...rest
   } = props;
 
@@ -51,6 +52,7 @@ export const TopbarContainerComponent = props => {
       onLogout={onLogout}
       onManageDisableScrolling={onManageDisableScrolling}
       onResendVerificationEmail={onResendVerificationEmail}
+      urlQueryParams={urlQueryParams}
       sendVerificationEmailInProgress={sendVerificationEmailInProgress}
       sendVerificationEmailError={sendVerificationEmailError}
       showGenericError={hasGenericError}
@@ -68,6 +70,7 @@ TopbarContainerComponent.defaultProps = {
   sendVerificationEmailError: null,
   currentUserListing: null,
   authScopes: null,
+  primaryFilters: null,
 };
 
 TopbarContainerComponent.propTypes = {
@@ -88,6 +91,7 @@ TopbarContainerComponent.propTypes = {
   sendVerificationEmailError: propTypes.error,
   onResendVerificationEmail: func.isRequired,
   hasGenericError: bool.isRequired,
+  primaryFilters: objectOf(propTypes.filterConfig),
 
   // from withRouter
   history: shape({

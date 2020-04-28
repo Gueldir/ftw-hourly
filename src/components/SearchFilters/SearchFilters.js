@@ -83,7 +83,7 @@ const SearchFiltersComponent = props => {
     history,
     intl,
   } = props;
-
+  
   const hasNoResult = listingsAreLoaded && resultsCount === 0;
   const classes = classNames(rootClassName || css.root, { [css.longInfo]: hasNoResult }, className);
 
@@ -136,7 +136,7 @@ const SearchFiltersComponent = props => {
     : null;
 
   const initialKeyword = keywordFilter
-    ? initialValue(urlQueryParams, keywordFilter.paramName)
+    ? initialValues(urlQueryParams, keywordFilter.paramName)
     : null;
 
   const isKeywordFilterActive = !!initialKeyword;
@@ -171,6 +171,7 @@ const SearchFiltersComponent = props => {
   };
 
   const handleKeyword = (urlParam, values) => {
+    console.log(values)
     const queryParams = values
       ? { ...urlQueryParams, [urlParam]: values }
       : omit(urlQueryParams, urlParam);
@@ -344,7 +345,6 @@ const SearchFiltersComponent = props => {
           {categoryFilterElement}
           {musicFilterElement}
           {sportFilterElement}
-          {certificateFilterElement}
           {dateRangeLengthFilterElement}
           {priceFilterElement}
           {keywordFilterElement}

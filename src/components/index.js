@@ -97,6 +97,7 @@ export { default as FieldRadioButton } from './FieldRadioButton/FieldRadioButton
 export { default as FieldReviewRating } from './FieldReviewRating/FieldReviewRating';
 export { default as FieldSelect } from './FieldSelect/FieldSelect';
 export { default as FieldTextInput } from './FieldTextInput/FieldTextInput';
+export { default as FieldSearchInput } from './FieldSearchInput/FieldSearchInput';
 // Fields that use other Fields
 export { default as FieldTimeZoneSelect } from './FieldTimeZoneSelect/FieldTimeZoneSelect';
 export { default as FieldBoolean } from './FieldBoolean/FieldBoolean';
@@ -126,9 +127,11 @@ export { default as BookingDateRangeLengthFilter } from './BookingDateRangeLengt
 export { default as BookingTimeInfo } from './BookingTimeInfo/BookingTimeInfo';
 export { default as BookingPanel } from './BookingPanel/BookingPanel';
 export { default as Discussion } from './Discussion/Discussion';
+export { default as FilterPlainTopbar } from './FilterPlainTopbar/FilterPlainTopbar';
 export { default as FilterPlain } from './FilterPlain/FilterPlain';
 export { default as FilterPopup } from './FilterPopup/FilterPopup';
 export { default as KeywordFilter } from './KeywordFilter/KeywordFilter';
+export { default as TopbarFilter } from './TopbarFilter/TopbarFilter';
 export { default as ListingCard } from './ListingCard/ListingCard';
 export { default as ManageListingCard } from './ManageListingCard/ManageListingCard';
 export { default as Map } from './Map/Map';
