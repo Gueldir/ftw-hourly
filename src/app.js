@@ -35,7 +35,7 @@ import defaultMessages from './translations/en.json';
 // If you are using a non-english locale with moment library,
 // you should also import time specific formatting rules for that locale
 // e.g. for French: import 'moment/locale/fr';
-
+import 'moment/locale/fr'
 // Step 3:
 // If you are using a non-english locale, point `messagesInLocale` to correct .json file
 import messagesInLocale from './translations/fr.json';
@@ -56,7 +56,7 @@ const addMissingTranslations = (sourceLangTranslations, targetLangTranslations) 
   return missingKeys.reduce(addMissingTranslation, targetLangTranslations);
 };
 
-const isDefaultLanguageInUse = config.locale === 'en';
+const isDefaultLanguageInUse = config.locale === 'fr';
 
 const messages = isDefaultLanguageInUse
   ? defaultMessages
@@ -73,7 +73,7 @@ const setupLocale = () => {
   if (isTestEnv) {
     // Use english as a default locale in tests
     // This affects app.test.js and app.node.test.js tests
-    config.locale = 'en';
+    config.locale = 'fr';
     return;
   }
 
