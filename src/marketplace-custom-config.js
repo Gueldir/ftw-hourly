@@ -30,7 +30,7 @@ export const category = [
 
 export const certificate = [
   { key: 'none', label: 'No certificate', hideFromFilters: true, hideFromListingInfo: true },
-  { key: 'certified', label: 'Certified' },
+  { key: 'certified', label: 'Certified', hideFromFilters: true, hideFromListingInfo: true },
 ];
 
 export const sport = [
