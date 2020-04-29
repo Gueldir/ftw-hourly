@@ -157,6 +157,28 @@ Remember to do required code changes also in FieldDateAndTimeInput.js!
   color: var(--matterColorNegative);
 }
 
+.seatsSelect input {  
+  margin-bottom: 21px;
+  width: calc(100vw - 48px);
+  margin: 0 24px;
+  padding-left: 4px;  
+  border-bottom-width: 2px;
+  @media (--viewportMedium) {
+    width: 100%;
+    margin: 0;
+    border-bottom-width: 3px;
+  }
+}
+
+.seatsSelect label {  
+  width: calc(100% - 48px);
+  margin: 21px 24px 0;
+  @media (--viewportMedium) {
+    width: 100%;
+    margin: 6px 0 0;
+  }
+}
+
 /**
 CSS for hiding the end date above
 **/

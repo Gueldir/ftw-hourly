@@ -27,6 +27,18 @@
   }
 }
 
+.threeColumns {
+  @media (--viewportMedium) {
+    column-count: 3;
+  }
+}
+
+.fourColumns {
+  @media (--viewportMedium) {
+    column-count: 4;
+  }
+}
+
 .item {
   display: flex;
   align-items: center;

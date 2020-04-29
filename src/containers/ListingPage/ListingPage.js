@@ -49,6 +49,8 @@ import SectionHeading from './SectionHeading';
 import SectionDescriptionMaybe from './SectionDescriptionMaybe';
 import SectionFeaturesMaybe from './SectionFeaturesMaybe';
 import SectionLanguage from './SectionLanguage';
+import SectionAudience from './SectionAudience';
+import SectionLevel from './SectionLevel';
 import SectionHostMaybe from './SectionHostMaybe';
 import SectionReviews from './SectionReviews';
 //import SectionMapMaybe from './SectionMapMaybe';
@@ -209,8 +211,11 @@ export class ListingPageComponent extends Component {
         : ensureListing(getListing(listingId));
     // Use the category customization and passes directly to stylesConfig the current styles
     // available accordin to the selectionned category.
-    const yogaStylesConfig = config.custom[currentListing.attributes.publicData.category];
+    const categoryConfig = currentListing.attributes.publicData.category;
+    const categoriesConfig = config.custom[categoryConfig];
     const languageOptions = config.custom.languageOptions;
+    const audienceOptions = config.custom.audienceOptions;
+    const levelOptions = config.custom.levelOptions;
 
     const listingSlug = rawParams.slug || createSlug(currentListing.attributes.title || '');
     const params = { slug: listingSlug, ...rawParams };
@@ -256,11 +261,6 @@ export class ListingPageComponent extends Component {
         })}
       </span>
     );
-
-    const bookingTitle = (
-      <FormattedMessage id="ListingPage.bookingTitle" values={{ title: richTitle }} />
-    );
-    const bookingSubTitle = intl.formatMessage({ id: 'ListingPage.bookingSubTitle' });
 
     const topbar = <TopbarContainer />;
 
@@ -335,6 +335,11 @@ export class ListingPageComponent extends Component {
     // Because listing can be never showed with banned or deleted user we don't have to provide
     // banned or deleted display names for the function
     const authorDisplayName = userDisplayNameAsString(ensuredAuthor, '');
+
+    const bookingTitle = (
+      <FormattedMessage id="ListingPage.bookingTitle" values={{ title: authorDisplayName }} />
+    );
+    const bookingSubTitle = intl.formatMessage({ id: 'ListingPage.bookingSubTitle' });
 
     const { formattedPrice, priceTitle } = priceData(price, intl);
 
@@ -429,9 +434,12 @@ export class ListingPageComponent extends Component {
                     hostLink={hostLink}
                     showContactUser={showContactUser}
                     onContactUser={this.onContactUser}
+                    options={categoryConfig}
                   />
                   <SectionDescriptionMaybe description={description} />
-                  <SectionFeaturesMaybe options={yogaStylesConfig} publicData={publicData} />
+                  <SectionFeaturesMaybe options={categoriesConfig} publicData={publicData} />
+                  <SectionAudience options={audienceOptions} publicData={publicData} />
+                  <SectionLevel options={levelOptions} publicData={publicData} />
                   <SectionLanguage options={languageOptions} publicData={publicData} />
                   <SectionReviews reviews={reviews} fetchReviewsError={fetchReviewsError} />
                   <SectionHostMaybe

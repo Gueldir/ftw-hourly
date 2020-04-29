@@ -558,22 +558,24 @@ class FieldDateAndTimeInput extends Component {
           </div>
         </div>        
         <div className={css.formRow}>
-          <FieldTextInput
-            id={formId ? `${formId}.seats` : 'seats'}
-            name="seats"
-            label={seatsLabel}
-            className={css.seatsSelect}
-            placeholder={maxSeats}
-            defaultValue={maxSeats == 0 ? 0 : 1}
-            type="number"
-            pattern="[0-9]*"
-            inputMode="numeric"
-            min={maxSeats == 0 ? 0 : 1}
-            max={maxSeats ? maxSeats <= 1 ? 1 : maxSeats : 0}
-            //disabled={true}
-            disabled={endTimeDisabled}
-            step="1"
-          />
+          <div className={css.field}>
+            <FieldTextInput
+              id={formId ? `${formId}.seats` : 'seats'}
+              name="seats"
+              label={seatsLabel}
+              className={css.seatsSelect}
+              placeholder={maxSeats}
+              defaultValue={maxSeats == 0 ? 0 : 1}
+              type="number"
+              pattern="[0-9]*"
+              inputMode="numeric"
+              min={maxSeats == 0 ? 0 : 1}
+              max={maxSeats ? maxSeats <= 1 ? 1 : maxSeats : 0}
+              disabled={true}
+              //disabled={endTimeDisabled}
+              step="1"
+            />
+          </div>
         </div>
       </div>
     );

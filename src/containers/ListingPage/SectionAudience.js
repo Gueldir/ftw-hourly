@@ -5,36 +5,36 @@ import { PropertyGroup } from '../../components';
 
 import css from './ListingPage.css';
 
-const SectionLanguage = props => {
+const SectionAudience = props => {
   const { options, publicData } = props;
   if (!publicData) {
     return null;
   }
 
-  const selectedOptions = publicData && publicData.language ? publicData.language : [];
+  const selectedOptions = publicData && publicData.audience ? publicData.audience : [];
   const selectedConfigOptions = options.filter(o => selectedOptions.find(s => s === o.key));
   
   return (
     <div className={css.sectionFeatures}>
       <h2 className={css.featuresTitle}>
-        <FormattedMessage id="ListingPage.languageTitle" />
+        <FormattedMessage id="ListingPage.audienceTitle" />
       </h2>
       <PropertyGroup
-        id="ListingPage.language"
+        id="ListingPage.audience"
         //options={selectedConfigOptions} To not display the unchecked options
         options={options}
         selectedOptions={selectedOptions}
-        threeColumns={options.length > 2}
+        fourColumns={options.length > 3}
       />
     </div>
   );
 };
 
-SectionLanguage.propTypes = {
+SectionAudience.propTypes = {
   options: array.isRequired,
   publicData: shape({
     selectedOptions: string,
   }).isRequired,
 };
 
-export default SectionLanguage;
+export default SectionAudience

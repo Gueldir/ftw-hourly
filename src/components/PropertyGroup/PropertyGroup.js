@@ -52,9 +52,9 @@ const Item = props => {
 };
 
 const PropertyGroup = props => {
-  const { rootClassName, className, id, options, selectedOptions, twoColumns } = props;
+  const { rootClassName, className, id, options, selectedOptions, twoColumns, threeColumns, fourColumns } = props;
   const classes = classNames(rootClassName || css.root, className);
-  const listClasses = twoColumns ? classNames(classes, css.twoColumns) : classes;
+  const listClasses = twoColumns ? classNames(classes, css.twoColumns) : threeColumns ? classNames(classes, css.threeColumns) : fourColumns ? classNames(classes, css.fourColumns) : classes;
 
   const checked = checkSelected(options, selectedOptions);
 
@@ -72,6 +72,8 @@ PropertyGroup.defaultProps = {
   className: null,
   selectedOptions: [],
   twoColumns: false,
+  threeColumns: false,
+  fourColumns: false,
 };
 
 const { arrayOf, bool, node, shape, string } = PropTypes;
@@ -88,6 +90,8 @@ PropertyGroup.propTypes = {
   ),
   selectedOptions: arrayOf(string),
   twoColumns: bool,
+  threeColumns: bool,
+  fourColumns: bool,
 };
 
 export default PropertyGroup;

@@ -171,7 +171,6 @@ const SearchFiltersComponent = props => {
   };
 
   const handleKeyword = (urlParam, values) => {
-    console.log(values)
     const queryParams = values
       ? { ...urlQueryParams, [urlParam]: values }
       : omit(urlQueryParams, urlParam);

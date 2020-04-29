@@ -20,6 +20,7 @@ const SectionHeading = props => {
     certificateConfig,
     showContactUser,
     onContactUser,
+    options,
   } = props;
 
   const unitType = config.bookingUnitType;
@@ -31,9 +32,10 @@ const SectionHeading = props => {
     : isDaily
     ? 'ListingPage.perDay'
     : 'ListingPage.perUnit';
-
+  const category = config.custom.category.find(c => c.key === options);
   const certificate = getCertificateInfo(certificateConfig, listingCertificate);
   const showCertificate = certificate && !certificate.hideFromListingInfo;
+
   return (
     <div className={css.sectionHeading}>
       <div className={css.desktopPriceContainer}>
@@ -47,6 +49,10 @@ const SectionHeading = props => {
       <div className={css.heading}>
         <h1 className={css.title}>{richTitle}</h1>
         <div className={css.author}>
+          <span>
+            <span>{category.label}</span>
+            <span className={css.separator}>•</span>
+          </span>
           {showCertificate ?
             <span>
               <span>{certificate.label}</span>
