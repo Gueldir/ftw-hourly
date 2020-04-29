@@ -266,6 +266,7 @@ class SearchFiltersMobileComponent extends Component {
         label={categoryLabel}
         onSelect={this.handleSelectSingle}
         liveEdit
+        openFilter={false}
         options={categoryFilter.options}
         initialValue={initialcategory}
         intl={intl}
@@ -303,6 +304,7 @@ class SearchFiltersMobileComponent extends Component {
         label={musicLabel}
         onSubmit={this.handleSelectMultiple}
         liveEdit
+        openFilter={false}
         options={musicFilter.options}
         initialValues={initialmusic}
       />
@@ -333,6 +335,8 @@ class SearchFiltersMobileComponent extends Component {
         urlParam={priceFilter.paramName}
         onSubmit={this.handlePrice}
         liveEdit
+        openFilter={true}
+        showAsPopup={false}
         {...priceFilter.config}
         initialValues={initialPriceRange}
       />
@@ -351,6 +355,7 @@ class SearchFiltersMobileComponent extends Component {
           label={keywordLabel}
           onSubmit={this.handleKeyword}
           liveEdit
+          openFilter={false}
           showAsPopup={false}
           initialValues={initialKeyword}
         />
@@ -370,6 +375,7 @@ class SearchFiltersMobileComponent extends Component {
           durationUrlParam={dateRangeLengthFilter.minDurationParamName}
           onSubmit={this.handleDateRangeLength}
           liveEdit
+          openFilter={false}
           showAsPopup={false}
           initialDateValues={initialDates}
           initialDurationValue={initialMinDuration}
@@ -388,6 +394,8 @@ class SearchFiltersMobileComponent extends Component {
         name="language"
         urlParam={languageFilter.paramName}
         label={languageLabel}
+        liveEdit
+        openFilter={false}
         onSubmit={this.handleSelectMultiple}
         options={languageFilter.options}
         initialValues={initiallanguage}
@@ -406,6 +414,8 @@ class SearchFiltersMobileComponent extends Component {
         name="audience"
         urlParam={audienceFilter.paramName}
         label={audienceLabel}
+        liveEdit
+        openFilter={false}
         onSubmit={this.handleSelectMultiple}
         options={audienceFilter.options}
         initialValues={initialaudience}
@@ -425,6 +435,8 @@ class SearchFiltersMobileComponent extends Component {
         name="level"
         urlParam={levelFilter.paramName}
         label={levelLabel}
+        liveEdit
+        openFilter={false}
         onSubmit={this.handleSelectMultiple}
         options={levelFilter.options}
         initialValues={initiallevel}
@@ -477,11 +489,11 @@ class SearchFiltersMobileComponent extends Component {
               {musicFilterElement}
               {sportFilterElement}
               {keywordFilterElement}
-              {languageFilterElement}
               {audienceFilterElement}
               {levelFilterElement}
-              {priceFilterElement}
+              {languageFilterElement}
               {dateRangeLengthFilterElement}
+              {priceFilterElement}
             </div>
           ) : null}
 

@@ -197,7 +197,7 @@ FilterPopup.propTypes = {
   initialValues: object,
   keepDirtyOnReinitialize: bool,
   contentPlacementOffset: number,
-  label: string.isRequired,
+  //label: string.isRequired, TBD: is whether string or array with KeywordFilter call and others
   labelMaxWidth: number,
   isSelected: bool.isRequired,
   children: node.isRequired,

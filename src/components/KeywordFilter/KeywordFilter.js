@@ -202,9 +202,9 @@ KeywordFilter.propTypes = {
   id: string.isRequired,
   name: string.isRequired,
   urlParam: string.isRequired,
-  label: string.isRequired,
+  label: string.isRequired, 
   onSubmit: func.isRequired,
-  initialValues: string,
+  //initialValues: string, TBD: is whether string or array with KeywordFilter call and others
   contentPlacementOffset: number,
 
   // form injectIntl

@@ -70,6 +70,7 @@ class SelectMultipleFilter extends Component {
       label,
       options,
       initialValues,
+      openFilter,
       contentPlacementOffset,
       onSubmit,
       urlParam,
@@ -138,6 +139,7 @@ class SelectMultipleFilter extends Component {
         isSelected={hasInitialValues}
         id={`${id}.plain`}
         liveEdit
+        openFilter={false}
         contentPlacementOffset={contentStyle}
         onSubmit={handleSubmit}
         initialValues={namedInitialValues}

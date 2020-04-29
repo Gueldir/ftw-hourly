@@ -152,6 +152,21 @@
   margin-top: 94px;
 }
 
+.searchContainer a {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  align-self: stretch;
+  margin: auto;
+  font-size: 24px;
+  text-align: center;
+  height: 72px;
+}
+
+.searchContainer.categoryLink {
+  margin-top: 0;
+}
+
 .mobileHelp {
   color: var(--matterColorAnti);
   margin: 0 24px;

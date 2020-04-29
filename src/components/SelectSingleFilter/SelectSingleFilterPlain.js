@@ -8,7 +8,8 @@ import css from './SelectSingleFilterPlain.css';
 class SelectSingleFilterPlain extends Component {
   constructor(props) {
     super(props);
-    this.state = { isOpen: true };
+    // By default would be to isOpen: true
+    this.state = { isOpen: this.props.openFilter };
     this.selectOption = this.selectOption.bind(this);
     this.toggleIsOpen = this.toggleIsOpen.bind(this);
   }

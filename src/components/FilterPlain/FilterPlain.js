@@ -9,7 +9,8 @@ import css from './FilterPlain.css';
 class FilterPlainComponent extends Component {
   constructor(props) {
     super(props);
-    this.state = { isOpen: true };
+    // By default would be to isOpen: true
+    this.state = { isOpen: this.props.openFilter };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleClear = this.handleClear.bind(this);

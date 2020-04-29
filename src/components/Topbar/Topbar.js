@@ -282,6 +282,35 @@ class TopbarComponent extends Component {
               <FormattedMessage id="Topbar.mobileSearchHelp" />
             </p>
           </div>
+          <div className={classNames(css.searchContainer, css.categoryLink)}>          
+            <NamedLink
+              className={css.inboxLink}
+              name="SearchPage"
+              to={{ search: 'pub_category=sport&pub_sport=&pub_music=&pub_art=', }}
+            >
+              <span className={css.inbox}>
+                <FormattedMessage id="TopbarDesktop.sport" />
+              </span>
+            </NamedLink>
+            <NamedLink
+              className={css.inboxLink}
+              name="SearchPage"
+              to={{  search: 'pub_category=music&pub_sport=&pub_music=&pub_art=', }}
+            >
+              <span className={css.inbox}>
+                <FormattedMessage id="TopbarDesktop.music" />
+              </span>
+            </NamedLink>            
+            <NamedLink
+              className={css.inboxLink}
+              name="SearchPage"
+              to={{  search: 'pub_category=art&pub_sport=&pub_music=&pub_art=', }}
+            >
+              <span className={css.inbox}>
+                <FormattedMessage id="TopbarDesktop.art" />
+              </span>
+            </NamedLink>
+          </div>
         </Modal>
         <ModalMissingInformation
           id="MissingInformationReminder"
