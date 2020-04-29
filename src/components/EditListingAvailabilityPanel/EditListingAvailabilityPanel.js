@@ -56,7 +56,7 @@ const Weekday = props => {
               return (
                 <span className={css.entry} key={`${e.dayOfWeek}${e.startTime}`}>{`${
                   e.startTime
-                } - ${e.endTime === '00:00' ? '24:00' : e.endTime} (${ e.seats } seats)`}</span>
+                } - ${e.endTime === '00:00' ? '24:00' : e.endTime} (${ e.seats })`}</span>
               );
             })
           : null}
