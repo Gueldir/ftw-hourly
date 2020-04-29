@@ -159,7 +159,6 @@ const DailyPlan = props => {
                 return (
                   <div className={css.fieldWrapper} key={name}>
                     <div className={css.formRow}>
-                      <span className={css.dashBetweenTimes}>Hour:</span>
                       <div className={css.field}>
                         <FieldSelect
                           id={`${name}.startTime`}
@@ -200,7 +199,7 @@ const DailyPlan = props => {
                           </option>
                         </FieldSelect>
                       </div>
-                      <span className={css.dashBetweenTimes}>Seat/h:</span>
+                      <span className={css.dashBetweenTimes}>•</span>
                       <div className={css.field}>
                         <FieldTextInput
                           id={`${name}.seats`}
@@ -212,6 +211,13 @@ const DailyPlan = props => {
                           min={1}
                           max={10}
                           step="1"
+                          onKeyUp={e => 
+                            parseInt(e.target.value)>parseInt(e.target.max) 
+                            ? e.target.value=e.target.max 
+                            : parseInt(e.target.value)<parseInt(e.target.min)
+                            ? e.target.value="" 
+                            : null
+                          }
                         />
                       </div>
                     </div>

@@ -577,6 +577,13 @@ const EditListingAvailabilityExceptionForm = props => {
                 max={10}
                 step="1"
                 disabled={isDisabled}
+                onKeyUp={e => 
+                  parseInt(e.target.value)>parseInt(e.target.max) 
+                  ? e.target.value=e.target.max 
+                  : parseInt(e.target.value)<parseInt(e.target.min)
+                  ? e.target.value="" 
+                  : null
+                }
               />
             </div>
             <div className={css.section}>
