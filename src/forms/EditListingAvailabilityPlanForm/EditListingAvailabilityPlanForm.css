@@ -76,7 +76,7 @@
 }
 
 .dayOfWeek {
-  width: 180px;
+  width: 100px;
   padding-top: 8px;
   @media (--viewportSmall) {
     width: 200px;
@@ -84,7 +84,10 @@
 }
 
 .timePicker {
-  width: 100%;
+  width: 60%;
+  @media (--viewportSmall) {
+    width: 100%;
+  }
 }
 
 .fieldWrapper {
@@ -92,7 +95,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
+  width: 75%;
 
   /* parent aka root is flexbox, this container takes all available space */
   flex-grow: 1;
@@ -109,6 +112,9 @@
     width: 100%;
     border-bottom: 1px solid var(--matterColorNegative);
     z-index: 0;
+  }
+  @media (--viewportSmall) {
+    width: 100%;
   }
 }
 
@@ -134,9 +140,9 @@
   &:hover {
     fill: var(--matterColor);
   }
-
   /* align icon with the select fields */
   padding: 2px 0 11px;
+  margin-top: 8px;
 }
 
 .dashBetweenTimes {
@@ -205,8 +211,11 @@
   letter-spacing: 0;
   background: none;
   padding-right: 0;
-  padding-left: 6px;
   padding-top: 8px;
   padding-bottom: 8px;
-  width: 42px;
+  width: 17px;
+  @media (--viewportSmall) {
+    width: 42px;
+    padding-left: 8px;
+  }
 }

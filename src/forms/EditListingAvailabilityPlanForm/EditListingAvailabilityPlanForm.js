@@ -129,6 +129,7 @@ const DailyPlan = props => {
   const getEntryEndTimes = getEntryBoundaries(values, dayOfWeek, intl, false);
 
   const hasEntries = values[dayOfWeek] && values[dayOfWeek][0];
+  const seatsAvailable = hasEntries && hasEntries.seats;
 
   const startTimePlaceholder = intl.formatMessage({
     id: 'EditListingAvailabilityPlanForm.startTimePlaceholder',
@@ -206,18 +207,11 @@ const DailyPlan = props => {
                           name={`${name}.seats`}
                           className={css.seatsSelect}
                           placeholder={4}
-                          defaultValue={1}
                           type="number"
                           min={1}
                           max={10}
                           step="1"
-                          onKeyUp={e => 
-                            parseInt(e.target.value)>parseInt(e.target.max) 
-                            ? e.target.value=e.target.max 
-                            : parseInt(e.target.value)<parseInt(e.target.min)
-                            ? e.target.value="" 
-                            : null
-                          }
+                          isUncontrolled
                         />
                       </div>
                     </div>
@@ -258,6 +252,7 @@ const DailyPlan = props => {
 };
 
 const submit = (onSubmit, weekdays) => values => {
+
   const sortedValues = weekdays.reduce(
     (submitValues, day) => {
       return submitValues[day]

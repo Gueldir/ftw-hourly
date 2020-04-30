@@ -3,6 +3,15 @@
 .root {
   outline: none;
   flex-grow: 1;
+  border-bottom: 0px solid;
+  transition: var(--transitionStyleButton);
+  height: 100%;
+
+  &:hover {
+    border-bottom: 4px solid var(--marketplaceColor);
+    border-radius: 0;
+    text-decoration: none;
+  }
 }
 
 .contentWrapper {

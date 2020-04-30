@@ -75,7 +75,7 @@
   display: flex;
   width: 24px;
   align-self: stretch;
-  background-color: var(--matterColorLight);
+  /*background-color: var(--matterColorLight);*/
 }
 
 .desktopInput {

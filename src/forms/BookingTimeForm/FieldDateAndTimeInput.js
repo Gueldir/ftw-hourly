@@ -557,8 +557,8 @@ class FieldDateAndTimeInput extends Component {
             </FieldSelect>
           </div>
         </div>        
-        <div className={css.formRow}>
-          <div className={css.field}>
+        <div className={css.formRow, css.seatsSelectContainer}>
+          <div className={css.field, css.seatsSelectContainer}>
             <FieldTextInput
               id={formId ? `${formId}.seats` : 'seats'}
               name="seats"
