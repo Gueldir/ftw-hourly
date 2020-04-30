@@ -62,7 +62,7 @@ export class NotFoundPageComponent extends Component {
                 <p className={css.description}>
                   <FormattedMessage id="NotFoundPage.description" />
                 </p>
-                <LocationSearchForm className={css.searchForm} onSubmit={handleSearchSubmit} />
+                {/*<LocationSearchForm className={css.searchForm} onSubmit={handleSearchSubmit} />*/}
               </div>
             </div>
           </LayoutWrapperMain>
