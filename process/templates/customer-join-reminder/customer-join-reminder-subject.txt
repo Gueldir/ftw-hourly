@@ -1,0 +1,1 @@
+{{transaction.listing.title}} with {{transaction.provider.display-name}} is about to start

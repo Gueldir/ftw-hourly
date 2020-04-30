@@ -1,0 +1,23 @@
+
+{{~#*inline "format-date"~}}
+{{date date time format="d. MMM, YYYY" lang="en-US" tz="Europe/Paris"}}
+at
+{{date date time format="hh:mm" lang="en-US" tz="Europe/Paris"}}
+{{~/inline~}}
+
+<html>
+  <body>
+    <h1>Your session is about to start!</h1>
+    {{#with transaction}}
+    <p>Dear {{provider.display-name}}, the session {{listing.title}} you are hosting today {{> format-date date=booking.start}} will now start in 15 minutes.</p>
+
+    <p>Remember to join with anticipation so you can start on the clock and make the most out of the session for your clients.</p>
+
+    <p><a href="{{marketplace.url}}/sale/{{url-encode id}}/details">Access the booking</a> and join the video meeting!</p>
+    {{/with}}
+
+    <hr />
+
+    <p>You have received this email notification because you are a member of {{marketplace.name}}. If you no longer wish to receive these emails, please contact {{marketplace.name}} team.</p>
+  </body>
+</html>

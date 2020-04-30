@@ -1,0 +1,1 @@
+Your {{transaction.listing.title}} is about to start
