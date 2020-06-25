@@ -26,7 +26,7 @@ class SelectSingleFilterPlain extends Component {
     // for loop probably detected when too many calls are made within a tiny timeframe
     setTimeout(
       () => {
-        if (urlParam == "pub_category") {
+        if (urlParam === "pub_category") {
           let subCatToClear = ["pub_sport","pub_music","pub_art"];
           this.props.onSelect(subCatToClear);
         }

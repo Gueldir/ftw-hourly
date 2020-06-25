@@ -311,7 +311,6 @@ SearchPageComponent.propTypes = {
   audienceConfig: array,
   languageConfig: array,
   levelConfig: array,
-  sportConfig: array,
   priceFilterConfig: shape({
     min: number.isRequired,
     max: number.isRequired,

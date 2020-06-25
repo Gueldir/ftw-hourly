@@ -12,7 +12,6 @@ const SectionLanguage = props => {
   }
 
   const selectedOptions = publicData && publicData.language ? publicData.language : [];
-  const selectedConfigOptions = options.filter(o => selectedOptions.find(s => s === o.key));
   
   return (
     <div className={css.sectionFeatures}>

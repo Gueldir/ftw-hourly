@@ -223,7 +223,6 @@ class SearchFiltersMobileComponent extends Component {
       onManageDisableScrolling,
       selectedFiltersCount,
       categoryFilter,
-      certificateFilter,
       languageFilter,
       audienceFilter,
       levelFilter,
@@ -273,7 +272,7 @@ class SearchFiltersMobileComponent extends Component {
       />
     ) : null;
 
-    const certificateLabel = intl.formatMessage({
+    /*const certificateLabel = intl.formatMessage({
       id: 'SearchFiltersMobile.certificateLabel',
     });
     const initialcertificate = certificateFilter
@@ -290,7 +289,7 @@ class SearchFiltersMobileComponent extends Component {
         initialValue={initialcertificate}
         intl={intl}
       />
-    ) : null;
+    ) : null;*/
 
     const musicLabel = intl.formatMessage({ id: 'SearchFiltersMobile.musicLabel' });
 
@@ -399,7 +398,6 @@ class SearchFiltersMobileComponent extends Component {
         onSubmit={this.handleSelectMultiple}
         options={languageFilter.options}
         initialValues={initiallanguage}
-        liveEdit
       />
     ) : null;
     const initialaudience = this.initialValues(audienceFilter.paramName);
@@ -419,7 +417,6 @@ class SearchFiltersMobileComponent extends Component {
         onSubmit={this.handleSelectMultiple}
         options={audienceFilter.options}
         initialValues={initialaudience}
-        liveEdit
       />
     ) : null;
 
@@ -440,7 +437,6 @@ class SearchFiltersMobileComponent extends Component {
         onSubmit={this.handleSelectMultiple}
         options={levelFilter.options}
         initialValues={initiallevel}
-        liveEdit
       />
     ) : null;
 

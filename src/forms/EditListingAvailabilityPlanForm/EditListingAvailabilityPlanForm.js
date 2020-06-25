@@ -129,7 +129,7 @@ const DailyPlan = props => {
   const getEntryEndTimes = getEntryBoundaries(values, dayOfWeek, intl, false);
 
   const hasEntries = values[dayOfWeek] && values[dayOfWeek][0];
-  const seatsAvailable = hasEntries && hasEntries.seats;
+  // const seatsAvailable = hasEntries && hasEntries.seats;
 
   const startTimePlaceholder = intl.formatMessage({
     id: 'EditListingAvailabilityPlanForm.startTimePlaceholder',

@@ -4,8 +4,6 @@ import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import routeConfiguration from '../../routeConfiguration';
-import { createResourceLocatorString } from '../../util/routes';
 import { isScrollingDisabled } from '../../ducks/UI.duck';
 import {
   Page,
@@ -15,7 +13,6 @@ import {
   LayoutWrapperFooter,
   Footer,
 } from '../../components';
-import { LocationSearchForm } from '../../forms';
 import { TopbarContainer } from '../../containers';
 
 import css from './NotFoundPage.css';
@@ -31,20 +28,11 @@ export class NotFoundPageComponent extends Component {
   }
 
   render() {
-    const { history, intl, scrollingDisabled } = this.props;
+    const { intl, scrollingDisabled } = this.props;
 
     const title = intl.formatMessage({
       id: 'NotFoundPage.title',
     });
-
-    const handleSearchSubmit = values => {
-      const { search, selectedPlace } = values.location;
-      const { origin, bounds } = selectedPlace;
-      const searchParams = { address: search, origin, bounds };
-      history.push(
-        createResourceLocatorString('SearchPage', routeConfiguration(), {}, searchParams)
-      );
-    };
 
     return (
       <Page title={title} scrollingDisabled={scrollingDisabled}>

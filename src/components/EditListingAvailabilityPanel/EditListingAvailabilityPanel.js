@@ -200,7 +200,7 @@ const EditListingAvailabilityPanel = props => {
 
   // Save exception click handler
   const saveException = values => {
-    const { availability, exceptionStartTime, exceptionEndTime, seats } = values;
+    const { exceptionStartTime, exceptionEndTime, seats } = values;
 
     // TODO: add proper seat handling    
     // const seats = availability === 'available' ? 1 : 0;

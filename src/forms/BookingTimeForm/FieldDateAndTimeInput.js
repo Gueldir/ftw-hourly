@@ -246,7 +246,7 @@ class FieldDateAndTimeInput extends Component {
   }
 
   onBookingStartDateChange = value => {
-    const { monthlyTimeSlots, timeZone, intl, form, values } = this.props;
+    const { monthlyTimeSlots, timeZone, intl, form } = this.props;
     if (!value || !value.date) {
       form.batch(() => {
         form.change('bookingStartTime', null);
@@ -557,19 +557,19 @@ class FieldDateAndTimeInput extends Component {
             </FieldSelect>
           </div>
         </div>        
-        <div className={css.formRow, css.seatsSelectContainer}>
-          <div className={css.field, css.seatsSelectContainer}>
+        <div className={classNames(css.formRow, css.seatsSelectContainer)}>
+          <div className={classNames(css.field, css.seatsSelectContainer)}>
             <FieldTextInput
               id={formId ? `${formId}.seats` : 'seats'}
               name="seats"
               label={seatsLabel}
               className={css.seatsSelect}
               placeholder={maxSeats}
-              defaultValue={maxSeats == 0 ? 0 : 1}
+              defaultValue={maxSeats === 0 ? 0 : 1}
               type="number"
               pattern="[0-9]*"
               inputMode="numeric"
-              min={maxSeats == 0 ? 0 : 1}
+              min={maxSeats === 0 ? 0 : 1}
               max={maxSeats ? maxSeats <= 1 ? 1 : maxSeats : 0}
               disabled={true}
               //disabled={endTimeDisabled}

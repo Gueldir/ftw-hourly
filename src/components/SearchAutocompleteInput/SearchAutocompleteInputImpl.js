@@ -359,7 +359,6 @@ class SearchAutocompleteInputImpl extends Component {
       input,
       meta,
       onSubmit,
-      inputRef,
     } = this.props;
     //const { name, onFocus } = input;
     const { touched, valid } = meta || {};

@@ -71,7 +71,6 @@ const SearchFiltersComponent = props => {
     resultsCount,
     searchInProgress,
     categoryFilter,
-    certificateFilter,
     sportFilter,
     musicFilter,
     priceFilter,
@@ -91,9 +90,9 @@ const SearchFiltersComponent = props => {
     id: 'SearchFilters.categoryLabel',
   });
 
-  const certificateLabel = intl.formatMessage({
+  /*const certificateLabel = intl.formatMessage({
     id: 'SearchFilters.certificateLabel',
-  });
+  });*/
 
   const sportLabel = intl.formatMessage({
     id: 'SearchFilters.sportLabel',
@@ -119,9 +118,9 @@ const SearchFiltersComponent = props => {
     ? initialValues(urlQueryParams, musicFilter.paramName)
     : null;
 
-  const initialcertificate = certificateFilter
+  /*const initialcertificate = certificateFilter
     ? initialValue(urlQueryParams, certificateFilter.paramName)
-    : null;
+    : null;*/
 
   const initialPriceRange = priceFilter
     ? initialPriceRangeValue(urlQueryParams, priceFilter.paramName)
@@ -190,7 +189,7 @@ const SearchFiltersComponent = props => {
     />
   ) : null;
 
-  const certificateFilterElement = certificateFilter ? (
+  /*const certificateFilterElement = certificateFilter ? (
     <SelectSingleFilter
       urlParam={certificateFilter.paramName}
       label={certificateLabel}
@@ -200,7 +199,7 @@ const SearchFiltersComponent = props => {
       initialValue={initialcertificate}
       contentPlacementOffset={FILTER_DROPDOWN_OFFSET}
     />
-  ) : null;
+  ) : null;*/
 
   const musicFilterElement = initialcategory[0] === "music" ? (
     <SelectMultipleFilter

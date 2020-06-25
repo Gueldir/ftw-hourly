@@ -197,9 +197,6 @@ export class ListingPageComponent extends Component {
       sendEnquiryError,
       monthlyTimeSlots,
       certificateConfig,
-      musicConfig,
-      sportConfig,
-      //yogaStylesConfig,
     } = this.props;
     
     const listingId = new UUID(rawParams.id);

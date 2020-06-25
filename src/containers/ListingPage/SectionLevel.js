@@ -12,7 +12,6 @@ const SectionLevel = props => {
   }
 
   const selectedOptions = publicData && publicData.level ? publicData.level : [];
-  const selectedConfigOptions = options.filter(o => selectedOptions.find(s => s === o.key));
   
   return (
     <div className={css.sectionFeatures}>

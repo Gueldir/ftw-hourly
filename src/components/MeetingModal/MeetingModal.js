@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage, intlShape, injectIntl } from '../../util/reactIntl';
+import { intlShape, injectIntl } from '../../util/reactIntl';
 import classNames from 'classnames';
 import { propTypes } from '../../util/types';
-import { IconReviewUser, Modal } from '../../components';
+import { Modal } from '../../components';
 
 import css from './MeetingModal.css';
 
@@ -13,12 +13,9 @@ const MeetingModal = props => {
     className,
     rootClassName,
     id,
-    intl,
     isOpen,
     onCloseModal,
     onManageDisableScrolling,
-    revieweeName,
-    api
   } = props;
 
   const classes = classNames(rootClassName || css.root, className);

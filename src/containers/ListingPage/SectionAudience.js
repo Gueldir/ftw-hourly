@@ -12,7 +12,6 @@ const SectionAudience = props => {
   }
 
   const selectedOptions = publicData && publicData.audience ? publicData.audience : [];
-  const selectedConfigOptions = options.filter(o => selectedOptions.find(s => s === o.key));
   
   return (
     <div className={css.sectionFeatures}>

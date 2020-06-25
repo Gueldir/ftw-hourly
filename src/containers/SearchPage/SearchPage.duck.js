@@ -166,7 +166,7 @@ export const searchListings = searchParams => (dispatch, getState, sdk) => {
   const priceMaybe = priceSearchParams(price);
   const availabilityMaybe = availabilityParams(dates, minDuration);
   const keywordsArray = keywords && [keywords.slice(",").split(" ")];
-  const keywords_search = !pub_sport && !pub_music && !pub_art && keywords && "has_any:" + keywordsArray.join(",");
+  // const keywords_search = !pub_sport && !pub_music && !pub_art && keywords && "has_any:" + keywordsArray.join(",");
   const multi_sport = pub_sport && keywords ? ("has_any:" + pub_sport + "," + keywordsArray.join(",")) : pub_sport ? ("has_any:" + pub_sport) : null;
   const multi_music = pub_music && keywords ? ("has_any:" + pub_music + "," +  keywordsArray.join(",")) : pub_music ? ("has_any:" + pub_music) : null;
   const multi_art = pub_art && keywords ? ("has_any:" + pub_art + "," +  keywordsArray.join(",")) : pub_art ? ("has_any:" + pub_art) : null;

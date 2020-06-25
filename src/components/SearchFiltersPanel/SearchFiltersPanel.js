@@ -36,7 +36,7 @@ import omit from 'lodash/omit';
 import routeConfiguration from '../../routeConfiguration';
 import { createResourceLocatorString } from '../../util/routes';
 import { propTypes } from '../../util/types';
-import { SelectSingleFilter, SelectMultipleFilter, InlineTextButton } from '../../components';
+import { SelectMultipleFilter, InlineTextButton } from '../../components';
 import css from './SearchFiltersPanel.css';
 
 class SearchFiltersPanelComponent extends Component {
@@ -152,7 +152,7 @@ class SearchFiltersPanelComponent extends Component {
   }
 
   render() {
-    const { rootClassName, className, intl, certificateFilter, languageFilter, audienceFilter, levelFilter } = this.props;
+    const { rootClassName, className, intl, languageFilter, audienceFilter, levelFilter } = this.props;
     const classes = classNames(rootClassName || css.root, className);
 
     const initiallanguage = this.initialValues(languageFilter.paramName);
@@ -171,7 +171,7 @@ class SearchFiltersPanelComponent extends Component {
       id: 'SearchFiltersPanel.levelLabel',
     });
 
-    const certificateLabel = intl.formatMessage({
+    /*const certificateLabel = intl.formatMessage({
       id: 'SearchFiltersPanel.certificateLabel',
     });
 
@@ -189,7 +189,7 @@ class SearchFiltersPanelComponent extends Component {
         initialValue={initialcertificate}
         intl={intl}
       />
-    ) : null;
+    ) : null;*/
 
   const languageFilterElement = languageFilter ? (
     <SelectMultipleFilter

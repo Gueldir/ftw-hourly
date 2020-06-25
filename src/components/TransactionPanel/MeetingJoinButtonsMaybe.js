@@ -12,28 +12,12 @@ const MeetingJoinButtonsMaybe = props => {
     className,
     rootClassName,
     showButtons,
-    acceptInProgress,
-    acceptSaleError,
-    declineSaleError,
-    onAcceptSale,
-    onDeclineSale,
     onOpenMeetingModal,
     loadMeetingRoom,
     buttonsDisabled
   } = props;
 
   const classes = classNames(rootClassName || css.actionButtons, className);
-
-  const acceptErrorMessage = acceptSaleError ? (
-    <p className={css.actionError}>
-      <FormattedMessage id="TransactionPanel.acceptSaleFailed" />
-    </p>
-  ) : null;
-  const declineErrorMessage = declineSaleError ? (
-    <p className={css.actionError}>
-      <FormattedMessage id="TransactionPanel.declineSaleFailed" />
-    </p>
-  ) : null;
 
   return showButtons ? (
     <div className={classes}>
