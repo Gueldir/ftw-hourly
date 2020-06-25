@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import { compose } from 'redux';
 import PropTypes, { shape } from 'prop-types';
-import { Form as FinalForm } from 'react-final-form';
 import { intlShape, injectIntl } from '../../util/reactIntl';
 import { createResourceLocatorString } from '../../util/routes';
-import classNames from 'classnames';
 import { withRouter } from 'react-router-dom';
-import { Form, TopbarFilter } from '../../components';
+import { TopbarFilter } from '../../components';
 import routeConfiguration from '../../routeConfiguration';
-import { Field } from 'react-final-form';
 import omit from 'lodash/omit';
 
 import css from './TopbarSearchForm.css';
@@ -96,20 +93,14 @@ import css from './TopbarSearchForm.css';
 }*/
 
 class TopbarSearchFormComponent extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     const {
       rootClassName, 
       desktopInputRoot,
-      className, 
-      intl, 
       isMobile, 
       urlQueryParams,
       keywordFilter,
-      handleSubmit,
       history,
     } = this.props
 
@@ -118,12 +109,6 @@ class TopbarSearchFormComponent extends Component {
       return queryParams[paramName];
     };
 
-    // resolve initial values for a multi value filter
-    const initialValues = (queryParams, paramName) => {
-      return !!queryParams[paramName] ? queryParams[paramName].split(' ') : [];
-    };
-
-    const classes = classNames(rootClassName, className);
     const desktopInputRootClass = desktopInputRoot || css.desktopInputRoot;
     const initialKeyword = keywordFilter
       ? initialValue(urlQueryParams, keywordFilter.paramName)

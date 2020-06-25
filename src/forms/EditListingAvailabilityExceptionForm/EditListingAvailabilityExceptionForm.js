@@ -373,9 +373,9 @@ const onExceptionEndDateChange = (value, timeRangesOnSelectedDate, props) => {
 };
 
 const onAvailabilityChange = (value, props, setIsDisabled) => {
-  const { form, values } = props;
+  const { form } = props;
 
-  if (value.target.value == 'available') {
+  if (value.target.value === 'available') {
     setIsDisabled(false);
     form.change('seats', 1);
     return;

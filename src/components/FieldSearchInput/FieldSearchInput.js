@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { bool, func, object, shape, string } from 'prop-types';
 import { Field } from 'react-final-form';
 import classNames from 'classnames';
-import { ValidationError, ExpandingTextarea } from '../../components';
 
 import css from './FieldSearchInput.css';
 
@@ -37,8 +36,6 @@ class FieldSearchInputComponent extends Component {
     // Error message and input error styles are only shown if the
     // field has been touched and the validation has failed.
     const hasError = !!customErrorText || !!(touched && invalid && error);
-
-    const fieldMeta = { touched: hasError, error: errorText };
 
     // Textarea doesn't need type.
     const { type, ...inputWithoutType } = input;
@@ -78,7 +75,6 @@ class FieldSearchInputComponent extends Component {
         }
       : { className: inputClasses, id, type, ...refMaybe, ...input, ...rest };
       
-    const classes = classNames(rootClassName || css.root, className);
     return (
         <input {...inputProps} />
     );

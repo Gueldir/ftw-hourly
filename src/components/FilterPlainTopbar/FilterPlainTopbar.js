@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { bool, func, node, object, string } from 'prop-types';
-import classNames from 'classnames';
-import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
+import { injectIntl, intlShape } from '../../util/reactIntl';
 
 import { TopbarFilterForm } from '../../forms';
-import css from './FilterPlainTopbar.css';
 
 class FilterPlainTopbarComponent extends Component {
   constructor(props) {
@@ -37,20 +35,12 @@ class FilterPlainTopbarComponent extends Component {
 
   render() {
     const {
-      rootClassName,
-      className,
-      plainClassName,
       id,
-      label,
-      isSelected,
       children,
       initialValues,
       keepDirtyOnReinitialize,
       contentPlacementOffset,
     } = this.props;
-    const classes = classNames(rootClassName || css.root, className);
-
-    const labelClass = isSelected ? css.filterLabelSelected : css.filterLabel;
 
     return (
       <TopbarFilterForm

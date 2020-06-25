@@ -3,7 +3,7 @@ import { func, number, string } from 'prop-types';
 import classNames from 'classnames';
 import { injectIntl, intlShape } from '../../util/reactIntl';
 import debounce from 'lodash/debounce';
-import { FieldSearchInput, IconSpinner } from '../../components';
+import { FieldSearchInput } from '../../components';
 
 import IconHourGlass from './IconHourGlass';
 import { FilterPlainTopbar } from '../../components';
@@ -71,26 +71,12 @@ class TopbarFilter extends Component {
       ...rest
     } = this.props;
 
-    const classes = classNames(rootClassName || css.root, className);
     const rootClass = classNames(rootClassName || css.root, className);
     const iconClass = classNames(iconClassName || css.icon);
     const inputClass = classNames(inputClassName || css.input);
 
 
     const hasInitialValues = !!initialValues && initialValues.length > 0;
-    const labelForPopup = hasInitialValues
-      ? intl.formatMessage({ id: 'TopbarFilter.labelSelected' }, { labelText: initialValues })
-      : label;
-
-    const labelForPlain = hasInitialValues
-      ? intl.formatMessage(
-          { id: 'TopbarFilterPlainForm.labelSelected' },
-          { labelText: initialValues }
-        )
-      : label;
-
-    const filterText = intl.formatMessage({ id: 'TopbarFilter.filterText' });
-
     const placeholder = intl.formatMessage({ id: 'TopbarFilter.placeholder' });
 
     const contentStyle = this.positionStyleForContent();

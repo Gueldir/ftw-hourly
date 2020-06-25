@@ -34,10 +34,6 @@ const priceData = (price, intl) => {
   return {};
 };
 
-const getCertificateInfo = (certificateConfig, key) => {
-  return certificateConfig.find(c => c.key === key);
-};
-
 class ListingImage extends Component {
   render() {
     return <ResponsiveImage {...this.props} />;
@@ -52,16 +48,13 @@ export const ListingCardComponent = props => {
     intl,
     listing,
     renderSizes,
-    certificateConfig,
-    musicConfig,
-    sportConfig,
     setActiveListing,
   } = props;
 
   const classes = classNames(rootClassName || css.root, className);
   const currentListing = ensureListing(listing);
   const id = currentListing.id.uuid;
-  const { title = '', price, publicData } = currentListing.attributes;
+  const { title = '', price } = currentListing.attributes;
   const author = currentListing.author.attributes.profile.displayName;
   const slug = createSlug(title);
   const firstImage =

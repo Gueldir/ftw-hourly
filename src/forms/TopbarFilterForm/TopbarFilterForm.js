@@ -36,25 +36,10 @@ const TopbarFilterFormComponent = props => {
       render={formRenderProps => {
         const {
           id,
-          form,
           handleSubmit,
-          onClear,
-          onCancel,
           style,
-          paddingClasses,
-          intl,
           children,
         } = formRenderProps;
-
-        const handleCancel = () => {
-          // reset the final form to initialValues
-          form.reset();
-          onCancel();
-        };
-
-        const clear = intl.formatMessage({ id: 'TopbarFilterForm.clear' });
-        const cancel = intl.formatMessage({ id: 'TopbarFilterForm.cancel' });
-        const submit = intl.formatMessage({ id: 'TopbarFilterForm.submit' });
 
         const classes = classNames(css.root);
 
@@ -62,20 +47,6 @@ const TopbarFilterFormComponent = props => {
           liveEdit || onChange ? (
             <FormSpy onChange={handleChange} subscription={{ values: true, dirty: true }} />
           ) : null;
-
-        const buttons = !liveEdit ? (
-          <div className={css.buttonsWrapper}>
-            <button className={css.clearButton} type="button" onClick={onClear}>
-              {clear}
-            </button>
-            <button className={css.cancelButton} type="button" onClick={handleCancel}>
-              {cancel}
-            </button>
-            <button className={css.submitButton} type="submit">
-              {submit}
-            </button>
-          </div>
-        ) : null;
 
         return (
           <Form
