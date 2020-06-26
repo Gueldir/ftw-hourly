@@ -17,6 +17,61 @@ https://github.com/sharetribe/flex-template-web/
 
 ## Upcoming version 2020-XX-XX
 
+## [v7.0.0] 2020-06-04
+
+### Updates from upstream (FTW-daily v5.0.0)
+
+- [change] Streamlining filter setup. Everyone who customizes FTW-templates, needs to update filters
+  and unfortunately the related code has been spread out in multiple UI containers.
+
+  Now, filters are more configurable through marketplace-custom-config.js. You can just add new
+  filter configs to `filters` array in there - and that should be enough for creating new filters
+  for extended data.
+
+  If your are creating a totally new filter component, you can take it into use in a single file:
+  src/containers/SearchPage/FilterComponent.js
+
+  In addition, we have renamed couple of container components:
+
+  - SearchFilters -> SearchFiltersPrimary
+  - SearchFiltersPanel -> SearchFiltersSecondary (SearchFiltersMobile has kept its name.)
+
+  SortBy filter's state is also tracked similarly as filters. From now on, the state is kept in
+  MainPanel and not in those 3 different UI containers.
+
+  [#1296](https://github.com/sharetribe/ftw-daily/pull/1296)
+
+[v7.0.0]: https://github.com/sharetribe/flex-template-web/compare/v6.6.0...v7.0.0
+
+## [v6.6.0] 2020-06-04
+
+### Updates from upstream
+
+- [fix] In some situations, ProfileMenu has began to overflow on TopbarDesktop.
+  [#1290](https://github.com/sharetribe/ftw-daily/pull/1290)
+- [change] Update dependencies (patch updates only)
+  [#1291](https://github.com/sharetribe/ftw-daily/pull/1291)
+- [change] Refactor server API routes into separate files.
+  [#1294](https://github.com/sharetribe/ftw-daily/pull/1294)
+- [change] Start the backend API router in dev mode with a dev server.
+  [#1297](https://github.com/sharetribe/ftw-daily/pull/1297)
+
+[v6.6.0]: https://github.com/sharetribe/flex-template-web/compare/v6.5.1...v6.6.0
+
+## [v6.5.1] 2020-05-13
+
+- [fix] Check length of `selectedConfigOptions` in `SectionFeaturesMaybe` to choose between one and
+  two column layout. [#92](https://github.com/sharetribe/ftw-hourly/pull/90)
+
+### Updates from upstream
+
+This is update from [upstream](https://github.com/sharetribe/ftw-daily): v4.4.3
+
+- [fix] Allow white space on Japanese bank account info. Japan collects bank name and account owner
+  name in addition to routing numbers. [#1287](https://github.com/sharetribe/ftw-daily/pull/1287)
+- [fix] wrongly named default props handleSubmit renamed to onSubmit
+  [#1288](https://github.com/sharetribe/ftw-daily/pull/1288)
+
 ## [v6.5.0] 2020-04-17
 
 - [change] Reorganize search filters [#89](https://github.com/sharetribe/ftw-hourly/pull/89)

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { string, func, arrayOf, shape, number } from 'prop-types';
+import { arrayOf, func, node, number, object, shape, string } from 'prop-types';
 import { FormattedMessage } from '../../util/reactIntl';
 import classNames from 'classnames';
 
@@ -9,6 +9,10 @@ import css from './SelectSingleFilterPopup.css';
 const optionLabel = (options, key) => {
   const option = options.find(o => o.key === key);
   return option ? option.label : key;
+};
+
+const getQueryParamName = queryParamNames => {
+  return Array.isArray(queryParamNames) ? queryParamNames[0] : queryParamNames;
 };
 
 class SelectSingleFilterPopup extends Component {
@@ -24,31 +28,25 @@ class SelectSingleFilterPopup extends Component {
     this.setState({ isOpen: isOpen });
   }
 
-  selectOption(urlParam, option) {
+  selectOption(queryParamName, option) {
     this.setState({ isOpen: false });
-    this.props.onSelect(urlParam, option);    
-    // TBD: Enhance the second call to onSelect, setTimeout is used to bypass the React's protection
-    // for loop probably detected when too many calls are made within a tiny timeframe
-    setTimeout(
-      () => {
-        if (urlParam === "pub_category") {
-          let subCatToClear = ["pub_sport","pub_music","pub_art"];
-          this.props.onSelect(subCatToClear);
-        }
-      }
-    ,);
+    this.props.onSelect({ [queryParamName]: option });
   }
 
   render() {
     const {
       rootClassName,
       className,
-      urlParam,
       label,
       options,
-      initialValue,
+      queryParamNames,
+      initialValues,
       contentPlacementOffset,
     } = this.props;
+
+    const queryParamName = getQueryParamName(queryParamNames);
+    const initialValue =
+      initialValues && initialValues[queryParamNames] ? initialValues[queryParamNames] : null;
 
     // resolve menu label text and class
     const menuLabel = initialValue ? optionLabel(options, initialValue) : label;
@@ -76,7 +74,7 @@ class SelectSingleFilterPopup extends Component {
               <MenuItem key={option.key}>
                 <button
                   className={css.menuItem}
-                  onClick={() => this.selectOption(urlParam, option.key)}
+                  onClick={() => this.selectOption(queryParamName, option.key)}
                 >
                   <span className={menuItemBorderClass} />
                   {option.label}
@@ -85,7 +83,10 @@ class SelectSingleFilterPopup extends Component {
             );
           })}
           <MenuItem key={'clearLink'}>
-            <button className={css.clearMenuItem} onClick={() => this.selectOption(urlParam, null)}>
+            <button
+              className={css.clearMenuItem}
+              onClick={() => this.selectOption(queryParamName, null)}
+            >
               <FormattedMessage id={'SelectSingleFilter.popupClear'} />
             </button>
           </MenuItem>
@@ -98,15 +99,15 @@ class SelectSingleFilterPopup extends Component {
 SelectSingleFilterPopup.defaultProps = {
   rootClassName: null,
   className: null,
-  initialValue: null,
+  initialValues: null,
   contentPlacementOffset: 0,
 };
 
 SelectSingleFilterPopup.propTypes = {
   rootClassName: string,
   className: string,
-  urlParam: string.isRequired,
-  label: string.isRequired,
+  queryParamNames: arrayOf(string).isRequired,
+  label: node.isRequired,
   onSelect: func.isRequired,
   options: arrayOf(
     shape({
@@ -114,7 +115,7 @@ SelectSingleFilterPopup.propTypes = {
       label: string.isRequired,
     })
   ).isRequired,
-  initialValue: string,
+  initialValues: object,
   contentPlacementOffset: number,
 };
 

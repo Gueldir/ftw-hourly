@@ -6,8 +6,8 @@ import config from '../../config';
 
 import css from './ListingPage.css';
 
-const getCertificateInfo = (certificateConfig, key) => {
-  return certificateConfig.find(c => c.key === key);
+const getCertificateInfo = (certificateOptions, key) => {
+  return certificateOptions.find(c => c.key === key);
 };
 
 const SectionHeading = props => {
@@ -17,7 +17,7 @@ const SectionHeading = props => {
     formattedPrice,
     hostLink,
     listingCertificate,
-    certificateConfig,
+    certificateOptions,
     showContactUser,
     onContactUser,
     options,
@@ -33,7 +33,7 @@ const SectionHeading = props => {
     ? 'ListingPage.perDay'
     : 'ListingPage.perUnit';
   const category = config.custom.category.find(c => c.key === options);
-  const certificate = getCertificateInfo(certificateConfig, listingCertificate);
+  const certificate = getCertificateInfo(certificateOptions, listingCertificate);
   const showCertificate = certificate && !certificate.hideFromListingInfo;
 
   return (

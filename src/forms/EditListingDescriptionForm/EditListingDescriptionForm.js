@@ -19,6 +19,7 @@ const EditListingDescriptionFormComponent = props => (
     mutators={{ ...arrayMutators }}
     render={formRenderProps => {
       const {
+        certificateOptions,
         className,
         disabled,
         ready,
@@ -141,7 +142,7 @@ const EditListingDescriptionFormComponent = props => (
           {/*<CustomCertificateSelectFieldMaybe
             id="certificate"
             name="certificate"
-            certificate={certificate}
+            certificateOptions={certificateOptions}
             intl={intl}
           />*/}
 
@@ -177,6 +178,12 @@ EditListingDescriptionFormComponent.propTypes = {
     updateListingError: propTypes.error,
   }),
   category: arrayOf(
+    shape({
+      key: string.isRequired,
+      label: string.isRequired,
+    })
+  ),
+  certificateOptions: arrayOf(
     shape({
       key: string.isRequired,
       label: string.isRequired,
