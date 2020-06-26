@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import config from '../../config';
 import routeConfiguration from '../../routeConfiguration';
-import { findOptionsForSelectFilter } from '../../util/search';
 import { LISTING_STATE_PENDING_APPROVAL, LISTING_STATE_CLOSED, propTypes } from '../../util/types';
 import { types as sdkTypes } from '../../util/sdkLoader';
 import {
@@ -197,7 +196,7 @@ export class ListingPageComponent extends Component {
       sendEnquiryInProgress,
       sendEnquiryError,
       monthlyTimeSlots,
-      filterConfig,
+      certificateConfig,
     } = this.props;
     
     const listingId = new UUID(rawParams.id);
@@ -384,10 +383,6 @@ export class ListingPageComponent extends Component {
         {authorDisplayName}
       </NamedLink>
     );
-
-    const yogaStylesOptions = findOptionsForSelectFilter('yogaStyles', filterConfig);
-    const certificateOptions = findOptionsForSelectFilter('certificate', filterConfig);
-
     return (
       <Page
         title={schemaTitle}
@@ -432,7 +427,7 @@ export class ListingPageComponent extends Component {
                     formattedPrice={formattedPrice}
                     richTitle={richTitle}
                     listingCertificate={publicData ? publicData.certificate : null}
-                    certificateOptions={certificateOptions}
+                    certificateConfig={certificateConfig}
                     hostLink={hostLink}
                     showContactUser={showContactUser}
                     onContactUser={this.onContactUser}
@@ -492,7 +487,9 @@ ListingPageComponent.defaultProps = {
   fetchReviewsError: null,
   monthlyTimeSlots: null,
   sendEnquiryError: null,
-  filterConfig: config.custom.filters,
+  certificateConfig: config.custom.certificate,
+  musicConfig: config.custom.music,
+  sportConfig: config.custom.sport,
 };
 
 ListingPageComponent.propTypes = {
@@ -538,7 +535,9 @@ ListingPageComponent.propTypes = {
   sendEnquiryError: propTypes.error,
   onSendEnquiry: func.isRequired,
   onInitializeCardPaymentData: func.isRequired,
-  filterConfig: array,
+  certificateConfig: array,
+  musicConfig: array,
+  sportConfig: array,
 };
 
 const mapStateToProps = state => {

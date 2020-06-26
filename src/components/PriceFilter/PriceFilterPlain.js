@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { arrayOf, func, node, number, shape, string } from 'prop-types';
+import { func, number, shape, string } from 'prop-types';
 import classNames from 'classnames';
 import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl';
 import { propTypes } from '../../util/types';
@@ -9,33 +9,6 @@ import config from '../../config';
 import { PriceFilterForm } from '../../forms';
 
 import css from './PriceFilterPlain.css';
-
-const RADIX = 10;
-
-const getPriceQueryParamName = queryParamNames => {
-  return Array.isArray(queryParamNames)
-    ? queryParamNames[0]
-    : typeof queryParamNames === 'string'
-    ? queryParamNames
-    : 'price';
-};
-
-// Parse value, which should look like "0,1000"
-const parse = priceRange => {
-  const [minPrice, maxPrice] = !!priceRange
-    ? priceRange.split(',').map(v => Number.parseInt(v, RADIX))
-    : [];
-  // Note: we compare to null, because 0 as minPrice is falsy in comparisons.
-  return !!priceRange && minPrice != null && maxPrice != null ? { minPrice, maxPrice } : null;
-};
-
-// Format value, which should look like { minPrice, maxPrice }
-const format = (range, queryParamName) => {
-  const { minPrice, maxPrice } = range || {};
-  // Note: we compare to null, because 0 as minPrice is falsy in comparisons.
-  const value = minPrice != null && maxPrice != null ? `${minPrice},${maxPrice}` : null;
-  return { [queryParamName]: value };
-};
 
 class PriceFilterPlainComponent extends Component {
   constructor(props) {
@@ -49,15 +22,13 @@ class PriceFilterPlainComponent extends Component {
   }
 
   handleChange(values) {
-    const { onSubmit, queryParamNames } = this.props;
-    const priceQueryParamName = getPriceQueryParamName(queryParamNames);
-    onSubmit(format(values, priceQueryParamName));
+    const { onSubmit, urlParam } = this.props;
+    onSubmit(urlParam, values);
   }
 
   handleClear() {
-    const { onSubmit, queryParamNames } = this.props;
-    const priceQueryParamName = getPriceQueryParamName(queryParamNames);
-    onSubmit(format(null, priceQueryParamName));
+    const { onSubmit, urlParam } = this.props;
+    onSubmit(urlParam, null);
   }
 
   toggleIsOpen() {
@@ -69,8 +40,6 @@ class PriceFilterPlainComponent extends Component {
       rootClassName,
       className,
       id,
-      label,
-      queryParamNames,
       initialValues,
       min,
       max,
@@ -79,10 +48,7 @@ class PriceFilterPlainComponent extends Component {
       currencyConfig,
     } = this.props;
     const classes = classNames(rootClassName || css.root, className);
-
-    const priceQueryParam = getPriceQueryParamName(queryParamNames);
-    const initialPrice = initialValues ? parse(initialValues[priceQueryParam]) : {};
-    const { minPrice, maxPrice } = initialPrice || {};
+    const { minPrice, maxPrice } = initialValues || {};
 
     const hasValue = value => value != null;
     const hasInitialValues = initialValues && hasValue(minPrice) && hasValue(maxPrice);
@@ -96,8 +62,6 @@ class PriceFilterPlainComponent extends Component {
             maxPrice: formatCurrencyMajorUnit(intl, currencyConfig.currency, maxPrice),
           }
         )
-      : label
-      ? label
       : intl.formatMessage({ id: 'PriceFilter.label' });
 
     return (
@@ -113,7 +77,7 @@ class PriceFilterPlainComponent extends Component {
         <div className={css.formWrapper}>
           <PriceFilterForm
             id={id}
-            initialValues={hasInitialValues ? initialPrice : { minPrice: min, maxPrice: max }}
+            initialValues={hasInitialValues ? initialValues : { minPrice: min, maxPrice: max }}
             onChange={this.handleChange}
             intl={intl}
             contentRef={node => {
@@ -143,11 +107,11 @@ PriceFilterPlainComponent.propTypes = {
   rootClassName: string,
   className: string,
   id: string.isRequired,
-  label: node,
-  queryParamNames: arrayOf(string).isRequired,
+  urlParam: string.isRequired,
   onSubmit: func.isRequired,
   initialValues: shape({
-    price: string,
+    minPrice: number.isRequired,
+    maxPrice: number.isRequired,
   }),
   min: number.isRequired,
   max: number.isRequired,

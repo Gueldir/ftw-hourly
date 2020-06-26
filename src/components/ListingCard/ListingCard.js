@@ -7,7 +7,6 @@ import { LINE_ITEM_DAY, LINE_ITEM_NIGHT, propTypes } from '../../util/types';
 import { formatMoney } from '../../util/currency';
 import { ensureListing } from '../../util/data';
 import { richText } from '../../util/richText';
-import { findOptionsForSelectFilter } from '../../util/search';
 import { createSlug } from '../../util/urlHelpers';
 import config from '../../config';
 import { NamedLink, ResponsiveImage } from '../../components';
@@ -35,10 +34,6 @@ const priceData = (price, intl) => {
   return {};
 };
 
-const getCertificateInfo = (certificateOptions, key) => {
-  return certificateOptions.find(c => c.key === key);
-};
-
 class ListingImage extends Component {
   render() {
     return <ResponsiveImage {...this.props} />;
@@ -53,7 +48,6 @@ export const ListingCardComponent = props => {
     intl,
     listing,
     renderSizes,
-    filtersConfig,
     setActiveListing,
   } = props;
 
@@ -65,11 +59,9 @@ export const ListingCardComponent = props => {
   const slug = createSlug(title);
   const firstImage =
     currentListing.images && currentListing.images.length > 0 ? currentListing.images[0] : null;
-
-  const certificateOptions = findOptionsForSelectFilter('certificate', filtersConfig);
-  const certificate = publicData
-    ? getCertificateInfo(certificateOptions, publicData.certificate)
-    : null;
+  /*const certificate = publicData
+    ? getCertificateInfo(certificateConfig, publicData.certificate)
+    : null;*/
   const { formattedPrice, priceTitle } = priceData(price, intl);
 
   const unitType = config.bookingUnitType;
@@ -148,14 +140,18 @@ ListingCardComponent.defaultProps = {
   className: null,
   rootClassName: null,
   renderSizes: null,
-  filtersConfig: config.custom.filters,
+  certificateConfig: config.custom.certificate,
+  musicConfig: config.custom.music,
+  sportConfig: config.custom.sport,
   setActiveListing: () => null,
 };
 
 ListingCardComponent.propTypes = {
   className: string,
   rootClassName: string,
-  filtersConfig: array,
+  certificateConfig: array,
+  musicConfig: array,
+  sportConfig: array,
   intl: intlShape.isRequired,
   listing: propTypes.listing.isRequired,
 

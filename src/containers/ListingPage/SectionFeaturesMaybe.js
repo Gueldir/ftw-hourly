@@ -23,7 +23,7 @@ const SectionFeaturesMaybe = props => {
         id="ListingPage.yogaStyles"
         options={selectedConfigOptions}
         selectedOptions={selectedOptions}
-        twoColumns={selectedConfigOptions.length > 5}
+        twoColumns={selectedConfigOptions > 5}
       />
     </div>
   );

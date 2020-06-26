@@ -4,8 +4,7 @@ import classNames from 'classnames';
 import { Form as FinalForm } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 import { intlShape, FormattedMessage } from '../../util/reactIntl';
-import { FormattedMessage } from '../../util/reactIntl';
-import { findOptionsForSelectFilter } from '../../util/search';
+
 import { propTypes } from '../../util/types';
 import { Button, Form } from '../../components';
 
@@ -32,7 +31,6 @@ const EditListingFeaturesFormComponent = props => (
         updated,
         updateInProgress,
         fetchErrors,
-        filterConfig,
       } = formRenderProps;
 
       const classes = classNames(rootClassName || css.root, className);
@@ -52,14 +50,12 @@ const EditListingFeaturesFormComponent = props => (
           <FormattedMessage id="EditListingFeaturesForm.showListingFailed" />
         </p>
       ) : null;
-
-      const options = findOptionsForSelectFilter('yogaStyles', filterConfig);
+      
       return (
         <Form className={classes} onSubmit={handleSubmit}>
           {errorMessage}
           {errorMessageShowListing}
 
-          <FieldCheckboxGroup className={css.features} id={name} name={name} options={options} />
           <CustomCategorySelectFieldMaybe
             id="category"
             name="category"
@@ -88,7 +84,6 @@ EditListingFeaturesFormComponent.defaultProps = {
   rootClassName: null,
   className: null,
   fetchErrors: null,
-  filterConfig: config.custom.filters,
 };
 
 EditListingFeaturesFormComponent.propTypes = {
@@ -112,7 +107,6 @@ EditListingFeaturesFormComponent.propTypes = {
       label: string.isRequired,
     })
   ),
-  filterConfig: propTypes.filterConfig,
 };
 
 const EditListingFeaturesForm = EditListingFeaturesFormComponent;

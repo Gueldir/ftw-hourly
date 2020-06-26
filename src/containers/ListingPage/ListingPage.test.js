@@ -30,41 +30,12 @@ import ActionBarMaybe from './ActionBarMaybe';
 const { UUID } = sdkTypes;
 const noop = () => null;
 
-const filterConfig = [
-  {
-    id: 'certificate',
-    label: 'Certificate',
-    type: 'SelectSingleFilter',
-    group: 'secondary',
-    queryParamName: 'pub_certificate',
-    config: {
-      options: [{ key: 'cat1', label: 'Cat 1' }, { key: 'cat2', label: 'Cat 2' }],
-    },
-  },
-  {
-    id: 'yogaStyles',
-    label: 'yogaStyles',
-    type: 'SelectMultipleFilter',
-    group: 'secondary',
-    queryParamName: 'pub_yogaStyles',
-    config: {
-      mode: 'has_all',
-      options: [
-        {
-          key: 'feat1',
-          label: 'Feat 1',
-        },
-        {
-          key: 'feat2',
-          label: 'Feat 2',
-        },
-        {
-          key: 'feat3',
-          label: 'Feat 3',
-        },
-      ],
-    },
-  },
+const certificateConfig = [{ key: 'cat1', label: 'Cat 1' }, { key: 'cat2', label: 'Cat 2' }];
+
+const yogaStylesConfig = [
+  { key: 'feat1', label: 'Feat 1' },
+  { key: 'feat2', label: 'Feat 2' },
+  { key: 'feat3', label: 'Feat 3' },
 ];
 
 describe('ListingPage', () => {
@@ -106,7 +77,8 @@ describe('ListingPage', () => {
       sendEnquiryInProgress: false,
       onSendEnquiry: noop,
       onFetchTimeSlots: noop,
-      filterConfig,
+      certificateConfig,
+      yogaStylesConfig,
     };
 
     const tree = renderShallow(<ListingPageComponent {...props} />);

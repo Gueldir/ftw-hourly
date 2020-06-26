@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { array, bool, func, oneOf, object, shape, string } from 'prop-types';
+import { array, bool, func, number, oneOf, object, shape, string } from 'prop-types';
 import { injectIntl, intlShape } from '../../util/reactIntl';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -45,9 +45,74 @@ export class SearchPageComponent extends Component {
 
     this.searchMapListingsInProgress = false;
 
+    this.filters = this.filters.bind(this);
     this.onMapMoveEnd = debounce(this.onMapMoveEnd.bind(this), SEARCH_WITH_MAP_DEBOUNCE);
     this.onOpenMobileModal = this.onOpenMobileModal.bind(this);
     this.onCloseMobileModal = this.onCloseMobileModal.bind(this);
+  }
+
+  filters() {
+    const {
+      categoryConfig,
+      certificateConfig,
+      languageConfig,
+      audienceConfig,
+      levelConfig,
+      musicConfig,
+      sportConfig,
+      priceFilterConfig,
+      keywordFilterConfig,
+      dateRangeLengthFilterConfig,
+    } = this.props;
+
+    // Note: "certificate" and "sport" filters are not actually filtering anything by default.
+    // Currently, if you want to use them, we need to manually configure them to be available
+    // for search queries. Read more from extended data document:
+    // https://www.sharetribe.com/docs/references/extended-data/#data-schema
+
+    return {
+      categoryFilter: {
+        paramName: 'pub_category',
+        options: categoryConfig,
+      },
+      certificateFilter: {
+        paramName: 'pub_certificate',
+        options: certificateConfig.filter(c => !c.hideFromFilters),
+      },
+      musicFilter: {
+        paramName: 'pub_music',
+        options: musicConfig,
+      },
+      sportFilter: {
+        paramName: 'pub_sport',
+        options: sportConfig,
+      },
+      languageFilter: {
+        paramName: 'pub_language',
+        options: languageConfig,
+      },
+      audienceFilter: {
+        paramName: 'pub_audience',
+        options: audienceConfig,
+      },
+      levelFilter: {
+        paramName: 'pub_level',
+        options: levelConfig,
+      },
+      priceFilter: {
+        paramName: 'price',
+        config: priceFilterConfig,
+      },
+      dateRangeLengthFilter: {
+        paramName: 'dates',
+        minDurationParamName: 'minDuration',
+        config: dateRangeLengthFilterConfig,
+      },
+      keywordFilter: {
+        paramName: 'keywords',
+        config: keywordFilterConfig,
+      },
+    };
   }
 
   // Callback to determine if new search is needed
@@ -68,7 +133,7 @@ export class SearchPageComponent extends Component {
     // we start to react to "mapmoveend" events by generating new searches
     // (i.e. 'moveend' event in Mapbox and 'bounds_changed' in Google Maps)
     if (viewportBoundsChanged && isSearchPage) {
-      const { history, location, filterConfig } = this.props;
+      const { history, location } = this.props;
 
       // parse query parameters, including a custom attribute named certificate
       const { address, bounds, mapSearch, ...rest } = parse(location.search, {
@@ -84,7 +149,7 @@ export class SearchPageComponent extends Component {
         ...originMaybe,
         bounds: viewportBounds,
         mapSearch: true,
-        ...validFilterParams(rest, filterConfig),
+        ...validFilterParams(rest, this.filters()),
       };
 
       history.push(createResourceLocatorString('SearchPage', routes, {}, searchParams));
@@ -107,9 +172,6 @@ export class SearchPageComponent extends Component {
     const {
       intl,
       listings,
-      filterConfig,
-      sortConfig,
-      history,
       location,
       onManageDisableScrolling,
       pagination,
@@ -120,23 +182,23 @@ export class SearchPageComponent extends Component {
       onActivateListing,
     } = this.props;
     // eslint-disable-next-line no-unused-vars
-    const { mapSearch, page, ...searchInURL } = parse(location.search, {
+    const { mapSearch, page, sort, ...searchInURL } = parse(location.search, {
       latlng: ['origin'],
       latlngBounds: ['bounds'],
     });
 
+    const filters = this.filters();
+
     // urlQueryParams doesn't contain page specific url params
     // like mapSearch, page or origin (origin depends on config.sortSearchByDistance)
-    const urlQueryParams = pickSearchParamsOnly(searchInURL, filterConfig, sortConfig);
+    const urlQueryParams = pickSearchParamsOnly(searchInURL, filters);
 
     // Page transition might initially use values from previous search
     const urlQueryString = stringify(urlQueryParams);
-    const paramsQueryString = stringify(
-      pickSearchParamsOnly(searchParams, filterConfig, sortConfig)
-    );
+    const paramsQueryString = stringify(pickSearchParamsOnly(searchParams, filters));
     const searchParamsAreInSync = urlQueryString === paramsQueryString;
 
-    const validQueryParams = validURLParamsForExtendedData(searchInURL, filterConfig);
+    const validQueryParams = validURLParamsForExtendedData(searchInURL, filters);
 
     const onMapIconClick = () => {
       this.useLocationSearchBounds = true;
@@ -175,6 +237,7 @@ export class SearchPageComponent extends Component {
         <div className={css.container}>
           <MainPanel
             urlQueryParams={validQueryParams}
+            sort={sort}
             listings={listings}
             searchInProgress={searchInProgress}
             searchListingsError={searchListingsError}
@@ -187,7 +250,20 @@ export class SearchPageComponent extends Component {
             pagination={pagination}
             searchParamsForPagination={parse(location.search)}
             showAsModalMaxWidth={MODAL_BREAKPOINT}
-            history={history}
+            primaryFilters={{
+              categoryFilter: filters.categoryFilter,
+              musicFilter: filters.musicFilter,
+              sportFilter: filters.sportFilter,
+              //certificateFilter: filters.certificateFilter,
+              keywordFilter: filters.keywordFilter,
+              priceFilter: filters.priceFilter,
+              dateRangeLengthFilter: filters.dateRangeLengthFilter,
+            }}
+            secondaryFilters={{              
+              languageFilter: filters.languageFilter,
+              audienceFilter: filters.audienceFilter,
+              levelFilter: filters.levelFilter,
+            }}
           />
         </div>
       </Page>
@@ -203,8 +279,16 @@ SearchPageComponent.defaultProps = {
   searchListingsError: null,
   searchParams: {},
   tab: 'listings',
-  filterConfig: config.custom.filters,
-  sortConfig: config.custom.sortConfig,
+  categoryConfig: config.custom.category,
+  certificateConfig: config.custom.certificate,
+  musicConfig: config.custom.music,
+  sportConfig: config.custom.sport,
+  languageConfig: config.custom.languageOptions,
+  audienceConfig: config.custom.audienceOptions,
+  levelConfig: config.custom.levelOptions,
+  priceFilterConfig: config.custom.priceFilterConfig,
+  keywordFilterConfig: config.custom.keywordFilterConfig,
+  dateRangeLengthFilterConfig: config.custom.dateRangeLengthFilterConfig,
   activeListingId: null,
 };
 
@@ -220,8 +304,19 @@ SearchPageComponent.propTypes = {
   searchListingsError: propTypes.error,
   searchParams: object,
   tab: oneOf(['filters', 'listings', 'map']).isRequired,
-  filterConfig: propTypes.filterConfig,
-  sortConfig: propTypes.sortConfig,
+  categoryConfig: array,
+  certificateConfig: array,
+  musicConfig: array,
+  sportConfig: array,
+  audienceConfig: array,
+  languageConfig: array,
+  levelConfig: array,
+  priceFilterConfig: shape({
+    min: number.isRequired,
+    max: number.isRequired,
+    step: number.isRequired,
+  }),
+  dateRangeLengthFilterConfig: object,
 
   // from withRouter
   history: shape({

@@ -283,7 +283,7 @@ PaymentMethodsForm.defaultProps = {
   className: null,
   rootClassName: null,
   inProgress: false,
-  onSubmit: null,
+  handleSubmit: null,
   addPaymentMethodError: null,
   deletePaymentMethodError: null,
   createStripeCustomerError: null,
@@ -294,7 +294,7 @@ PaymentMethodsForm.defaultProps = {
 PaymentMethodsForm.propTypes = {
   formId: string,
   intl: intlShape.isRequired,
-  onSubmit: func,
+  handleSubmit: func,
   addPaymentMethodError: object,
   deletePaymentMethodError: object,
   createStripeCustomerError: object,

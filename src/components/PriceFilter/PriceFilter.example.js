@@ -5,10 +5,15 @@ import { stringify, parse } from '../../util/urlHelpers';
 import PriceFilter from './PriceFilter';
 
 const URL_PARAM = 'pub_price';
+const RADIX = 10;
 
 // Helper for submitting example
-const handleSubmit = (values, history) => {
-  const queryParams = values ? `?${stringify(values)}` : '';
+const handleSubmit = (urlParam, values, history) => {
+  const { minPrice, maxPrice } = values || {};
+  const queryParams =
+    minPrice != null && maxPrice != null
+      ? `?${stringify({ [urlParam]: [minPrice, maxPrice].join(',') })}`
+      : '';
   history.push(`${window.location.pathname}${queryParams}`);
 };
 
@@ -17,15 +22,21 @@ const PriceFilterWrapper = withRouter(props => {
 
   const params = parse(location.search);
   const price = params[URL_PARAM];
-  const initialValues = { [URL_PARAM]: !!price ? price : null };
+  const valuesFromParams = !!price ? price.split(',').map(v => Number.parseInt(v, RADIX)) : [];
+  const initialValues = !!price
+    ? {
+        minPrice: valuesFromParams[0],
+        maxPrice: valuesFromParams[1],
+      }
+    : null;
 
   return (
     <PriceFilter
       {...props}
       initialValues={initialValues}
-      onSubmit={values => {
+      onSubmit={(urlParam, values) => {
         console.log('Submit PriceFilterForm with (unformatted) values:', values);
-        handleSubmit(values, history);
+        handleSubmit(urlParam, values, history);
       }}
     />
   );
@@ -35,7 +46,7 @@ export const PriceFilterPopup = {
   component: PriceFilterWrapper,
   props: {
     id: 'PriceFilterPopupExample',
-    queryParamNames: [URL_PARAM],
+    urlParam: URL_PARAM,
     min: 0,
     max: 1000,
     step: 5,
@@ -45,14 +56,14 @@ export const PriceFilterPopup = {
     // initialValues: handled inside wrapper
     // onSubmit: handled inside wrapper
   },
-  group: 'filters',
+  group: 'misc',
 };
 
 export const PriceFilterPlain = {
   component: PriceFilterWrapper,
   props: {
     id: 'PriceFilterPlainExample',
-    queryParamNames: [URL_PARAM],
+    urlParam: URL_PARAM,
     min: 0,
     max: 1000,
     step: 5,
@@ -62,5 +73,5 @@ export const PriceFilterPlain = {
     // initialValues: handled inside wrapper
     // onSubmit: handled inside wrapper
   },
-  group: 'filters',
+  group: 'misc',
 };

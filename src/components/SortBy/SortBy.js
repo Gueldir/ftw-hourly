@@ -8,24 +8,23 @@ import SortByPlain from './SortByPlain';
 import SortByPopup from './SortByPopup';
 
 const SortBy = props => {
-  const { sort, showAsPopup, isConflictingFilterActive, intl, ...rest } = props;
+  const { sort, showAsPopup, isKeywordFilterActive, intl, ...rest } = props;
 
-  const { relevanceKey, queryParamName } = config.custom.sortConfig;
+  const { relevanceKey } = config.custom.sortConfig;
 
   const options = config.custom.sortConfig.options.map(option => {
     const isRelevance = option.key === relevanceKey;
     return {
       ...option,
-      disabled:
-        (isRelevance && !isConflictingFilterActive) || (!isRelevance && isConflictingFilterActive),
+      disabled: (isRelevance && !isKeywordFilterActive) || (!isRelevance && isKeywordFilterActive),
     };
   });
   const defaultValue = 'createdAt';
   const componentProps = {
-    urlParam: queryParamName,
+    urlParam: 'sort',
     label: intl.formatMessage({ id: 'SortBy.heading' }),
     options,
-    initialValue: isConflictingFilterActive ? relevanceKey : sort || defaultValue,
+    initialValue: isKeywordFilterActive ? relevanceKey : sort || defaultValue,
     ...rest,
   };
   return showAsPopup ? <SortByPopup {...componentProps} /> : <SortByPlain {...componentProps} />;
@@ -39,7 +38,7 @@ SortBy.defaultProps = {
 SortBy.propTypes = {
   sort: string,
   showAsPopup: bool,
-  isConflictingFilterActive: bool.isRequired,
+  isKeywordFilterActive: bool.isRequired,
   intl: intlShape.isRequired,
 };
 

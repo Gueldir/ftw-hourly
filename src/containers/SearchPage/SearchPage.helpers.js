@@ -1,52 +1,44 @@
 import intersection from 'lodash/intersection';
 import config from '../../config';
 import { createResourceLocatorString } from '../../util/routes';
-import { parseSelectFilterOptions } from '../../util/search';
 import { createSlug } from '../../util/urlHelpers';
 import routeConfiguration from '../../routeConfiguration';
-
-const flatten = (acc, val) => acc.concat(val);
 
 /**
  * Validates a filter search param agains a filters configuration.
  *
  * All invalid param names and values are dropped
  *
- * @param {String} queryParamName Search parameter name
+ * @param {String} paramName Search parameter name
  * @param {Object} paramValue Search parameter value
  * @param {Object} filters Filters configuration
  */
-export const validURLParamForExtendedData = (queryParamName, paramValueRaw, filters) => {
-  // Resolve configuration for this filter
-  const filterConfig = filters.find(f => {
-    const isArray = Array.isArray(f.queryParamNames);
-    return isArray
-      ? f.queryParamNames.includes(queryParamName)
-      : f.queryParamNames === queryParamName;
-  });
+export const validURLParamForExtendedData = (paramName, paramValueRaw, filters) => {
+  const filtersArray = Object.values(filters);
+  // resolve configuration for this filter
+  const filterConfig = filtersArray.find(f => f.paramName === paramName);
 
   const paramValue = paramValueRaw.toString();
+  const valueArray = paramValue ? paramValue.split(',') : [];
 
-  if (filterConfig) {
-    const { min, max } = filterConfig.config || {};
+  if (filterConfig && valueArray.length > 0) {
+    const { min, max, active } = filterConfig.config || {};
 
-    if (['SelectSingleFilter', 'SelectMultipleFilter'].includes(filterConfig.type)) {
-      // Pick valid select options only
-      const allowedValues = filterConfig.config.options.map(o => o.key);
-      const valueArray = parseSelectFilterOptions(paramValue);
+    if (filterConfig.options) {
+      // Single and multiselect filters
+      const allowedValues = filterConfig.options.map(o => o.key);
+
       const validValues = intersection(valueArray, allowedValues).join(',');
-
-      return validValues.length > 0 ? { [queryParamName]: validValues } : {};
-    } else if (filterConfig.type === 'PriceFilter') {
-      // Restrict price range to correct min & max
-      const valueArray = paramValue ? paramValue.split(',') : [];
+      return validValues.length > 0 ? { [paramName]: validValues } : {};
+    } else if (filterConfig.config && min != null && max != null) {
+      // Price filter
       const validValues = valueArray.map(v => {
         return v < min ? min : v > max ? max : v;
       });
-      return validValues.length === 2 ? { [queryParamName]: validValues.join(',') } : {};
-    } else if (filterConfig) {
-      // Generic filter - remove empty params
-      return paramValue.length > 0 ? { [queryParamName]: paramValue } : {};
+      return validValues.length === 2 ? { [paramName]: validValues.join(',') } : {};
+    } else if (filterConfig.config && active) {
+      // Generic filter
+      return paramValue.length > 0 ? { [paramName]: paramValue } : {};
     }
   }
   return {};
@@ -61,11 +53,12 @@ export const validURLParamForExtendedData = (queryParamName, paramValueRaw, filt
  * @param {Object} filters Filters configuration
  */
 export const validFilterParams = (params, filters) => {
-  const filterParamNames = filters.map(f => f.queryParamNames).reduce(flatten, []);
+  const filterParamNames = Object.values(filters).map(f => f.paramName);
   const paramEntries = Object.entries(params);
 
   return paramEntries.reduce((validParams, entry) => {
-    const [paramName, paramValue] = entry;
+    const paramName = entry[0];
+    const paramValue = entry[1];
 
     return filterParamNames.includes(paramName)
       ? {
@@ -85,11 +78,12 @@ export const validFilterParams = (params, filters) => {
  * @param {Object} filters Filters configuration
  */
 export const validURLParamsForExtendedData = (params, filters) => {
-  const filterParamNames = filters.map(f => f.queryParamNames).reduce(flatten, []);
+  const filterParamNames = Object.values(filters).map(f => f.paramName);
   const paramEntries = Object.entries(params);
 
   return paramEntries.reduce((validParams, entry) => {
-    const [paramName, paramValue] = entry;
+    const paramName = entry[0];
+    const paramValue = entry[1];
 
     return filterParamNames.includes(paramName)
       ? {
@@ -102,19 +96,16 @@ export const validURLParamsForExtendedData = (params, filters) => {
 
 // extract search parameters, including a custom URL params
 // which are validated by mapping the values to marketplace custom config.
-export const pickSearchParamsOnly = (params, filters, sortConfig) => {
+export const pickSearchParamsOnly = (params, filters) => {
   const { address, origin, bounds, ...rest } = params || {};
   const boundsMaybe = bounds ? { bounds } : {};
   const originMaybe = config.sortSearchByDistance && origin ? { origin } : {};
   const filterParams = validFilterParams(rest, filters);
-  const sort = rest[sortConfig.queryParamName];
-  const sortMaybe = sort ? { sort } : {};
 
   return {
     ...boundsMaybe,
     ...originMaybe,
     ...filterParams,
-    ...sortMaybe,
   };
 };
 

@@ -18,18 +18,18 @@ class FilterPlainComponent extends Component {
   }
 
   handleChange(values) {
-    const { onSubmit } = this.props;
-    onSubmit(values);
+    const { onSubmit, urlParam } = this.props;
+    onSubmit(urlParam, values);
   }
 
   handleClear() {
-    const { onSubmit, onClear } = this.props;
+    const { onSubmit, onClear, urlParam } = this.props;
 
     if (onClear) {
       onClear();
     }
 
-    onSubmit(null);
+    onSubmit(urlParam, null);
   }
 
   toggleIsOpen() {
